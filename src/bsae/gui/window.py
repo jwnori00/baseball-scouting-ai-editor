@@ -34,12 +34,16 @@ class Window(QMainWindow):
         self.setWindowTitle('Baseball Scouting AI Editor — 개발판 / 실제 경기 성능 미평가')
         self.resize(1150,950)
         self.session=None;self.project_path=None;self.job=None;self.dirty=False
+        root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
+        policy=root/'build-policy.json'
+        self.development_package=policy.is_file() and json.loads(policy.read_text(encoding='utf-8-sig')).get('kind')=='development'
+
         self.preview_segments=[];self.preview_index=0
         body=QWidget();self.setCentralWidget(body);layout=QVBoxLayout(body)
         layout.addWidget(QLabel('1. 경기 원본 추가 → 2. 선수·모델 선택 → 3. AI 분석 → 4. 후보 검수 → 5. 승인 영상 출력'))
         self.files=QListWidget();self.files.setMaximumHeight(95);layout.addWidget(self.files)
         row=QHBoxLayout();layout.addLayout(row)
-        for text,callback in [('새 경기',self.new_session),('영상 추가',self.add_files),('위로',lambda:self.move(-1)),('아래로',lambda:self.move(1)),('삭제',self.remove_file),('프로젝트 열기',self.open_project),('프로젝트 저장',self.save_project)]:
+        for text,callback in [('새 경기',self.new_session),('영상 추가',self.add_files),('경기 등록 (분석 없이)',self.register_game),('위로',lambda:self.move(-1)),('아래로',lambda:self.move(1)),('삭제',self.remove_file),('프로젝트 열기',self.open_project),('프로젝트 저장',self.save_project)]:
             self.button(row,text,callback)
         row=QHBoxLayout();layout.addLayout(row)
         self.role=QComboBox();self.role.addItems(['투수','타자']);row.addWidget(self.role)
@@ -86,6 +90,7 @@ class Window(QMainWindow):
             self.model.setText(str(root/'models'/'model.json'))
         if getattr(sys,'frozen',False):
             self.model.setReadOnly(True)
+        self.check_model()
 
 
     def button(self,row,text,callback):
@@ -99,6 +104,10 @@ class Window(QMainWindow):
         if path:edit.setText(path)
 
     def check_model(self):
+        if self.development_package:
+            self.availability.setText('개발판 — 검증된 AI 모델 없음. 자동 분석 비활성화. 영상 등록·검수·출력 시험 가능.')
+            self.analyze_button.setEnabled(False)
+            return
         try:
             from bsae.vision.model import TemporalModel
             model=TemporalModel(self.model.text())
@@ -139,7 +148,22 @@ class Window(QMainWindow):
         self.job.error.connect(self.error);self.job.done.connect(done)
         self.job.finished.connect(self.check_model);self.analyze_button.setEnabled(False);self.job.start()
 
+    def register_game(self):
+        if self.job and self.job.isRunning():return
+        if self.session:self.error('새 경기 버튼으로 새 프로젝트를 시작하세요.');return
+        if not self.name.text().strip() or not self.files.count():self.error('선수 이름과 영상 파일을 입력하세요.');return
+        paths=[self.files.item(i).text() for i in range(self.files.count())]
+        identity=PlayerIdentity(self.name.text().strip(),'pitcher' if self.role.currentIndex()==0 else 'batter',self.team.text(),self.jersey.text())
+        game_date=self.date.text()
+        self.launch(lambda job:GameSession(identity.name,identity,add_sources(paths),game_date=game_date),self.registered)
+
+    def registered(self,session):
+        self.session=session;self.dirty=True;self.refresh()
+        self.start.setValue(0);self.end.setValue(min(10,sum(s.duration for s in session.sources)))
+        self.stage.setText('경기 등록 완료 — 개발판 검수·출력 시험. AI 탐색 결과가 아닙니다.')
+
     def start_analysis(self):
+        if self.development_package:self.error('개발판에는 검증된 AI 모델이 없어 자동 분석이 비활성화되어 있습니다.');return
         if self.job and self.job.isRunning():return
         if not self.name.text().strip() or not self.files.count():self.error('선수 이름과 원본 영상을 입력하세요.');return
         try:profile=json.loads(Path(self.profile.text()).read_text(encoding='utf-8'))

@@ -28,26 +28,33 @@ if __name__=='__main__':
         from bsae.vision.model import TemporalModel
         from bsae.export.render import export
         root=Path(sys._MEIPASS)
-        model=TemporalModel(root/'models'/'model.json')
-        model.predict(np.zeros(456))
+        policy=json.loads((root/'build-policy.json').read_text(encoding='utf-8-sig'))
+        if policy['kind']=='release':
+            model=TemporalModel(root/'models'/'model.json')
+            model.predict(np.zeros(456))
         run('tesseract',['--version'])
         run('tesseract',['--list-langs'])
         app=QApplication([]);window=Window();window.show();app.processEvents()
+        if policy['kind']=='development':
+            assert not window.analyze_button.isEnabled()
         with tempfile.TemporaryDirectory(prefix='야구 Martínez ') as d:
             d=Path(d);video=d/'합성 원본.mp4'
             run('ffmpeg',['-v','error','-nostdin','-n','-f','lavfi','-i','testsrc2=size=160x90:rate=10:duration=2','-c:v','libx264',video])
             original=fingerprint(video)
             game=GameSession('Synthetic smoke',PlayerIdentity('Synthetic'),add_sources([video]))
-            e=PitchEvent(game.id,game.split(.2,1.5),.2,1.5);game.events=[e]
-            review(game,e.id,'APPROVED',confirm_identity=True)
+            window.registered(game)
+            window.start.setValue(.2);window.end.setValue(1.5);window.manual()
+            window.table.selectRow(0);window.confirm.setChecked(True);window.apply('APPROVED')
+            game=window.session
+            assert len(game.events)==1 and game.events[0].status=='APPROVED'
             game.save(d/'project.json');game=GameSession.load(d/'project.json')
             export(game,d/'output')
             assert original==fingerprint(video)
-        window.close()
+        window.dirty=False;window.close()
         # Explicitly does not assert baseball model accuracy or native playback.
         Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
             executable='PASS',gui_construction='PASS',synthetic_render='PASS',
-            model_integrity='PASS',baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
+            model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='ENABLED' if policy['kind']=='release' else 'DISABLED',baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
     else:
         from bsae.app import main
         raise SystemExit(main())

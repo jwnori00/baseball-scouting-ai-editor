@@ -80,3 +80,20 @@ Onedir ZIP에 포함하며 frozen 모드에서는 외부 PATH 도구로 대체�
 실제 원본은 사용자의 Windows PC에 유지합니다. 업로드를 요청하지 않습니다.
 실행 명령은 README와 docs/LOCAL_VALIDATION.md, 제작/깨끗한 PC 검사는 docs/PACKAGING.md에 있습니다.
 현재 GitHub API 읽기는 `Forbidden`으로 거부되어 PR 자동 생성은 불가능했습니다.
+
+## Windows 포터블 수정 작업
+
+- `editor.spec` 누락 원인: 기존 `.gitignore`의 `*.spec` 규칙 때문에 로컬 파일이 커밋에서 제외됨.
+  `/packaging/editor.spec` 예외를 추가해 추적함.
+- 개발판에도 모델을 필수로 요구하던 자산 게이트를 development/release로 분리.
+  development는 모델을 동봉하지 않고 AI를 비활성화함.
+- 정식 release는 실제 야구 독립 평가 보고서, 모델 해시 결합, 목표 성능과 상업 이용 검토를 요구함.
+- FFmpeg 버전마다 달라지는 선택된 마지막 VFR 프레임의 0.1/0.3초 길이를 구분하고
+  테스트는 5초의 PTS 원점을 제외한 실제 재생 범위를 검사함.
+- Linux Qt 의존성 `libegl1` 등 시스템 패키지 추가.
+- Windows 전용 워크플로: 네이티브 FFmpeg 소스 빌드, 네이티브 OCR DLL/자료,
+  Qt 대응 소스/라이선스/체크섬 수집, 테스트, 실제 frozen EXE 자체검사, ZIP/SHA-256 Artifact.
+- 최근 main 실행 42173406878의 Windows/Linux 실패 상태와 작업 ID를 확인함.
+  상세 로그는 GitHub 웹의 로그인 제한과 API Forbidden 때문에 직접 열람하지 못함.
+  공개 페이지의 실패 상태, 사용자 제공 오류, 로컬 재현을 구분하여 진단함.
+- 사용자 다운로드 절차: docs/WINDOWS_DOWNLOAD.md.

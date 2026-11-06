@@ -1,6 +1,7 @@
 name: Synthetic workflow tests
 on:
   push:
+    branches: [main, "feat/**", "fix/**"]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -24,7 +25,7 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Linux media tools
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg tesseract-ocr
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg tesseract-ocr libegl1 libgl1 libopengl0 libxkbcommon0 libxcb-cursor0 libpulse0
       - name: Windows test media tools
         if: runner.os == 'Windows'
         shell: pwsh
