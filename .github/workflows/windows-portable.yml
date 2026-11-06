@@ -60,6 +60,10 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-pkgconf
             mingw-w64-x86_64-tesseract-ocr
+      - uses: actions/cache@v4
+        with:
+          path: vendor/portable/corresponding-source
+          key: windows-qt-pyside-6.8.3-source-v1
       - name: Build native FFmpeg and collect native OCR
         shell: msys2 {0}
         run: |

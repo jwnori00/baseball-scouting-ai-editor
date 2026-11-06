@@ -29,7 +29,11 @@ cp COPYING "$assets/licenses/media/x264-COPYING"
 cd "$root/build/media/ffmpeg"
 ./configure --prefix="$prefix" --target-os=mingw32 --arch=x86_64 --cc=gcc --cxx=g++ \
     --disable-shared --enable-static --disable-autodetect --disable-doc --disable-debug \
-    --disable-network --enable-gpl --enable-libx264 --pkg-config-flags=--static --extra-ldflags=-static
+    --disable-network --enable-gpl --enable-libx264 --pkg-config-flags=--static --extra-ldflags=-static \
+    --disable-encoders --enable-encoder=libx264,aac,ffv1,rawvideo,pcm_s16le,wrapped_avframe \
+    --disable-muxers --enable-muxer=mp4,matroska,rawvideo,null \
+    --disable-filters --enable-filter=fps,scale,showinfo,setsar,pad,select,setpts,testsrc2,sine,anullsrc,aresample,aformat,format,anull,null,transpose,hflip,vflip,crop,rotate \
+    --disable-outdevs --disable-ffplay
 make -j2
 make install
 cp "$prefix/bin/ffmpeg.exe" "$prefix/bin/ffprobe.exe" "$assets/tools/"

@@ -32,7 +32,7 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Baseball Scouting AI Editor — 개발판 / 실제 경기 성능 미평가')
-        self.resize(1150,950)
+        self.resize(1100,800)
         self.session=None;self.project_path=None;self.job=None;self.dirty=False
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
         policy=root/'build-policy.json'
@@ -40,34 +40,45 @@ class Window(QMainWindow):
 
         self.preview_segments=[];self.preview_index=0
         body=QWidget();self.setCentralWidget(body);layout=QVBoxLayout(body)
-        layout.addWidget(QLabel('1. 경기 원본 추가 → 2. 선수·모델 선택 → 3. AI 분석 → 4. 후보 검수 → 5. 승인 영상 출력'))
+        layout.addWidget(QLabel('영상 선택 → 선수 지정 → AI 탐색 → 후보 검수 → MP4 저장'))
         self.files=QListWidget();self.files.setMaximumHeight(95);layout.addWidget(self.files)
         row=QHBoxLayout();layout.addLayout(row)
-        for text,callback in [('새 경기',self.new_session),('영상 추가',self.add_files),('경기 등록 (분석 없이)',self.register_game),('위로',lambda:self.move(-1)),('아래로',lambda:self.move(1)),('삭제',self.remove_file),('프로젝트 열기',self.open_project),('프로젝트 저장',self.save_project)]:
+        project_menu=self.menuBar().addMenu('프로젝트')
+        for text,callback in [('새 경기',self.new_session),('프로젝트 열기',self.open_project),('프로젝트 저장',self.save_project)]:
+            project_menu.addAction(text,callback)
+        for text,callback in [('영상 선택',self.add_files),('위로',lambda:self.move(-1)),('아래로',lambda:self.move(1)),('삭제',self.remove_file)]:
             self.button(row,text,callback)
+        if self.development_package or not getattr(sys,'frozen',False):
+            diagnostic_menu=self.menuBar().addMenu('개발판 시험')
+            diagnostic_menu.addAction('영상·검수·출력 시험용 경기 등록 (AI 아님)',self.register_game)
         row=QHBoxLayout();layout.addLayout(row)
         self.role=QComboBox();self.role.addItems(['투수','타자']);row.addWidget(self.role)
         self.name=QLineEdit();self.name.setPlaceholderText('선수 이름');row.addWidget(self.name)
         self.team=QLineEdit();self.team.setPlaceholderText('팀');row.addWidget(self.team)
         self.jersey=QLineEdit();self.jersey.setPlaceholderText('등번호');row.addWidget(self.jersey)
-        self.alias=QLineEdit();self.alias.setPlaceholderText('별칭 (쉼표 구분)');row.addWidget(self.alias)
+        self.alias=QLineEdit();self.alias.setPlaceholderText('별칭 (쉼표 구분)');self.alias.hide()
         self.date=QLineEdit();self.date.setPlaceholderText('YYYY-MM-DD');row.addWidget(self.date)
         self.model=QLineEdit();self.profile=QLineEdit()
+        self.model_settings=QWidget();settings_layout=QVBoxLayout(self.model_settings)
         for text,edit in [('모델 manifest',self.model),('중계 OCR 설정',self.profile)]:
-            row=QHBoxLayout();layout.addLayout(row);row.addWidget(QLabel(text));row.addWidget(edit)
+            row=QHBoxLayout();settings_layout.addLayout(row);row.addWidget(QLabel(text));row.addWidget(edit)
             self.button(row,'선택',lambda checked=False,e=edit:self.choose_json(e))
+        layout.addWidget(self.model_settings);self.model_settings.hide()
+        if not getattr(sys,'frozen',False):
+            action=diagnostic_menu.addAction('개발자 모델 설정 표시');action.setCheckable(True)
+            action.toggled.connect(self.model_settings.setVisible)
         self.availability=QLabel('자동 분석 BLOCKED: 야구 동작 학습 모델을 선택하세요. 동봉 모델 없음.')
         layout.addWidget(self.availability);self.model.textChanged.connect(self.check_model)
         row=QHBoxLayout();layout.addLayout(row)
         self.analyze_button=self.button(row,'AI 자동 분석 시작',self.start_analysis);self.analyze_button.setEnabled(False)
-        self.button(row,'분석/출력 중단 (캐시 보존)',self.cancel)
+        self.button(row,'중단',self.cancel)
         self.progress=QProgressBar();row.addWidget(self.progress)
         self.stage=QLabel('대기');layout.addWidget(self.stage)
-        self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(['번호','이닝','시작','종료','검수','신뢰도','유형'])
+        self.table=QTableWidget(0,5);self.table.setHorizontalHeaderLabels(['번호','이닝','시작','종료','검수'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected);layout.addWidget(self.table)
-        self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence)
-        self.video=QVideoWidget();self.video.setMinimumHeight(200);layout.addWidget(self.video)
+        self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence);self.evidence.hide()
+        self.video=QVideoWidget();self.video.setMinimumHeight(180);layout.addWidget(self.video)
         self.player=QMediaPlayer(self);self.audio=QAudioOutput(self);self.player.setAudioOutput(self.audio);self.player.setVideoOutput(self.video)
         self.player.positionChanged.connect(self.preview_position)
         self.player.mediaStatusChanged.connect(self.preview_status)
@@ -80,14 +91,17 @@ class Window(QMainWindow):
         row=QHBoxLayout();layout.addLayout(row)
         self.button(row,'수정·검수 승인',lambda:self.apply('APPROVED'))
         self.button(row,'제외',lambda:self.apply('EXCLUDED'))
-        self.button(row,'재검수',lambda:self.apply('REVIEW_REQUIRED'))
+        self.button(row,'판단 근거',lambda:self.evidence.setVisible(not self.evidence.isVisible()))
+        project_menu.addAction('선택 후보 재검수',lambda:self.apply('REVIEW_REQUIRED'))
         self.button(row,'누락 후보 보조 추가',self.manual)
         self.button(row,'선택 타석 그룹 확정',self.confirm_plate)
         self.output_mode=QComboBox();self.output_mode.addItems(['전체 MP4','투구별 MP4','확정 타석별 MP4']);row.addWidget(self.output_mode)
-        self.button(row,'승인 영상 출력',self.start_export)
+        self.button(row,'MP4 저장',self.start_export)
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
         if (root/'models'/'model.json').is_file():
             self.model.setText(str(root/'models'/'model.json'))
+        if (root/'models'/'broadcast.json').is_file():
+            self.profile.setText(str(root/'models'/'broadcast.json'))
         if getattr(sys,'frozen',False):
             self.model.setReadOnly(True)
         self.check_model()
@@ -108,13 +122,17 @@ class Window(QMainWindow):
             self.availability.setText('개발판 — 검증된 AI 모델 없음. 자동 분석 비활성화. 영상 등록·검수·출력 시험 가능.')
             self.analyze_button.setEnabled(False)
             return
+        if not self.model.text().strip():
+            self.availability.setText('AI 자동 탐색 준비 안 됨 — 검증된 야구 모델이 아직 없습니다.')
+            self.analyze_button.setEnabled(False)
+            return
         try:
             from bsae.vision.model import TemporalModel
             model=TemporalModel(self.model.text())
             self.availability.setText('실험용 모델 로드 가능 — 성능 '+model.info.get('validation','NOT_EVALUATED'))
             self.analyze_button.setEnabled(not (self.job and self.job.isRunning()))
         except Exception as exc:
-            self.availability.setText('자동 분석 BLOCKED: '+str(exc));self.analyze_button.setEnabled(False)
+            self.availability.setText('AI 모델을 불러오지 못했습니다. 자동 탐색이 중지되었습니다.');self.availability.setToolTip(str(exc));self.analyze_button.setEnabled(False)
 
     def discard(self):
         return not self.dirty or QMessageBox.question(self,'저장하지 않은 변경','저장하지 않은 변경을 버릴까요?')==QMessageBox.Yes
@@ -127,6 +145,7 @@ class Window(QMainWindow):
         self.files.clear();self.refresh()
 
     def add_files(self):
+        if self.job and self.job.isRunning():return
         if self.session:
             self.error('기존 프로젝트의 원본 변경은 새 프로젝트에서 진행하세요.');return
         paths,_=QFileDialog.getOpenFileNames(self,'로컬 원본 선택','','Video (*.mp4 *.mkv *.mov *.avi *.ts);;All (*)')
@@ -198,7 +217,7 @@ class Window(QMainWindow):
         if not self.session:return
         for i,e in enumerate(self.session.events):
             self.table.insertRow(i)
-            for j,value in enumerate([e.number,e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',e.status,'미평가' if e.confidence is None else e.confidence,e.event_type]):
+            for j,value in enumerate([e.number,e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',{'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[e.status]]):
                 self.table.setItem(i,j,QTableWidgetItem(str(value)))
 
     def selected_event(self):

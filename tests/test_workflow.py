@@ -142,7 +142,7 @@ def test_gui_model_gate():
     app=QApplication.instance() or QApplication([])
     w=Window()
     assert not w.analyze_button.isEnabled()
-    assert 'BLOCKED' in w.availability.text()
+    assert '모델' in w.availability.text()
     w.close();app.processEvents()
 
 

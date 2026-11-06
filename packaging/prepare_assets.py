@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import tarfile
 import urllib.request
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -35,7 +36,24 @@ def prepare():
     if record['sha256']!=expected:raise ValueError('Official Qt source checksum mismatch')
     receipts.append(record)
     receipts.append(fetch('https://github.com/pyside/pyside-setup/archive/3ae6c97953d563c33ff630f259716b01b81aa531.tar.gz',sources/'pyside-setup-6.8.3.tar.gz'))
+    # The PySide wheels may omit license texts. Extract exact corresponding
+    # source notices instead of silently skipping them or inventing wheel files.
+    license_index=[]
+    for archive in (sources/'qt-everywhere-src-6.8.3.tar.xz',sources/'pyside-setup-6.8.3.tar.gz'):
+        with tarfile.open(archive,mode='r|*') as tar:
+            for member in tar:
+                name=Path(member.name).name
+                if member.isfile() and ('/LICENSES/' in member.name or name.startswith(('LICENSE','COPYING'))):
+                    if member.size>2_000_000:raise ValueError('Unexpectedly large source license text')
+                    identifier=hashlib.sha256((archive.name+':'+member.name).encode()).hexdigest()[:20]
+                    target=ASSETS/'licenses'/'qt-pyside'/(identifier+'-'+name)
+                    target.parent.mkdir(parents=True,exist_ok=True)
+                    with tar.extractfile(member) as text:target.write_bytes(text.read())
+                    license_index.append(dict(file=target.name,archive=archive.name,path=member.name))
+    if not license_index:raise ValueError('Qt/PySide source license texts missing')
+    (ASSETS/'licenses'/'qt-pyside'/'index.json').write_text(json.dumps(license_index,indent=2),encoding='utf-8')
     # Qt Multimedia can include its own FFmpeg DLL; preserve that exact upstream source.
+
     import ctypes,os,re,PySide6
     handles=[]
     for dll in Path(PySide6.__file__).parent.rglob('avutil-*.dll'):

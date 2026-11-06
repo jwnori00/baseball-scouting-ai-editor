@@ -26,6 +26,15 @@ def validate(root, kind='development'):
         if not (root/'tools'/name).is_file():raise ValueError('필수 도구 없음: '+name)
     if kind=='release':
         model=TemporalModel(root/'models'/'model.json')
+        from bsae.vision.scoreboard import ScoreboardOCR
+        if 'models/broadcast.json' not in verified:raise ValueError('검증된 중계 OCR 프로필 누락')
+        profile=json.loads((root/'models'/'broadcast.json').read_text(encoding='utf-8'))
+        ScoreboardOCR(profile)
+        regions=profile.get('regions',{})
+        for role in ('pitcher','batter'):
+            if role+'_name' not in regions or not any(role+'_'+field in regions for field in ('jersey','team')):
+                raise ValueError('선수 식별용 중계 프로필 부족: '+role)
+
         report_path=root/'models'/'validation.json'
         if 'models/validation.json' not in verified:raise ValueError('검증 보고서 체크섬 누락')
         report=json.loads(report_path.read_text(encoding='utf-8'))

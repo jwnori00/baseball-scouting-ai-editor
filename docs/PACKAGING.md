@@ -1,123 +1,64 @@
-# Windows 개발판 패키징
+# 포터블 배포 — 제작 환경 전용
 
-상태: **NOT_TESTED**. Linux에서 Windows EXE가 성공했다고 주장하지 않습니다.
-현재 필요한 검증된 야구 모델과 재배포 자산은 **BLOCKED**입니다.
-빌드 스크립트와 spec을 제공한 것이 실제 ZIP 생성·실행 성공을 뜻하지 않습니다.
+사용자는 개발 명령을 실행하지 않습니다. Codex/GitHub Actions에서 빌드하고
+사용자는 ZIP 전체를 풀어 EXE를 실행합니다. [다운로드 안내](WINDOWS_DOWNLOAD.md).
 
-제작자는 Windows 10/11 x64, Python 3.12 x64, Git을 준비합니다.
-일반 사용자에게 이 설치를 요구하는 최종 배포 흐름은 아직 완성되지 않았습니다.
+## 개발판과 정식 AI판
 
-## 빌드 자산 계약
+| 조건 | development | release |
+|---|---|---|
+| Python/Qt/OpenCV/NumPy 내장 | 필수 | 필수 |
+| FFmpeg/FFprobe, OCR DLL/언어 자료 내장 | 필수 | 필수 |
+| GUI 영상 입력·검수·MP4 출력 | 가능 | 가능 |
+| 야구 모델·중계 프로필 | 동봉하지 않음 | 검증된 자산 필수 |
+| AI 자동 탐색 | 비활성화 | 검증 조건 충족 시에만 활성화 |
+| 실제 자동 스카우팅 납품에 사용 가능하다는 주장 | 금지 | 실제 경기/납품 검수 필요 |
 
-저장소 외부 `C:\BSAE-build-assets`에 다음을 준비합니다.
+`packaging/validate_assets.py`는 파일 SHA-256과 필수 구성요소를 검사합니다.
+release는 `models/model.json`, 가중치, `models/broadcast.json`, `models/validation.json`을 요구합니다.
+독립 실제 경기 평가·상업 이용 검토·모델 해시 연결이 없거나 미평가 값이면 차단합니다.
+현재 이 모델 자산은 준비되지 않았습니다. 합성 테스트 모델을 배포 모델로 대체하지 않습니다.
 
-```
-assets.json
-models/model.json
-models/temporal.npz
-tools/ffmpeg.exe
-tools/ffprobe.exe
-tools/tesseract.exe
-tools/tessdata/eng.traineddata
-tools/(Tesseract 실행에 필요한 DLL들)
-licenses/(모델·Tesseract·언어 데이터·FFmpeg·x264 등의 실제 라이선스)
-corresponding-source/(사용한 Qt/PySide/FFmpeg/x264 등의 완전한 대응 소스·빌드 명령)
-```
+## GitHub Actions 제작 순서
 
-모든 배포 자산의 SHA-256을 `assets.json`에 등록합니다.
-`{"files":[{"path":"tools/ffmpeg.exe","sha256":"실제 64자리 체크섬"}]}` 형식이며 모든 파일을 나열해야 합니다.
-모델 manifest도 자체 체크섬·라이선스·학습 출처를 갖춰야 합니다.
-체크섬은 신뢰할 수 있는 배포자의 공식 체크섬 또는 직접 재현한 빌드 산출물과 대조하세요.
-다운로드한 파일에서 해시를 계산해 목록에 넣는 행위만으로 배포자의 진위를 검증할 수는 없습니다.
-도구는 공식 프로젝트의 검증된 소스·릴리스를 사용하고 인증서/체크섬 검사를 끄지 마세요.
-빌드 도구는 자산의 변경 여부와 형식을 검사하지만 법적 재배포 권한을 대신 판단하지 않습니다.
+워크플로: `.github/workflows/windows-portable.yml` / 표시명 **Windows portable EXE**.
 
-출처:
+1. Python 3.12 x64 및 고정 빌드 의존성을 Actions에 설치합니다.
+2. FFmpeg와 x264의 고정 공식 Git 커밋을 소스 빌드합니다.
+3. MSYS2의 네이티브 MINGW64 Tesseract와 종속 DLL·라이선스를 수집합니다.
+4. 공식 OCR 영어 자료, Qt/PySide 및 Qt Multimedia FFmpeg의 대응 소스를 수집합니다.
+   Qt 소스는 공식 SHA-256과 대조하고 모든 자산의 해시를 기록합니다.
+5. 합성 통합 테스트 → PyInstaller onedir → 실제 EXE 자체검사를 순서대로 실행합니다.
+6. 성공해야만 ZIP과 SHA-256을 Application Artifact로 게시합니다.
+   정확한 대응 소스는 **ThirdPartyCorrespondingSources**로 같은 실행에 게시합니다.
+7. 실패 로그/테스트/EXE 보고서는 **Windows-build-evidence**로 남깁니다.
+   비공개 경기영상은 CI에서 받거나 올리지 않습니다.
 
-- FFmpeg: https://ffmpeg.org/download.html , https://github.com/FFmpeg/FFmpeg
-- x264: https://www.videolan.org/developers/x264.html
-- Tesseract: https://github.com/tesseract-ocr/tesseract (Apache-2.0)
-- 영어 OCR 자료: https://github.com/tesseract-ocr/tessdata (사용한 실제 revision과 LICENSE 유지)
-- PySide6/Qt 6.8.3: https://code.qt.io/pyside/pyside-setup.git/ , https://download.qt.io/archive/qt/6.8/6.8.3/
+로컬 제작 PC용 보조 스크립트는 `scripts/build_windows.ps1`입니다.
+**이 스크립트를 최종 사용자에게 실행하도록 요구하지 않습니다.**
 
-실제 재배포 모델 출처·버전·체크섬·상업 이용 가능 여부는 현재 **없음/미확인**입니다.
-임의로 공용 객체 탐지 모델을 야구 투구 모델로 표시하지 않습니다.
+## 실제 검증의 범위
 
-## 실행
+EXE 자체검사는 외부 Python/FFmpeg를 PATH에서 제거한 상태에서
+내장 도구·OCR 실행, Qt 창 생성, 합성 영상 로드, GUI의 시험 구간/검수,
+프로젝트 왕복 저장, MP4 출력/디코딩, 원본 해시 보존을 확인합니다.
+개발판의 AI 버튼이 비활성화되는지도 검사합니다.
 
-```powershell
-.\scripts\build_windows.ps1 -Assets C:\BSAE-build-assets
-```
+이 검사는 실제 야구 자동 탐색·깨끗한 Windows 사용자 PC의 전체 동작을 증명하지 않습니다.
+별도 Windows 10/11 x64 PC/VM에서 인터넷 없이 ZIP 해제·더블클릭·영상 재생·출력을 확인해야 합니다.
+정식 AI판에서는 대상 선수 전수 탐색·준비동작/반환 송구·수비/주루 종료 보존까지 확인해야 합니다.
+`scripts/test_clean_windows.ps1` 및 EXE의 `--acceptance-test`는 제작/검증 담당자용으로 보존합니다.
+미평가 성능을 인수 통과로 처리하지 않습니다.
 
-스크립트는 자산 검사 → 합성 통합 테스트 → PyInstaller onedir → 라이선스 수집 →
-PATH에서 외부 도구를 뺀 실제 EXE 자체검사 → ZIP과 SHA-256 순서로 실행하며 실패 시 중단합니다.
-실행 파일은 `dist\BaseballScoutingAIEditor\BaseballScoutingAIEditor.exe`입니다.
-배포 결과는 `BaseballScoutingAIEditor-Windows-x64-dev.zip`과 `.sha256`입니다.
-전체 폴더를 함께 배포해야 하며 `_internal`의 DLL·도구·모델·고지·대응 소스를 유지합니다.
-현재 모델 UI 경로는 압축을 푼 폴더의 `_internal\models\model.json`을 선택하세요.
-중계별 OCR 프로필은 사용자의 로컬 설정으로 제공해야 합니다.
+## 라이선스와 출처
 
-자체검사는 Qt 창 생성, 내장 모델 무결성/추론 호출, 내장 OCR 실행,
-합성 영상 렌더링·디코딩, 프로젝트 왕복 저장 및 원본 보호를 확인합니다.
-실제 중계 분석 정확도, Windows 사용자 PC 재생, 읽기 전용 설치 폴더, SmartScreen,
-코드 서명 및 일반 사용자 사용성 검증은 별도이며 아직 수행하지 않았습니다.
-GitHub Actions는 Windows/Linux 합성 테스트만 실행합니다. EXE 빌드 성공이나 릴리스를 생성하지 않습니다.
+- FFmpeg n7.1.3: `f46e514491172d15bd74b4abb1814cd2f05a763e`
+- x264: `c24e06c2e184345ceb33eb20a15d1024d9fd3497`
+- Qt/PySide 6.8.3: 공식 소스 아카이브와 실제 설치 배포판의 라이선스 수집
+- Tesseract: MSYS2 native package, 종속 DLL·실제 package versions와 라이선스 수집
+- OCR 영어 자료: 공식 tessdata_fast의 전체 Git revision을 기록한 파일
 
-## 라이선스 검토
-
-기존 v0.2.0 참고 저장소에는 프로젝트 코드의 재사용 허가 라이선스가 발견되지 않았으므로
-코드를 복사하지 않았습니다. 본 저장소의 배포 라이선스 선택도 별도 결정 사항입니다.
-Python은 PSF, NumPy는 BSD, OpenCV는 Apache-2.0 및 번들 구성요소 고지를 확인합니다.
-PySide6/Qt의 실제 모듈별 LGPLv3/GPL/상용 조건을 확인하고 교체 가능한 DLL을 유지해야 합니다.
-FFmpeg의 libx264 활성 빌드는 GPL 조건 및 정확한 대응 소스·빌드 구성을 함께 확인해야 합니다.
-PyInstaller 부트로더의 GPL 예외는 실제 버전의 LICENSE를 유지합니다.
-`collect_notices.py`는 설치된 Python 배포판의 실제 라이선스 파일을 수집합니다.
-대응 소스·권리 고지 완비 여부는 배포 담당자가 실제 자산으로 검토해야 합니다.
-
-## 깨끗한 Windows PC 최종 인수 시험 — 아직 미실행
-
-이 테스트는 배포 사용자에게 설치를 요구하지 않습니다. 테스트 담당자는 Python·pip·FFmpeg·
-Tesseract가 없는 새 Windows 10/11 x64 VM/PC에 ZIP 전체를 옮깁니다.
-인터넷 연결을 끊고 NVIDIA GPU가 없는 환경에서 검사합니다.
-인터넷 차단과 깨끗한 OS 상태는 테스트 담당자가 실제로 확인해야 하며 PATH 검사만으로 증명되지 않습니다.
-
-1. ZIP을 한글·공백 경로에 풀고 EXE를 더블클릭합니다.
-2. 내장 모델이 자동 선택되는지, 추가 다운로드·설치·환경변수 요구가 없는지 확인합니다.
-3. 로컬 원본 1개/3개를 불러오고 대상 투수·타자를 각각 분석합니다.
-4. 후보·근거·불확실성을 확인하고 실제 장면 재생·구간 수정·승인/제외를 수행합니다.
-5. 승인 영상 전체·투구별·타석별 MP4를 출력하고 소리·후속 플레이·원본 보존을 확인합니다.
-6. 중단·재개, 프로젝트 저장/열기, 기존 출력 보호, 설치 폴더 쓰기 불가 상황을 검사합니다.
-
-자동 로컬 인수 시험도 **동일 EXE**로 실행할 수 있습니다. 실제 사람이 전체 영상에 대해
-검수한 정답 프로젝트와 아래 plan JSON을 사용자 PC의 비공개 위치에 준비합니다.
-
-```json
-{
-  "reference_project": "D:/private/reviewed-game.json",
-  "ground_truth_complete": true,
-  "followup_reviewed": true,
-  "model": "C:/BSAE/_internal/models/model.json",
-  "profile": {"language":"eng", "regions":{}},
-  "cache": "D:/private/acceptance.sqlite",
-  "candidate_project": "D:/private/fresh-candidates.json",
-  "output": "D:/private/new-acceptance-export",
-  "manual_seconds": 7200,
-  "assisted_seconds": 1800
-}
-```
-
-경로·프로필·시간은 형식 예시입니다. 실제 방송 ROI와 직접 측정한 시간을 사용합니다.
-정답이 전수 확인되지 않았으면 두 선언을 true로 설정하지 마세요.
-정답 프로젝트는 대상 선수의 실제 플레이 전수·후속 종료를 사람이 확인하고 승인 기록을 저장해야 합니다.
-미측정 시간은 생략하면 NOT_EVALUATED이며 인수 시험은 통과하지 않습니다.
-
-```powershell
-# 일반 실행은 EXE 더블클릭. 아래 명령은 테스트 담당자용입니다.
-.\scripts\test_clean_windows.ps1 -Exe 'C:\BSAE\BaseballScoutingAIEditor.exe' -Plan 'D:\private\acceptance.json' -Report 'D:\private\acceptance-report.json'
-```
-
-인수 시험은 새 자동 탐색 결과를 정답과 비교하고, 이미 사람이 승인한 정답 이벤트만 렌더링합니다.
-새 AI 후보를 자동 승인해 테스트를 통과시키지 않습니다.
-모든 측정 목표를 만족하지 못하면 종료 코드가 실패이며 미평가 지표도 통과로 간주하지 않습니다.
-GUI 전체 상호작용 검증은 위 수동 체크리스트로 별도 완료해야 합니다.
-원본·프레임·정답·인수 보고서는 GitHub Actions에 올리지 않습니다.
+GCC/MSYS2·패키지 버전·빌드 명령·FFmpeg 설정·공식 다운로드 URL·체크섬을 보존합니다.
+Qt DLL은 교체 가능한 개별 라이브러리로 배포합니다. 대응 소스 Artifact는 재배포 시에도
+프로그램과 같은 다운로드 위치에 제공해야 합니다. 모델·원본의 이용 권한은 별도 확인 사항입니다.
+코드 서명·SmartScreen·실제 사용자 PC 검증은 아직 완료하지 않았습니다.

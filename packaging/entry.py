@@ -11,6 +11,10 @@ if __name__=='__main__':
         if report.exists():
             raise SystemExit(3)
         try:
+            import json
+            policy=json.loads((Path(sys._MEIPASS)/'build-policy.json').read_text(encoding='utf-8-sig'))
+            if policy['kind']!='release':
+                raise ValueError('Development package: automatic analysis is disabled without a validated baseball model')
             outcome=run_acceptance(sys.argv[index+1],report)
             raise SystemExit(0 if outcome['status']=='PASS' else 2)
         except Exception as exc:
