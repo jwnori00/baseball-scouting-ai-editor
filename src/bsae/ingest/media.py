@@ -30,12 +30,16 @@ def run(name, args, **kwargs):
     if sys.platform == 'win32':
         kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
     executable = tool(name)
-    if name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
+    if name=='tesseract' and sys.platform=='win32':
+        from .ocr_runtime import prepare
+        executable,args,environment,working_directory=prepare(executable,list(map(str,args)))
+        kwargs['env']=environment;kwargs['cwd']=working_directory
+    elif name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
         import os
         kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
     result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
     if result.returncode:
-        raise RuntimeError(result.stderr.decode('utf-8', errors='replace')[-4000:])
+        raise RuntimeError(name+': '+result.stderr.decode('utf-8', errors='replace')[-4000:])
     return result.stdout
 
 

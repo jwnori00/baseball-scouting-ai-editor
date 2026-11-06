@@ -42,6 +42,11 @@ if __name__=='__main__':
             model.predict(np.zeros(456))
         run('tesseract',['--version'])
         run('tesseract',['--list-langs'])
+        import cv2
+        from bsae.vision.scoreboard import ScoreboardOCR
+        text_frame=np.full((100,600,3),255,np.uint8)
+        cv2.putText(text_frame,'MARTINEZ',(10,65),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,0),3)
+        assert 'MARTINEZ' in ScoreboardOCR({'regions':{'pitcher_name':[0,0,1,1]}}).read(text_frame)['pitcher_name']
         app=QApplication([]);window=Window();window.show();app.processEvents()
         if policy['kind']=='development':
             assert not window.analyze_button.isEnabled()
@@ -70,7 +75,7 @@ if __name__=='__main__':
         window.dirty=False;window.close()
         # Explicitly does not assert baseball model accuracy or native playback.
         Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-            executable='PASS',gui_construction='PASS',synthetic_render='PASS',
+            executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
             model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
     else:
         from bsae.app import main

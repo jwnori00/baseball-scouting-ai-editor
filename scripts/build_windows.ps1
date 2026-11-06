@@ -36,13 +36,18 @@ try {
     $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
     $Report = Join-Path $PWD 'build-evidence\portable-smoke.json'
     if (Test-Path $Report) { Remove-Item $Report }
-    $Exe = Join-Path $PWD 'dist\BaseballScoutingAIEditor\BaseballScoutingAIEditor.exe'
-    $Process = Start-Process -FilePath $Exe -ArgumentList @('--self-test', "`"$Report`"") -PassThru
+    $UnicodeInstall = Join-Path $env:TEMP ('야구 설치 Martínez ' + [guid]::NewGuid().ToString('N'))
+    Copy-Item dist/BaseballScoutingAIEditor $UnicodeInstall -Recurse
+    $Exe = Join-Path $UnicodeInstall 'BaseballScoutingAIEditor.exe'
+    $Process = Start-Process -FilePath $Exe -WorkingDirectory $UnicodeInstall -ArgumentList @('--self-test', "`"$Report`"") -PassThru
     if (-not $Process.WaitForExit(180000)) { $Process.Kill(); throw 'Frozen EXE test timed out' }
     if ($Process.ExitCode -ne 0 -or -not (Test-Path $Report)) { throw 'Frozen EXE smoke failed' }
     $Result = Get-Content $Report -Raw | ConvertFrom-Json
     if ($Result.synthetic_render -ne 'PASS' -or $Result.gui_construction -ne 'PASS') { throw 'Frozen workflow failed' }
-} finally { $env:PATH = $PreviousPath }
+} finally {
+    $env:PATH = $PreviousPath
+    if ($UnicodeInstall -and (Test-Path $UnicodeInstall)) { Remove-Item $UnicodeInstall -Recurse -Force }
+}
 $Zip = Join-Path $PWD "BaseballScoutingAIEditor-Windows-x64-$Kind.zip"
 if (Test-Path $Zip) { throw 'ZIP exists; preserve it before rebuilding' }
 Copy-Item build-evidence dist/BaseballScoutingAIEditor/build-evidence -Recurse
