@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="20" time="4.503" timestamp="2026-11-06T06:58:59.963045+00:00" hostname="runnervmhao91"><testcase classname="tests.test_workflow" name="test_stream_pts_and_multifile" time="0.293" /><testcase classname="tests.test_workflow" name="test_real_inference_to_review_and_render" time="0.022"><failure message="subprocess.CalledProcessError: Command '['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE', '-v', 'error', '-nostdin', '-n', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', '160x90', '-r', '4', '-i', 'pipe:0', '-f', 'lavfi', '-i', 'sine=frequency=440:sample_rate=48000', '-t', '11', '-c:v', 'ffv1', 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pytest-of-runneradmin\\pytest-0\\test_real_inference_to_review_0\\합성 Martínez.mkv']' returned non-zero exit status 3165764104.">make_video = &lt;function make_video.&lt;locals&gt;.create at 0x00000170B4754040&gt;
+trained = (WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/model0/model.json'), {'dead': arr....,
+        [182,  72, 209],
+        [ 61, 187, 229],
+        [157,  24,  35]]], shape=(90, 160, 3), dtype=uint8), ...})
+tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_real_inference_to_review_0')
+
+    def test_real_inference_to_review_and_render(make_video,trained,tmp_path):
+        manifest,_=trained
+&gt;       source=make_video(['other','setup','delivery','receive','live','dead','other','setup','delivery','receive','dead'],audio=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\conftest.py:32: in create
+    subprocess.run(args,input=raw,check=True,capture_output=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = b'r\xbb\xa3Y\xc0Z\xc5Q\xa4W\x83?5P\x8as\xaf\\\x88de\xa3yC\xd6r7\x1b\xb1\x18\x14\xd5\xbc`\xb5d3T\xd3;\x93m5\x91]\x99c\x...0\xd2\xa5\x1e\x82X\x98\x87\x17\x9d\xe5\x1b\xac5\x15U;`Y89\xcae\x85e\x1b\xe1B\xc60j\x8a\xe0\x8f{t\xd2nn91\x15\x7f=\xaaF'
+capture_output = True, timeout = None, check = True
+popenargs = (['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE', '-v', 'error', '-nostdin', '-n', '-f', ...],)
+kwargs = {'stderr': -1, 'stdin': -1, 'stdout': -1}
+process = &lt;Popen: returncode: 3165764104 args: ['D:\\a\\baseball-scouting-ai-editor\\b...&gt;
+stdout = b''
+stderr = b'[aost#0:1 @ 000001da3a3fc6c0] Automatic encoder selection failed Default encoder for format matroska (codec ac3) is ...erence_to_review_0\\\xed\x95\xa9\xec\x84\xb1 Mart\xc3\xadnez.mkv.\r\nError opening output files: Encoder not found\r\n'
+retcode = 3165764104
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE', '-v', 'error', '-nostdin', '-n', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', '160x90', '-r', '4', '-i', 'pipe:0', '-f', 'lavfi', '-i', 'sine=frequency=440:sample_rate=48000', '-t', '11', '-c:v', 'ffv1', 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pytest-of-runneradmin\\pytest-0\\test_real_inference_to_review_0\\합성 Martínez.mkv']' returned non-zero exit status 3165764104.
+
+C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py:571: CalledProcessError</failure></testcase><testcase classname="tests.test_workflow" name="test_missing_or_tampered_model_fails" time="0.108" /><testcase classname="tests.test_workflow" name="test_cache_cancel_resume" time="0.515" /><testcase classname="tests.test_workflow" name="test_identity_accent_and_multiple_evidence" time="0.001" /><testcase classname="tests.test_workflow" name="test_camera_changes_do_not_finish_active_play" time="0.137" /><testcase classname="tests.test_workflow" name="test_batter_groups_and_substitution" time="0.127" /><testcase classname="tests.test_workflow" name="test_cross_file_event_render" time="0.653" /><testcase classname="tests.test_workflow" name="test_metrics_no_claim_without_truth" time="0.001" /><testcase classname="tests.test_workflow" name="test_source_protection_and_changed_media" time="0.162" /><testcase classname="tests.test_workflow" name="test_gui_model_gate" time="0.304" /><testcase classname="tests.test_workflow" name="test_replay_model_state_does_not_create_pitch" time="0.432" /><testcase classname="tests.test_workflow" name="test_exact_overlap_requires_motion" time="0.001" /><testcase classname="tests.test_workflow" name="test_local_ocr_reads_rendered_text" time="0.280"><failure message="AssertionError: assert 'MARTINEZ' in ''">def test_local_ocr_reads_rendered_text():
+        import shutil
+        if not shutil.which('tesseract'):pytest.skip('Tesseract optional for CI without OCR tool; local OCR is tested separately')
+        import cv2
+        from bsae.vision.scoreboard import ScoreboardOCR
+        rgb=np.full((100,600,3),255,np.uint8)
+        cv2.putText(rgb,'MARTINEZ',(10,65),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,0),3)
+        values=ScoreboardOCR(dict(regions={'pitcher_name':[0,0,1,1]},language='eng')).read(rgb)
+&gt;       assert 'MARTINEZ' in values['pitcher_name']
+E       AssertionError: assert 'MARTINEZ' in ''
+
+tests\test_workflow.py:171: AssertionError</failure></testcase><testcase classname="tests.test_workflow" name="test_vfr_nonzero_pts_are_normalized" time="0.142" /><testcase classname="tests.test_workflow" name="test_portable_bundled_model_is_selected" time="0.043" /><testcase classname="tests.test_workflow" name="test_acceptance_does_not_autoapprove_predictions" time="0.789" /><testcase classname="tests.test_workflow" name="test_development_package_disables_even_supplied_model" time="0.011" /><testcase classname="tests.test_workflow" name="test_development_media_registration_without_ai" time="0.103" /><testcase classname="tests.test_workflow" name="test_asset_gate_separates_development_and_release" time="0.037" /></testsuite></testsuites>
