@@ -29,7 +29,7 @@ def concatenate(paths, output):
         '-c','copy','-movflags','+faststart', output])
 
 
-def export(session, destination, mode='all', progress=lambda value: None, stop=None, include_pickoffs=False):
+def export(session, destination, mode='all', progress=lambda value: None, stop=None, include_pickoffs=False, auto_frame=True):
     if mode not in ('all', 'pitch', 'plate'):
         raise ValueError('출력 모드 오류')
     session.validate()
@@ -71,6 +71,7 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
         with tempfile.TemporaryDirectory(prefix='.bsae-', dir=destination.parent) as temp:
             temp = Path(temp)
             encoded = {}
+            framing = []
             first = probe(sources[events[0].segments[0].source_id].path)
             video = next(s for s in first['streams'] if s['codec_type']=='video')
             height = max(2, int(video['height'])//2*2)
@@ -85,13 +86,20 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
                         raise RuntimeError('출력 취소')
                     source = sources[seg.source_id]
                     meta = probe(source.path)
+                    source_video = next(v for v in meta['streams'] if v['codec_type']=='video')
+                    crop = None
+                    if auto_frame:
+                        from .framing import detect_crop
+                        crop = detect_crop(source.path, seg.start, seg.end, source_video, stop)
+                    framing.append(dict(event_id=e.id, source_id=seg.source_id, start=seg.start, end=seg.end, crop=crop))
+                    prefix = ('crop='+':'.join(map(str,crop))+',') if crop else ''
                     audio = any(s['codec_type']=='audio' for s in meta['streams'])
                     path = temp/f'piece_{i:06d}_{j:03d}.mp4'
                     args = ['-v','error','-nostdin','-n','-ss',str(seg.start),'-i',source.path]
                     if not audio:
                         args += ['-f','lavfi','-i','anullsrc=r=48000:cl=stereo']
                     args += ['-t',str(seg.end-seg.start),'-map','0:v:0','-map','0:a:0' if audio else '1:a:0',
-                        '-vf',f'scale=trunc(iw*sar/2)*2:ih,setsar=1,scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2',
+                        '-vf',prefix+f'scale=trunc(iw*sar/2)*2:ih,setsar=1,scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2',
                         '-r','30','-c:v','libx264','-threads','2','-pix_fmt','yuv420p','-c:a','aac','-ar','48000','-ac','2','-movflags','+faststart',str(path)]
                     run('ffmpeg', args)
                     verify(path, seg.end-seg.start)
@@ -109,6 +117,7 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
                 outputs.append(report)
         manifest = ExportManifest([e.id for e in events], outputs, {s.id:s.fingerprint for s in sources.values()})
         atomic_json(destination/'manifest.json', asdict(manifest))
+        atomic_json(destination/'framing.json', dict(automatic=auto_frame, segments=framing))
         atomic_json(destination/'events.json', [asdict(e) for e in events])
         from bsae.evaluation import write_csv
         write_csv(destination/'events.csv', [dict(id=e.id, inning=e.inning, plate_id=e.plate_id,

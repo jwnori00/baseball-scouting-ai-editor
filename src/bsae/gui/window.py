@@ -100,6 +100,9 @@ class Window(QMainWindow):
         self.button(row,'누락 후보 보조 추가',self.manual)
         self.button(row,'선택 타석 그룹 확정',self.confirm_plate)
         self.output_mode=QComboBox();self.output_mode.addItems(['전체 MP4','투구별 MP4','확정 타석별 MP4']);row.addWidget(self.output_mode)
+        self.auto_frame_action=project_menu.addAction('MP4 검은 여백 자동 제거·확대')
+        self.auto_frame_action.setCheckable(True);self.auto_frame_action.setChecked(True)
+        self.auto_frame_action.setToolTip('승인 구간 전체를 검사하고 검은 테두리를 제거합니다. 원본 구도를 유지하려면 해제하세요.')
         self.button(row,'MP4 저장',self.start_export)
         project_menu.addAction('탐색 결과 CSV·JSON 저장',self.save_diagnostics)
         project_menu.addAction('선택 후보부터 새 타석',lambda:self.edit_plate(False))
@@ -372,7 +375,8 @@ class Window(QMainWindow):
         from bsae.export.render import export
         session=deepcopy(self.session);mode=['all','pitch','plate'][self.output_mode.currentIndex()]
         include_pickoffs=self.pickoff_option.isChecked()
-        self.launch(lambda job:export(session,Path(parent)/name,mode,include_pickoffs=include_pickoffs,progress=lambda v:job.progress.emit('승인 영상 출력·검증',v),stop=job.stop),lambda path:self.stage.setText('검증 완료: '+str(path)))
+        auto_frame=self.auto_frame_action.isChecked()
+        self.launch(lambda job:export(session,Path(parent)/name,mode,include_pickoffs=include_pickoffs,auto_frame=auto_frame,progress=lambda v:job.progress.emit('승인 영상 출력·검증',v),stop=job.stop),lambda path:self.stage.setText('검증 완료: '+str(path)))
 
     def closeEvent(self,event):
         if self.job and self.job.isRunning():

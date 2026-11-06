@@ -1,7 +1,7 @@
 name: Windows portable EXE
 on:
   push:
-    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr]
+    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing]
   pull_request:
     branches: [main]
   workflow_dispatch:
