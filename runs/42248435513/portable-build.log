@@ -1,0 +1,63 @@
+Portable assets verified; release requires independent baseball validation.
+.F........................................                               [100%]
+================================== FAILURES ===================================
+____________ test_real_export_expands_padded_video_and_can_disable ____________
+
+tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_real_export_expands_padde0')
+
+    def test_real_export_expands_padded_video_and_can_disable(tmp_path):
+        import json
+        from bsae.ingest.media import run,add_sources,frames,probe
+        from bsae.core.models import GameSession,PlayerIdentity,PitchEvent
+        from bsae.core.review import review
+        from bsae.export.render import export
+        path=tmp_path/'padded.mp4'
+>       run('ffmpeg',['-v','error','-f','lavfi','-i','color=c=red:s=160x90:r=30:d=1',
+            '-vf','pad=640:360:240:134','-c:v','libx264','-pix_fmt','yuv420p',path])
+
+tests\test_export_framing.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'ffmpeg'
+args = ['-v', 'error', '-f', 'lavfi', '-i', 'color=c=red:s=160x90:r=30:d=1', ...]
+kwargs = {'creationflags': 134217728}
+executable = 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE'
+result = CompletedProcess(args=['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmp...t found\r\nError opening input file color=c=red:s=160x90:r=30:d=1.\r\nError opening input files: Filter not found\r\n")
+
+    def run(name, args, **kwargs):
+        if sys.platform == 'win32':
+            kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
+        executable = tool(name)
+        if name=='tesseract' and sys.platform=='win32':
+            from .ocr_runtime import prepare
+            executable,args,environment,working_directory=prepare(executable,list(map(str,args)))
+            kwargs['env']=environment;kwargs['cwd']=working_directory
+        elif name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
+            import os
+            kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
+        result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
+        if result.returncode:
+>           raise RuntimeError(name+': '+result.stderr.decode('utf-8', errors='replace')[-4000:])
+E           RuntimeError: ffmpeg: [AVFilterGraph @ 0000020de4336680] No such filter: 'color'
+
+E           [AVFilterGraph @ 0000020de4336680] Error processing filtergraph: Filter not found
+
+E           [in#0 @ 0000020de4335b00] Error opening input: Filter not found
+
+E           Error opening input file color=c=red:s=160x90:r=30:d=1.
+
+E           Error opening input files: Filter not found
+
+src\bsae\ingest\media.py:42: RuntimeError
+- generated xml file: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build-evidence\windows-tests.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_export_framing.py::test_real_export_expands_padded_video_and_can_disable - RuntimeError: ffmpeg: [AVFilterGraph @ 0000020de4336680] No such filter: 'color'
+
+[AVFilterGraph @ 0000020de4336680] Error processing filtergraph: Filter not found
+
+[in#0 @ 0000020de4335b00] Error opening input: Filter not found
+
+Error opening input file color=c=red:s=160x90:r=30:d=1.
+
+Error opening input files: Filter not found
+1 failed, 41 passed in 16.17s
