@@ -72,13 +72,7 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
             temp = Path(temp)
             encoded = {}
             framing = []
-            first = probe(sources[events[0].segments[0].source_id].path)
-            video = next(s for s in first['streams'] if s['codec_type']=='video')
-            height = max(2, int(video['height'])//2*2)
-            from fractions import Fraction
-            sar = video.get('sample_aspect_ratio', '1:1').replace(':','/')
-            aspect = float(Fraction(sar)) if sar not in ('N/A','0/1') else 1
-            width = max(2, round(int(video['width'])*aspect/2)*2)
+            width, height = 1280, 720
             for i,e in enumerate(events):
                 pieces = []
                 for j,seg in enumerate(e.segments):

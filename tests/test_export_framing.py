@@ -17,7 +17,7 @@ def test_union_preserves_late_fullscreen_and_caption(monkeypatch):
 
 def test_real_export_expands_padded_video_and_can_disable(tmp_path):
     import json
-    from bsae.ingest.media import run,add_sources,frames
+    from bsae.ingest.media import run,add_sources,frames,probe
     from bsae.core.models import GameSession,PlayerIdentity,PitchEvent
     from bsae.core.review import review
     from bsae.export.render import export
@@ -30,6 +30,8 @@ def test_real_export_expands_padded_video_and_can_disable(tmp_path):
     for enabled in (True,False):
         target=tmp_path/str(enabled)
         export(s,target,auto_frame=enabled)
+        video=next(v for v in probe(target/'all_0001.mp4')['streams'] if v['codec_type']=='video')
+        assert (video['width'],video['height'],video['avg_frame_rate'])==(1280,720,'30/1')
         _,image=next(frames(target/'all_0001.mp4',fps=1,width=640,height=360))
         coverage=np.mean(image[:,:,0]>100)
         assert coverage>.75 if enabled else coverage<.10
