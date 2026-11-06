@@ -60,20 +60,30 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-pkgconf
             mingw-w64-x86_64-tesseract-ocr
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
+        id: native-assets
         with:
-          path: vendor/portable/corresponding-source
-          key: windows-qt-pyside-6.8.3-source-v1
+          path: vendor/portable
+          key: windows-native-portable-v2-${{ hashFiles('packaging/build_media.sh', 'packaging/prepare_assets.py', 'requirements-dev.txt') }}
       - name: Build native FFmpeg and collect native OCR
+        if: steps.native-assets.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           set -o pipefail
           bash packaging/build_media.sh 2>&1 | tee build-evidence/media-build.log
       - name: Prepare verified data and corresponding source
+        if: steps.native-assets.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           python packaging/prepare_assets.py
           if ($LASTEXITCODE -ne 0) { throw 'Asset preparation failed' }
+      - name: Retain prepared assets before application tests
+        if: steps.native-assets.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        continue-on-error: true
+        with:
+          path: vendor/portable
+          key: ${{ steps.native-assets.outputs.cache-primary-key }}
       - name: Test, build onedir, run actual EXE, ZIP and SHA-256
         shell: pwsh
         run: |

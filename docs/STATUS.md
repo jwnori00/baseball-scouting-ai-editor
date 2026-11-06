@@ -110,3 +110,17 @@ Onedir ZIP에 포함하며 frozen 모드에서는 외부 PATH 도구로 대체�
   최종 성공/ZIP 여부는 이후 실행 결과로 판단해야 함.
 - 실제 납품 작업 및 ChatGPT 보조 프롬프트는 docs/SCOUTING_WORKFLOW.md에 정리.
   원본 접근 없이 AI가 영상을 분석한 것으로 보고하지 않으며, 수동 전 경기 검색으로 자동 탐색을 대체하지 않음.
+
+### 실제 Windows 빌드 실패 진단 — 실행 42175931071
+
+공식 evidence 브랜치에서 실제 로그와 Windows XML을 읽었습니다.
+네이티브 FFmpeg/OCR 빌드와 자산 체크섬 검사는 성공했으나 테스트가 18 passed / 2 failed여서
+EXE/ZIP 게시 단계는 실행하지 않았습니다.
+
+- 합성 MKV 생성이 기본 AC3 인코더에 의존함: 프로덕션과 동일한 AAC를 테스트 입력에도 명시.
+- 포터블 OCR에 configs/tsv가 없어 TSV 대신 평문이 반환됨: `-c tessedit_create_tsv=1`로 수정.
+  Windows와 같은 공식 eng 가중치로 실제 TSV 및 MARTINEZ 인식을 확인함. 기본 신뢰도 기준은 유지.
+- 준비된 네이티브 자산을 앱 테스트 전에 캐시에 보존하도록 변경.
+- 빌드는 일반 중계 코덱(H.264/HEVC/VP8/VP9/MPEG-2/MPEG-4 등)과 MP4/MOV/MKV/TS/AVI,
+  출력·합성 테스트에 필요한 코덱으로 제한하고 실행기 CPU 수에 맞춰 최대 4개 작업 사용.
+  모든 특수 영상 코덱을 지원한다는 주장은 하지 않음.

@@ -21,20 +21,25 @@ fetch_source x264 https://github.com/mirror/x264.git c24e06c2e184345ceb33eb20a15
 fetch_source ffmpeg https://github.com/FFmpeg/FFmpeg.git f46e514491172d15bd74b4abb1814cd2f05a763e
 export PATH="/mingw64/bin:/usr/bin:$PATH"
 export PKG_CONFIG_PATH="$prefix/lib/pkgconfig"
+jobs=$(nproc)
+if (( jobs > 4 )); then jobs=4; fi
+printf 'Native media build jobs: %s\n' "$jobs"
 cd "$root/build/media/x264"
 ./configure --prefix="$prefix" --enable-static --disable-cli --disable-opencl --extra-ldflags=-static
-make -j2
+make -j"$jobs"
 make install
 cp COPYING "$assets/licenses/media/x264-COPYING"
 cd "$root/build/media/ffmpeg"
 ./configure --prefix="$prefix" --target-os=mingw32 --arch=x86_64 --cc=gcc --cxx=g++ \
     --disable-shared --enable-static --disable-autodetect --disable-doc --disable-debug \
     --disable-network --enable-gpl --enable-libx264 --pkg-config-flags=--static --extra-ldflags=-static \
+    --disable-decoders --enable-decoder=h264,hevc,vp9,vp8,mpeg4,mpeg2video,mjpeg,ffv1,rawvideo,aac,aac_fixed,mp3,mp3float,pcm_s16le,pcm_s24le,pcm_f32le,flac,opus,vorbis,ac3,eac3,alac \
+    --disable-demuxers --enable-demuxer=mov,matroska,mpegts,mpegps,avi,rawvideo,concat \
     --disable-encoders --enable-encoder=libx264,aac,ffv1,rawvideo,pcm_s16le,wrapped_avframe \
     --disable-muxers --enable-muxer=mp4,matroska,rawvideo,null \
     --disable-filters --enable-filter=fps,scale,showinfo,setsar,pad,select,setpts,testsrc2,sine,anullsrc,aresample,aformat,format,anull,null,transpose,hflip,vflip,crop,rotate \
     --disable-outdevs --disable-ffplay
-make -j2
+make -j"$jobs"
 make install
 cp "$prefix/bin/ffmpeg.exe" "$prefix/bin/ffprobe.exe" "$assets/tools/"
 cp COPYING.GPLv2 COPYING.GPLv3 LICENSE.md "$assets/licenses/media/"

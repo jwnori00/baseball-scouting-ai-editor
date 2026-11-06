@@ -43,7 +43,7 @@ class ScoreboardOCR:
             ok, image = cv2.imencode('.png', cv2.cvtColor(crop, cv2.COLOR_RGB2BGR))
             if not ok:
                 raise RuntimeError('OCR 이미지 인코딩 실패')
-            raw = run('tesseract', ['stdin', 'stdout', '-l', self.profile.get('language', 'eng'), '--psm', '7', 'tsv'], input=image.tobytes())
+            raw = run('tesseract', ['stdin', 'stdout', '-l', self.profile.get('language', 'eng'), '--psm', '7', '-c', 'tessedit_create_tsv=1'], input=image.tobytes())
             words = [row['text'] for row in csv.DictReader(io.StringIO(raw.decode('utf-8')), delimiter='\t')
                      if row.get('text', '').strip() and float(row.get('conf', -1)) >= self.profile.get('minimum_word_confidence', 60)]
             result[name] = ' '.join(words)
