@@ -1,43 +1,34 @@
-# Baseball Scouting AI Editor
+# Baseball Scouting AI Editor — 자동 플레이 탐색 검증판
 
-목적은 대상 투수·타자의 **모든 플레이를 자동으로 찾아 스카우팅 MP4를 제작·납품**하는 것입니다.
-기존 코드는 보존하고 사용자 흐름을 다음으로 줄였습니다.
+기존 Windows 영상 입력·검수·MP4 출력을 유지하며,
+**영상 선택 → 투수/타자 지정 → 자동 플레이 탐색 → 검수 → MP4 저장**으로 작업합니다.
+사용자 PC에 Python·pip·FFmpeg를 설치하지 않습니다.
 
-**영상 선택 → 선수 지정 → AI 탐색 → 후보 검수 → MP4 저장**
+## 실행
 
-## 사용자 실행
+GitHub **Actions → Windows portable EXE → 성공한 통합 브랜치 실행 → Artifacts →
+BaseballScoutingAIEditor-Windows-x64-rules-preview**를 받습니다.
+Artifact ZIP 안의 프로그램 ZIP도 새 폴더에 전부 풀고 `BaseballScoutingAIEditor.exe`를 실행합니다.
+**실제 성공한 실행과 Artifact가 있을 때만 다운로드할 수 있습니다.**
+[다운로드 안내](docs/WINDOWS_DOWNLOAD.md).
 
-Windows 사용자는 Python·pip·FFmpeg를 설치하지 않습니다.
-GitHub **Actions → Windows portable EXE → 성공한 실행 → Artifacts →
-BaseballScoutingAIEditor-Windows-x64-development**에서 받은 프로그램 ZIP을 전부 풀고
-`BaseballScoutingAIEditor.exe`를 실행하는 배포 구조입니다.
-**실제 성공한 실행과 Artifact가 있어야 다운로드할 수 있습니다.**
-[다운로드 안내](docs/WINDOWS_DOWNLOAD.md)
+## 자동 탐색 구현 범위
 
-현재 개발판은 영상 입력·검수·출력 시험용이며 **검증된 야구 모델이 없어 AI 자동 탐색이 비활성화**됩니다.
-이 개발판을 실제 전수 자동 탐색이 완성된 제품으로 표시하지 않습니다.
-정식 AI판은 해당 방송에서 검증한 모델·중계 프로필·필수 자산이 없으면 빌드를 차단합니다.
+기본 엔진은 중계 구도·카메라 보정 국소 움직임·OCR·시간 문맥을 결합한 규칙 방식입니다.
+일반 동작 모델의 야구 판정을 필수 조건으로 사용하지 않습니다.
+후보는 자동 승인하지 않고, 이름+팀 등의 근거가 부족하면 신원 미확정으로 남깁니다.
+타자는 개별 투구와 타석 그룹을 구분하며, 카운트가 그대로인 파울도 움직임 후보를 유지합니다.
 
-## 실제 영상 제작
+기본 프로필은 제공된 LMB 샘플의 여백/자막 배치를 대상으로 합니다.
+다른 방송 배치·다양한 교체/견제/리플레이·의미적 플레이 종료는 추가 검증이 필요합니다.
+정식 1.0 또는 모든 경기에서의 전수 검출 성능을 주장하지 않습니다.
+이전 **development** ZIP은 자동 탐색이 차단된 수동 검증판이므로 새 **rules-preview**와 구분하세요.
 
-[실무 절차와 재사용 AI 프롬프트](docs/SCOUTING_WORKFLOW.md)를 사용합니다.
-ChatGPT 프롬프트만으로 로컬 영상 경로를 읽거나 투구를 발견할 수는 없습니다.
-실제 자동 탐색을 사람이 전 경기를 수동 검색하는 흐름으로 대체하지 않습니다.
+- [투수·타자 사용 매뉴얼](docs/AUTOMATIC_DISCOVERY.md)
+- [실제 샘플 검증 결과와 한계](docs/RULES_VALIDATION.md)
+- [실무 절차·재사용 프롬프트](docs/SCOUTING_WORKFLOW.md)
+- [Windows 제작/검사](docs/PACKAGING.md) — 제작자용이며 사용자 설치 절차가 아닙니다.
 
-실제 Daniel Martínez 경기영상은 사용자 PC에만 보관하며 업로드하지 않습니다.
-해당 원본을 분석하거나 완성 스카우팅 MP4를 제작한 상태가 아닙니다.
-모든 실제 경기 성능은 `NOT_EVALUATED`입니다.
-
-## 구현과 검증
-
-다중 원본·PTS 타임라인·원본 보호, 로컬 후보 엔진·OCR·캐시,
-한국어 검수 UI, 승인 구간 MP4 출력·디코딩 검증을 재사용합니다.
-모델 경로·OCR 설정은 기본 사용자 화면에서 숨기고 학습·평가 도구는 개발용으로만 보존합니다.
-범용 학습 시스템이나 분석 대시보드의 추가 개발은 진행하지 않습니다.
-
-- [구현 상태](docs/STATUS.md)
-- [패키징/빌드](docs/PACKAGING.md) — 제작자용, 사용자 설치 절차가 아닙니다.
-- [로컬 검증 도구](docs/LOCAL_VALIDATION.md) — 개발자용
-- [구조](docs/ARCHITECTURE.md)
-
-기존 `baseball-scouting-auto-editor` 저장소는 수정하지 않았습니다.
+실제 원본과 추출 프레임은 GitHub/CI에 올리지 않습니다.
+제공된 91초 샘플은 분석했지만 사용자 PC의 1.2GB 이상 전체 원본을 읽은 것은 아닙니다.
+기존 main, 성공한 fix/windows-portable-build 및 기존 v0.2.0 저장소는 보존합니다.

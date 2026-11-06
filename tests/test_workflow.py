@@ -136,13 +136,14 @@ def test_source_protection_and_changed_media(make_video,tmp_path,trained):
     with pytest.raises(ValueError,match='변경'):analyze(s,trained[0],{},tmp_path/'cache.sqlite')
 
 
-def test_gui_model_gate():
+def test_gui_rules_runtime_gate():
     from PySide6.QtWidgets import QApplication
     from bsae.gui.window import Window
     app=QApplication.instance() or QApplication([])
     w=Window()
-    assert not w.analyze_button.isEnabled()
-    assert '모델' in w.availability.text()
+    import shutil
+    assert w.analyze_button.isEnabled()==bool(shutil.which('tesseract'))
+    assert '탐색' in w.availability.text()
     w.close();app.processEvents()
 
 
@@ -199,7 +200,9 @@ def test_portable_bundled_model_is_selected(trained,tmp_path,monkeypatch):
     monkeypatch.setattr(sys,'frozen',True,raising=False)
     app=QApplication.instance() or QApplication([]);w=Window()
     assert w.model.text()==str(bundled/'model.json')
-    assert w.model.isReadOnly() and w.analyze_button.isEnabled()
+    assert w.model.isReadOnly()
+    # A random model cannot replace missing bundled profile/tools.
+    assert not w.analyze_button.isEnabled()
     w.close();app.processEvents()
 
 

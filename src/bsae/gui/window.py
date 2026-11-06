@@ -31,7 +31,7 @@ class Job(QThread):
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Baseball Scouting AI Editor — 개발판 / 실제 경기 성능 미평가')
+        self.setWindowTitle('Baseball Scouting AI Editor — 자동 탐색 검증판 / 검수 필수')
         self.resize(1100,800)
         self.session=None;self.project_path=None;self.job=None;self.dirty=False
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
@@ -44,6 +44,7 @@ class Window(QMainWindow):
         self.files=QListWidget();self.files.setMaximumHeight(95);layout.addWidget(self.files)
         row=QHBoxLayout();layout.addLayout(row)
         project_menu=self.menuBar().addMenu('프로젝트')
+        project_menu.addAction('검증용 독립 정답 작업 시작',self.register_game)
         for text,callback in [('새 경기',self.new_session),('프로젝트 열기',self.open_project),('프로젝트 저장',self.save_project)]:
             project_menu.addAction(text,callback)
         for text,callback in [('영상 선택',self.add_files),('위로',lambda:self.move(-1)),('아래로',lambda:self.move(1)),('삭제',self.remove_file)]:
@@ -70,11 +71,14 @@ class Window(QMainWindow):
         self.availability=QLabel('자동 분석 BLOCKED: 야구 동작 학습 모델을 선택하세요. 동봉 모델 없음.')
         layout.addWidget(self.availability);self.model.textChanged.connect(self.check_model)
         row=QHBoxLayout();layout.addLayout(row)
-        self.analyze_button=self.button(row,'AI 자동 분석 시작',self.start_analysis);self.analyze_button.setEnabled(False)
+        self.analyze_button=self.button(row,'자동 플레이 탐색 시작',self.start_analysis);self.analyze_button.setEnabled(False)
         self.button(row,'중단',self.cancel)
         self.progress=QProgressBar();row.addWidget(self.progress)
         self.stage=QLabel('대기');layout.addWidget(self.stage)
-        self.table=QTableWidget(0,5);self.table.setHorizontalHeaderLabels(['번호','이닝','시작','종료','검수'])
+        self.review_filter=QComboBox();self.review_filter.addItems(['대상·신원미확정','전체 후보','다른 선수·OCR 오류','리플레이','누락 의심 구간'])
+        self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
+        self.visible_events=[]
+        self.table=QTableWidget(0,6);self.table.setHorizontalHeaderLabels(['투구','타석','이닝','시작','종료','검수'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected);layout.addWidget(self.table)
         self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence);self.evidence.hide()
@@ -97,6 +101,12 @@ class Window(QMainWindow):
         self.button(row,'선택 타석 그룹 확정',self.confirm_plate)
         self.output_mode=QComboBox();self.output_mode.addItems(['전체 MP4','투구별 MP4','확정 타석별 MP4']);row.addWidget(self.output_mode)
         self.button(row,'MP4 저장',self.start_export)
+        project_menu.addAction('탐색 결과 CSV·JSON 저장',self.save_diagnostics)
+        project_menu.addAction('선택 후보부터 새 타석',lambda:self.edit_plate(False))
+        project_menu.addAction('선택 타석을 이전과 합치기',lambda:self.edit_plate(True))
+        for title,kind in [('선택 후보를 투구로 분류','pitch_candidate'),('선택 후보를 견제로 분류','pickoff'),('선택 후보를 리플레이로 분류','replay')]:
+            project_menu.addAction(title,lambda checked=False,k=kind:self.classify_selected(k))
+        self.pickoff_option=project_menu.addAction('승인한 견제도 출력');self.pickoff_option.setCheckable(True)
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
         if (root/'models'/'model.json').is_file():
             self.model.setText(str(root/'models'/'model.json'))
@@ -118,21 +128,20 @@ class Window(QMainWindow):
         if path:edit.setText(path)
 
     def check_model(self):
+        # Legacy model fields remain developer-only. A generic action model is
+        # never required to accept a rule-based pitch candidate.
         if self.development_package:
-            self.availability.setText('개발판 — 검증된 AI 모델 없음. 자동 분석 비활성화. 영상 등록·검수·출력 시험 가능.')
-            self.analyze_button.setEnabled(False)
-            return
-        if not self.model.text().strip():
-            self.availability.setText('AI 자동 탐색 준비 안 됨 — 검증된 야구 모델이 아직 없습니다.')
-            self.analyze_button.setEnabled(False)
-            return
+            self.availability.setText('기존 개발판 — 자동 탐색 비활성화. 자동 탐색 검증판을 사용하세요.')
+            self.analyze_button.setEnabled(False);return
         try:
-            from bsae.vision.model import TemporalModel
-            model=TemporalModel(self.model.text())
-            self.availability.setText('실험용 모델 로드 가능 — 성능 '+model.info.get('validation','NOT_EVALUATED'))
-            self.analyze_button.setEnabled(not (self.job and self.job.isRunning()))
+            from bsae.vision.rules import load_profile
+            from bsae.ingest.media import tool
+            profile=load_profile()
+            for name in ('ffmpeg','ffprobe','tesseract'):tool(name)
+            self.availability.setText('구도·움직임·OCR 자동 탐색 — 중계 레이아웃과 모든 후보를 검수하세요.')
+            self.analyze_button.setEnabled(not(self.job and self.job.isRunning()))
         except Exception as exc:
-            self.availability.setText('AI 모델을 불러오지 못했습니다. 자동 탐색이 중지되었습니다.');self.availability.setToolTip(str(exc));self.analyze_button.setEnabled(False)
+            self.availability.setText('자동 탐색 준비 안 됨: '+str(exc));self.analyze_button.setEnabled(False)
 
     def discard(self):
         return not self.dirty or QMessageBox.question(self,'저장하지 않은 변경','저장하지 않은 변경을 버릴까요?')==QMessageBox.Yes
@@ -179,13 +188,15 @@ class Window(QMainWindow):
     def registered(self,session):
         self.session=session;self.dirty=True;self.refresh()
         self.start.setValue(0);self.end.setValue(min(10,sum(s.duration for s in session.sources)))
-        self.stage.setText('경기 등록 완료 — 개발판 검수·출력 시험. AI 탐색 결과가 아닙니다.')
+        self.stage.setText('검증용 원본 등록 완료 — 수동 정답 작업이며 자동 탐색 결과가 아닙니다.')
 
     def start_analysis(self):
         if self.development_package:self.error('개발판에는 검증된 AI 모델이 없어 자동 분석이 비활성화되어 있습니다.');return
         if self.job and self.job.isRunning():return
         if not self.name.text().strip() or not self.files.count():self.error('선수 이름과 원본 영상을 입력하세요.');return
-        try:profile=json.loads(Path(self.profile.text()).read_text(encoding='utf-8'))
+        try:
+            from bsae.vision.rules import load_profile
+            profile=load_profile(self.profile.text() or None)
         except Exception as exc:self.error(exc);return
         path,_=QFileDialog.getSaveFileName(self,'분석 프로젝트 저장 위치','','JSON (*.json)')
         if not path:return
@@ -196,40 +207,93 @@ class Window(QMainWindow):
         existing=deepcopy(self.session) if self.session else None
         manifest=self.model.text();game_date=self.date.text()
         def operation(job):
-            from bsae.vision.pipeline import analyze
+            from bsae.vision.rules import analyze_plays
+            job.progress.emit('영상 불러오기 · 원본 식별 정보 확인',0)
             session=existing or GameSession(identity.name,identity,add_sources(paths),game_date=game_date)
             if existing and any(getattr(identity,k)!=getattr(existing.player,k) for k in ('name','role','team','jersey','aliases')):
                 raise ValueError('다른 선수 분석은 프로젝트를 새로 열어 진행하세요.')
             session.save(path)
-            analyze(session,manifest,profile,str(Path(path).with_suffix('.sqlite')),job.stop,job.progress.emit)
-            session.save(path);return session
+            try:
+                analyze_plays(session,profile,str(Path(path).with_suffix('.sqlite')),job.stop,job.progress.emit)
+            except Exception as exc:
+                from bsae.vision.pipeline import Cancelled
+                if isinstance(exc,Cancelled):raise RuntimeError('분석을 중단했습니다. 프로젝트와 캐시가 보존됐으며 같은 작업을 재개할 수 있습니다.') from exc
+                raise
+            finally:session.save(path)
+            return session
         self.project_path=path
         self.launch(operation,self.analysis_done)
 
     def analysis_done(self,session):
         self.session=session;self.dirty=False;self.refresh()
+        counts=session.analysis.get('counts',{})
+        self.stage.setText(f"후보 {len(session.events)}개 / 타석 {len(session.appearances)}개 / 신원 미확정 {counts.get('uncertain',0)}개 / 누락 의심 {len(session.analysis.get('coverage_gaps',[]))}구간 — 검수 필요")
 
     def cancel(self):
         if self.job:self.job.stop.set();self.stage.setText('중단 요청: 현재 처리 단위 종료 후 캐시 보존')
 
     def refresh(self):
-        self.table.setRowCount(0)
+        self.visible_events=[];self.table.setRowCount(0)
         if not self.session:return
-        for i,e in enumerate(self.session.events):
+        mode=self.review_filter.currentIndex()
+        if mode==4:self.visible_events=self.session.analysis.get('coverage_gaps',[])
+        else:
+            for e in self.session.events:
+                other=e.event_type=='other_player_or_ocr_error';replay=e.event_type=='replay'
+                if mode==0 and (other or replay):continue
+                if mode==2 and not other:continue
+                if mode==3 and not replay:continue
+                self.visible_events.append(e)
+        plates={p.id:i+1 for i,p in enumerate(self.session.appearances)}
+        for i,e in enumerate(self.visible_events):
             self.table.insertRow(i)
-            for j,value in enumerate([e.number,e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',{'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[e.status]]):
-                self.table.setItem(i,j,QTableWidgetItem(str(value)))
+            if isinstance(e,dict):values=['?', '-', '-',f"{e['start']:.3f}",f"{e['end']:.3f}",'누락 의심: 투구 아님']
+            else:values=[e.number,plates.get(e.plate_id,'?'),e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',{'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[e.status]]
+            for j,value in enumerate(values):self.table.setItem(i,j,QTableWidgetItem(str(value)))
 
     def selected_event(self):
         i=self.table.currentRow()
-        if self.session and 0<=i<len(self.session.events):return self.session.events[i]
+        if self.session and 0<=i<len(self.visible_events):
+            e=self.visible_events[i]
+            if not isinstance(e,dict):return e
+            raise ValueError('누락 의심 구간은 투구로 확정되지 않았습니다. 원본 확인 후 보조 후보를 추가하세요.')
         raise ValueError('후보를 선택하세요')
 
     def selected(self):
-        try:e=self.selected_event()
-        except ValueError:return
-        self.start.setValue(e.timeline_start);self.end.setValue(e.timeline_end);self.confirm.setChecked(False)
+        i=self.table.currentRow()
+        if not 0<=i<len(self.visible_events):return
+        e=self.visible_events[i];self.confirm.setChecked(False)
+        if isinstance(e,dict):
+            self.start.setValue(e['start']);self.end.setValue(e['end']);self.evidence.setText(e['reason']);return
+        self.start.setValue(e.timeline_start);self.end.setValue(e.timeline_end)
         self.evidence.setText('\n'.join(e.warnings)+'\n'+ '; '.join(x.kind+': '+x.value[:150] for x in e.evidence))
+
+    def classify_selected(self,kind):
+        try:
+            from bsae.core.review import classify_event
+            classify_event(self.session,self.selected_event().id,kind)
+            self.dirty=True;self.refresh()
+        except Exception as exc:self.error(exc)
+
+    def edit_plate(self,merge):
+        try:
+            from bsae.core.review import split_plate,merge_previous_plate
+            event=self.selected_event()
+            if merge and QMessageBox.question(self,'타석 병합 검수','원본에서 같은 타석임을 확인했나요?')!=QMessageBox.Yes:return
+            (merge_previous_plate if merge else split_plate)(self.session,event.id)
+            self.dirty=True;self.refresh()
+        except Exception as exc:self.error(exc)
+
+    def save_diagnostics(self):
+        if not self.session:return
+        parent=QFileDialog.getExistingDirectory(self,'진단 결과 저장 위치')
+        if not parent:return
+        try:
+            from datetime import datetime
+            from bsae.vision.rules import export_diagnostics
+            path=export_diagnostics(self.session,Path(parent)/('탐색결과_'+datetime.now().strftime('%Y%m%d_%H%M%S')))
+            self.stage.setText('CSV·JSON 저장: '+str(path))
+        except Exception as exc:self.error(exc)
 
     def apply(self,status):
         try:
@@ -307,7 +371,8 @@ class Window(QMainWindow):
         if Path(name).name!=name or name in ('.','..'):self.error('폴더 이름만 입력하세요');return
         from bsae.export.render import export
         session=deepcopy(self.session);mode=['all','pitch','plate'][self.output_mode.currentIndex()]
-        self.launch(lambda job:export(session,Path(parent)/name,mode,progress=lambda v:job.progress.emit('승인 영상 출력·검증',v),stop=job.stop),lambda path:self.stage.setText('검증 완료: '+str(path)))
+        include_pickoffs=self.pickoff_option.isChecked()
+        self.launch(lambda job:export(session,Path(parent)/name,mode,include_pickoffs=include_pickoffs,progress=lambda v:job.progress.emit('승인 영상 출력·검증',v),stop=job.stop),lambda path:self.stage.setText('검증 완료: '+str(path)))
 
     def closeEvent(self,event):
         if self.job and self.job.isRunning():

@@ -3,7 +3,11 @@ import sys
 from pathlib import Path
 
 if __name__=='__main__':
-    if '--acceptance-test' in sys.argv:
+    if '--compare-reviewed' in sys.argv:
+        from bsae.validation import compare_projects
+        index=sys.argv.index('--compare-reviewed')
+        compare_projects(*sys.argv[index+1:index+4],reference_complete='--complete-reference' in sys.argv)
+    elif '--acceptance-test' in sys.argv:
         from bsae.acceptance import run_acceptance
         from bsae.core.models import atomic_json
         index=sys.argv.index('--acceptance-test')
@@ -41,11 +45,20 @@ if __name__=='__main__':
         app=QApplication([]);window=Window();window.show();app.processEvents()
         if policy['kind']=='development':
             assert not window.analyze_button.isEnabled()
+        auto_scan='NOT_RUN'
         with tempfile.TemporaryDirectory(prefix='야구 Martínez ') as d:
             d=Path(d);video=d/'합성 원본.mp4'
             run('ffmpeg',['-v','error','-nostdin','-n','-f','lavfi','-i','testsrc2=size=160x90:rate=10:duration=2','-c:v','libx264',video])
             original=fingerprint(video)
             game=GameSession('Synthetic smoke',PlayerIdentity('Synthetic'),add_sources([video]))
+            if policy['kind']=='rules-preview':
+                from bsae.vision.rules import analyze_plays,load_profile
+                assert window.analyze_button.isEnabled()
+                analyze_plays(game,load_profile(),d/'auto.sqlite')
+                assert game.analysis['engine']=='broadcast-rules-v1'
+                assert all(e.status!='APPROVED' for e in game.events)
+                auto_scan='PASS'
+                game.events=[];game.appearances=[]
             window.registered(game)
             window.start.setValue(.2);window.end.setValue(1.5);window.manual()
             window.table.selectRow(0);window.confirm.setChecked(True);window.apply('APPROVED')
@@ -58,7 +71,7 @@ if __name__=='__main__':
         # Explicitly does not assert baseball model accuracy or native playback.
         Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
             executable='PASS',gui_construction='PASS',synthetic_render='PASS',
-            model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='ENABLED' if policy['kind']=='release' else 'DISABLED',baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
+            model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
     else:
         from bsae.app import main
         raise SystemExit(main())

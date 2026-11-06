@@ -7,7 +7,7 @@ from bsae.vision.model import TemporalModel
 
 
 def validate(root, kind='development'):
-    if kind not in ('development','release'):raise ValueError('Unknown build kind')
+    if kind not in ('development','rules-preview','release'):raise ValueError('Unknown build kind')
     root=Path(root).resolve(strict=True)
     manifest=json.loads((root/'assets.json').read_text(encoding='utf-8'))
     verified=set()
@@ -46,6 +46,9 @@ def validate(root, kind='development'):
         for key in ('start_error_median','end_error_median'):
             value=report.get('metrics',{}).get(key)
             if not isinstance(value,(int,float)) or not 0<=value<=1:raise ValueError('정식 배포 경계 오차 미충족: '+key)
+    elif kind=='rules-preview':
+        from bsae.vision.rules import load_profile
+        load_profile()
     elif (root/'models'/'model.json').exists():
         raise ValueError('개발판은 모델을 동봉하거나 자동 분석을 활성화하지 않습니다')
     return manifest

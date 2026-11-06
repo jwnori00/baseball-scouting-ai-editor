@@ -1,7 +1,7 @@
 name: Windows portable EXE
 on:
   push:
-    branches: [main, fix/windows-portable-build]
+    branches: [main, fix/windows-portable-build, feat/rules-play-integration]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -9,10 +9,11 @@ on:
       kind:
         description: Development disables AI; release requires validated baseball model
         type: choice
-        options: [development, release]
-        default: development
+        options: [rules-preview, development, release]
+        default: rules-preview
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: windows-portable-${{ github.ref }}
   cancel-in-progress: true
@@ -25,7 +26,7 @@ jobs:
       sources_url: ${{ steps.sources.outputs.artifact-url }}
     env:
       QT_QPA_PLATFORM: offscreen
-      BUILD_KIND: ${{ inputs.kind || 'development' }}
+      BUILD_KIND: ${{ inputs.kind || 'rules-preview' }}
     steps:
       - uses: actions/checkout@v4
       - name: Release model gate
@@ -51,7 +52,53 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Project install failed' }
           python -m pip check
           if ($LASTEXITCODE -ne 0) { throw 'Dependency check failed' }
+      - uses: actions/cache/restore@v4
+        id: native-assets
+        with:
+          path: vendor/portable
+          key: windows-native-portable-v2-${{ hashFiles('packaging/build_media.sh', 'packaging/prepare_assets.py', 'requirements-dev.txt') }}
+          restore-keys: windows-native-portable-v2-
+      - name: Check successful baseline compatibility
+        id: baseline
+        if: steps.native-assets.outputs.cache-hit != 'true'
+        run: python packaging/reuse_assets.py --eligible
+      - uses: actions/github-script@v7
+        id: baseline-run
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.baseline.outputs.eligible == 'true'
+        continue-on-error: true
+        with:
+          script: |
+            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 42183581537});
+            if (run.data.head_sha !== '78ed471b37bc37c531cd006c46e02326600cb026' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');
+      - uses: actions/download-artifact@v4
+        id: baseline-application
+        if: steps.baseline-run.outcome == 'success'
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+          run-id: 42183581537
+          name: BaseballScoutingAIEditor-Windows-x64-development
+          path: ${{ runner.temp }}/baseline-application
+      - uses: actions/download-artifact@v4
+        id: baseline-sources
+        if: steps.baseline-application.outcome == 'success'
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+          run-id: 42183581537
+          name: ThirdPartyCorrespondingSources
+          path: ${{ runner.temp }}/baseline-sources
+      - name: Reuse verified Windows native assets
+        id: reuse
+        if: steps.baseline-sources.outcome == 'success'
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          python packaging/reuse_assets.py "${{ runner.temp }}/baseline-application" "${{ runner.temp }}/baseline-sources"
+          if ($LASTEXITCODE -ne 0) { throw 'Baseline reuse failed; rebuild will be used' }
+          "ready=true" >> $env:GITHUB_OUTPUT
       - uses: msys2/setup-msys2@v2
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
         with:
           msystem: MINGW64
           update: true
@@ -60,22 +107,16 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-pkgconf
             mingw-w64-x86_64-tesseract-ocr
-      - uses: actions/cache/restore@v4
-        id: native-assets
-        with:
-          path: vendor/portable
-          key: windows-native-portable-v2-${{ hashFiles('packaging/build_media.sh', 'packaging/prepare_assets.py', 'requirements-dev.txt') }}
-          restore-keys: windows-native-portable-v2-
       - name: Compiler identity for safe object reuse
         id: compiler
-        if: steps.native-assets.outputs.cache-hit != 'true'
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
         shell: msys2 {0}
         run: |
           identity=$( (gcc -dumpmachine; gcc -dumpfullversion; pacman -Q mingw-w64-x86_64-gcc nasm make) | sha256sum | cut -d ' ' -f 1)
           echo "identity=$identity" >> "$(cygpath -u "$GITHUB_OUTPUT")"
       - uses: actions/cache/restore@v4
         id: media-objects
-        if: steps.native-assets.outputs.cache-hit != 'true'
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
         with:
           path: |
             build/media
@@ -83,13 +124,13 @@ jobs:
           key: windows-media-objects-f46e514-c24e06c-${{ steps.compiler.outputs.identity }}-${{ hashFiles('packaging/build_media.sh') }}
           restore-keys: windows-media-objects-f46e514-c24e06c-${{ steps.compiler.outputs.identity }}-
       - name: Build native FFmpeg and collect native OCR
-        if: steps.native-assets.outputs.cache-hit != 'true'
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
         shell: msys2 {0}
         run: |
           set -o pipefail
           bash packaging/build_media.sh 2>&1 | tee build-evidence/media-build.log
       - name: Cache successful native compilation
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.media-objects.outputs.cache-hit != 'true'
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true' && steps.media-objects.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         continue-on-error: true
         with:
@@ -98,7 +139,7 @@ jobs:
             vendor/media
           key: ${{ steps.media-objects.outputs.cache-primary-key }}
       - name: Prepare verified data and corresponding source
-        if: steps.native-assets.outputs.cache-hit != 'true'
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
         shell: pwsh
         run: |
           python packaging/prepare_assets.py

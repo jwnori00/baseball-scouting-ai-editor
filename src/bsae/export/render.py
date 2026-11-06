@@ -33,6 +33,8 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
     if mode not in ('all', 'pitch', 'plate'):
         raise ValueError('출력 모드 오류')
     session.validate()
+    if any(e.status=='APPROVED' and e.event_type in ('replay','other_player_or_ocr_error') for e in session.events):
+        raise ValueError('리플레이·다른 선수 후보는 원본 확인 후 투구로 재분류해야 출력할 수 있습니다')
     events = sorted([e for e in session.events if e.status == 'APPROVED' and (include_pickoffs or e.event_type != 'pickoff')], key=lambda e:e.timeline_start)
     if not events:
         raise ValueError('검수 승인된 투구가 없습니다')

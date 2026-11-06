@@ -33,3 +33,11 @@ Artifact 이름이 없거나 실행이 빨간색 실패라면 ZIP이 생성된 �
 워크플로가 기본 브랜치에 반영된 후 **Windows portable EXE → Run workflow → kind: development → Run workflow**.
 `release`는 검증된 야구 모델·독립 평가·상업 이용 검토가 없으면 의도적으로 차단합니다.
 다운로드 가능 여부는 실제 실행 결과와 Artifact 게시 성공으로 확인해야 합니다.
+
+## 자동 탐색이 포함된 새 검증판
+
+**feat/rules-play-integration** 실행에서 성공한
+**BaseballScoutingAIEditor-Windows-x64-rules-preview** Artifact를 선택합니다.
+이 ZIP은 구도·움직임·OCR 규칙 엔진과 프로필이 내장돼 **자동 플레이 탐색 시작**을 사용할 수 있습니다.
+이전 `development` Artifact와 다른 프로그램 상태입니다.
+[사용법과 검증 범위](AUTOMATIC_DISCOVERY.md)를 확인하고 모든 후보를 검수하세요.
