@@ -1,4 +1,5 @@
 """Local player catalogue, stored outside the portable ZIP directory."""
+from contextlib import contextmanager,closing
 from dataclasses import asdict
 from datetime import datetime,timezone
 from pathlib import Path
@@ -23,7 +24,13 @@ class Library:
         self.path.parent.mkdir(parents=True,exist_ok=True)
         with self.connect() as db:db.execute('CREATE TABLE IF NOT EXISTS players(id TEXT PRIMARY KEY,payload TEXT NOT NULL)')
 
-    def connect(self):return sqlite3.connect(self.path,timeout=10)
+    @contextmanager
+    def connect(self):
+        # sqlite3.Connection.__exit__ commits/rolls back but does NOT close.
+        # Explicit close is essential for Windows backup/restart/cleanup.
+        with closing(sqlite3.connect(self.path,timeout=10)) as db:
+            with db:
+                yield db
 
     @staticmethod
     def validate(row):

@@ -52,3 +52,14 @@ def test_gui_library_selection_fills_identity_and_preserves_video():
     assert window.library_id==record['id'] and window.favorite.isChecked()
     assert window.files.item(0).text()=='/keep-source.mp4'
     window.dirty=False;window.close()
+
+
+def test_library_releases_database_file_after_every_operation(tmp_path):
+    path=tmp_path/'catalogue.sqlite3';lib=Library(path)
+    row=lib.save(PlayerIdentity('연결 닫기 시험','pitcher','팀','48',league='KBO'))
+    assert lib.get(row['id'])['player']['name']=='연결 닫기 시험'
+    assert len(lib.records())==1
+    backup=tmp_path/'backup.json';lib.backup(backup);assert lib.restore(backup)==0
+    # Windows refuses this rename/delete if any connection still owns a handle.
+    moved=path.with_name('moved.sqlite3');path.rename(moved);moved.unlink()
+    assert not moved.exists()
