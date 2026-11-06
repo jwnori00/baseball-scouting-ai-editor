@@ -8,12 +8,13 @@ from bsae.ingest.media import run
 
 
 def normalize(text):
-    return re.sub(r'[^a-z0-9]', '', ''.join(c for c in unicodedata.normalize('NFKD', text.lower()) if not unicodedata.combining(c)))
+    text=unicodedata.normalize('NFC',''.join(c for c in unicodedata.normalize('NFKD',text.casefold()) if not unicodedata.combining(c)))
+    return ''.join(c for c in text if c.isalnum())
 
 
 def identify(player, readings):
     role_name = readings.get(player.role + '_name', '')
-    match = normalize(role_name) in {normalize(n) for n in [player.name, *player.aliases] if n.strip()}
+    match = bool(normalize(role_name)) and normalize(role_name) in {normalize(n) for n in [player.name, *player.aliases] if n.strip()}
     evidence = []
     if match:
         evidence.append(('name', role_name))

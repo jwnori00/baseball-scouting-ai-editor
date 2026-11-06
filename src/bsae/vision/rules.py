@@ -19,7 +19,7 @@ from .cache import Cache
 from .pipeline import Cancelled
 from .scoreboard import ScoreboardOCR,normalize
 
-VERSION='broadcast-rules-v1'
+VERSION='broadcast-rules-v2'
 
 
 def load_profile(path=None):
@@ -31,6 +31,12 @@ def load_profile(path=None):
         box=profile['camera'][key]
         if len(box)!=4 or not 0<=box[0]<box[2]<=1 or not 0<=box[1]<box[3]<=1:raise ValueError('잘못된 중계 영역: '+key)
     if not 4<=profile.get('sampling_fps',10)<=30 or not .25<=profile.get('ocr_interval',2)<=10:raise ValueError('잘못된 샘플링 설정')
+    if profile['camera'].get('mode')=='learned_scene':
+        model_path=path.parent/profile['scene_model']
+        if model_path.resolve().parent!=path.parent.resolve():raise ValueError('구도 모델은 설정 폴더 안에 있어야 합니다')
+        if hashlib.sha256(model_path.read_bytes()).hexdigest()!=profile['scene_sha256']:raise ValueError('구도 모델 체크섬 불일치')
+        from .scene import validate
+        profile['scene_weights']=validate(json.loads(model_path.read_text(encoding='utf-8')))
     ScoreboardOCR(profile)
     return profile
 
@@ -46,7 +52,23 @@ def camera_cues(rgb,profile):
     dark=float((cv2.cvtColor(panel,cv2.COLOR_RGB2GRAY)<75).mean())
     green=(hsv[:,:,0]>=25)&(hsv[:,:,0]<=90)&(hsv[:,:,1]>40)&(hsv[:,:,2]>35)
     soil=(hsv[:,:,0]<30)&(hsv[:,:,1]>40)&(hsv[:,:,2]>35)&(hsv[:,:,2]<235)
-    return dict(pitch_view=bool(dark>=camera['panel_dark_min'] and green.mean()>=camera['grass_min']),
+    pitch_view=bool(dark>=camera['panel_dark_min'] and green.mean()>=camera['grass_min'])
+    if camera.get('mode')=='field_geometry':
+        field=(green|soil).astype(np.float32)
+        upper=float(region(field,[0.10,0.12,0.90,0.36]).mean())
+        lower_left=float(region(field,[0.06,0.58,0.27,0.92]).mean())
+        lower_right=float(region(field,[0.78,0.58,0.96,0.92]).mean())
+        uniform=((hsv[:,:,1]<65)&(hsv[:,:,2]>140)).astype(np.uint8)
+        _,_,components,_=cv2.connectedComponentsWithStats(region(uniform,[.25,.25,.78,.96]))
+        largest=max(components[1:,cv2.CC_STAT_AREA],default=0)/float(rgb.shape[0]*rgb.shape[1])
+        pitch_view=bool(upper<=camera['upper_field_max'] and min(lower_left,lower_right)>=camera['side_field_min'] and largest<=camera.get('largest_uniform_max',1))
+    extra={}
+    if camera.get('mode')=='learned_scene':
+        from .scene import margin
+        score=margin(rgb,profile['scene_weights']);threshold=profile['scene_weights']['threshold']
+        pitch_view=bool(score>=threshold)
+        extra=dict(scene_margin=score,scene_threshold=threshold)
+    return dict(pitch_view=pitch_view,**extra,
         dark=dark,grass=float(green.mean()),field=float((green|soil).mean()))
 
 
@@ -241,7 +263,7 @@ class Assembly:
             if any(abs(t-e['peak'])<self.profile.get('minimum_motion_separation',2.5) for e in self.pending):continue
             start=index
             while start>0 and rows[start-1][1]['motion']>baseline:start-=1
-            start=max(0,start-int(.75*self.profile['sampling_fps']))
+            start=max(0,start-int(self.profile.get('preparation_padding_seconds',.75)*self.profile['sampling_fps']))
             # Include earliest visible preparation when onset is ambiguous.
             if index-start<3:start=0
             identity=row['identity']
@@ -260,7 +282,7 @@ class Assembly:
             if len(self.signatures)>5000:self.signatures.pop(next(iter(self.signatures)))
             catcher=max(r['catcher_motion'] for _,r in rows[index:index+int(1.5*self.profile['sampling_fps'])])
             self.pending.append(dict(start=rows[start][0],peak=t,energy=energy,threshold=threshold,catcher=catcher,at_camera_start=start<=1,
-                identity=identity,readings=readings,extended=False,replay=replay_marker(readings) or duplicate,
+                identity=identity,readings=readings,scene_margin=row.get('scene_margin'),extended=False,replay=replay_marker(readings) or duplicate,
                 signature_duplicate=duplicate,chunk=chunk))
         if chunk and self.pending:
             # Commit only bursts fully behind the overlap; still conservative.
@@ -275,6 +297,7 @@ class Assembly:
             identity=item['identity'];readings=item['readings']
             warnings=['컷 경계·반환 송구·후속 플레이 종료는 검수 필요',
                 '방송 레이아웃 규칙 기반 후보; 일반 중계 전체 성능 미평가']
+            if self.profile['camera'].get('mode')=='learned_scene':warnings.append('학습된 구도 판별일 뿐 투구·선수·리플레이·플레이 종료 자동 검증이 아닙니다')
             if identity['state']!='target':warnings.append('대상 선수 신원 미확정; 이름·팀·등번호 원본 대조 필요')
             if item['extended']:warnings.append('수비·주루 보존을 위해 다음 필드 장면까지 확장; 불필요한 여유 검수 필요')
             if item['chunk']:warnings.append('장시간 동일 앵글: 연속 구도 경계 검수 필요')
@@ -285,9 +308,10 @@ class Assembly:
             if identity['state']=='other_or_ocr_error':event_type='other_player_or_ocr_error'
             if item['replay']:event_type='replay';warnings.append('명시적 리플레이 표식 또는 동일 프레임 시퀀스')
             proof=[DetectionEvidence('localized_motion',json.dumps(dict(energy=item['energy'],threshold=item['threshold'])),item['peak'],VERSION),
-                DetectionEvidence('pitch_camera','telemetry panel + field geometry; not a pitch by itself',a,VERSION),
+                DetectionEvidence('pitch_camera',self.profile['camera'].get('mode','telemetry_panel')+' + field geometry; not a pitch by itself',a,VERSION),
                 DetectionEvidence('identity_state',identity['state'],item['peak']),
                 DetectionEvidence('end',reason,b,VERSION)]
+            if item.get('scene_margin') is not None:proof.append(DetectionEvidence('scene_margin',str(item['scene_margin'])+' (uncalibrated; not confidence)',item['peak'],VERSION))
             proof += [DetectionEvidence(k,v,item['peak']) for k,v in identity['proof']]
             proof += [DetectionEvidence('ocr:'+k,v,item['peak']) for k,v in readings.items() if v]
             event=PitchEvent(self.session.id,self.session.split(a,b),a,b,

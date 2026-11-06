@@ -221,3 +221,23 @@ def test_reference_plate_split_merge_preserves_pitch_cuts():
     merge_previous_plate(s,s.events[1].id);assert len(s.appearances)==1
     assert original==[(e.timeline_start,e.timeline_end) for e in s.events]
     assert all(e.history for e in (s.events[0],s.events[1]))
+
+
+def test_korean_identity_never_collapses_to_empty():
+    from bsae.vision.scoreboard import normalize,identify
+    from bsae.vision.rules import name_matches
+    a=PlayerIdentity('배영섭','batter','삼성','65');b=PlayerIdentity('이현승','pitcher','두산','48')
+    assert normalize(a.name) and normalize(a.name)!=normalize(b.name)
+    assert name_matches('배영섭',a) and not name_matches('이현승',a)
+    assert identify(a,dict(batter_name='배영섭',batter_team='삼성'))[0]
+    assert not identify(a,dict(batter_name='',batter_team='삼성'))[0]
+
+
+def test_panel_free_camera_rejects_large_uniform_closeup():
+    from bsae.vision.rules import camera_cues
+    p=load_profile(Path(__file__).resolve().parents[1]/'profiles'/'kbo-mbc-centerfield-v1.json')
+    image=np.zeros((180,320,3),np.uint8);image[90:]=[60,120,45]
+    image[95:140,110:120]=230
+    assert camera_cues(image,p)['pitch_view']
+    image[50:170,100:200]=230
+    assert not camera_cues(image,p)['pitch_view']

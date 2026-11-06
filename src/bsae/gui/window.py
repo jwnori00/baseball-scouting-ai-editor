@@ -5,6 +5,7 @@ import sys
 import json
 import threading
 from PySide6.QtCore import QThread, Signal, QUrl
+from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import (QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QPushButton,QLabel,
     QLineEdit,QComboBox,QFileDialog,QMessageBox,QListWidget,QTableWidget,QTableWidgetItem,
     QDoubleSpinBox,QProgressBar,QInputDialog,QCheckBox)
@@ -79,8 +80,14 @@ class Window(QMainWindow):
         self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
         self.visible_events=[]
         self.table=QTableWidget(0,6);self.table.setHorizontalHeaderLabels(['투구','타석','이닝','시작','종료','검수'])
-        self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected);layout.addWidget(self.table)
+        self.table.cellDoubleClicked.connect(lambda row,column:self.edit_inning() if column==2 else None)
+        bulk_row=QHBoxLayout();layout.addLayout(bulk_row)
+        self.button(bulk_row,'표 전체 선택',self.table.selectAll)
+        self.button(bulk_row,'선택 후보 일괄 승인',self.approve_selected)
+        self.button(bulk_row,'선택 후보 이닝 수정',self.edit_inning)
+        bulk_row.addWidget(QLabel('Ctrl / Shift로 여러 행 선택 · 이닝 칸 더블클릭으로 수정'))
         self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence);self.evidence.hide()
         self.video=QVideoWidget();self.video.setMinimumHeight(180);layout.addWidget(self.video)
         self.player=QMediaPlayer(self);self.audio=QAudioOutput(self);self.player.setAudioOutput(self.audio);self.player.setVideoOutput(self.video)
@@ -111,6 +118,13 @@ class Window(QMainWindow):
             project_menu.addAction(title,lambda checked=False,k=kind:self.classify_selected(k))
         self.pickoff_option=project_menu.addAction('승인한 견제도 출력');self.pickoff_option.setCheckable(True)
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
+        broadcast_menu=project_menu.addMenu('자동 탐색 중계 유형')
+        self.broadcast_group=QActionGroup(self);self.broadcast_group.setExclusive(True)
+        for label,filename in [('다중 중계 학습 시험 · 선수 확인 필수','multi-broadcast-scene-v1.json'),('LMB 기존 실험 설정','lmb-telemetry-v1.json'),('KBO MBC 구도 시험 · 선수 확인 필수','kbo-mbc-centerfield-v1.json')]:
+            action=broadcast_menu.addAction(label);action.setCheckable(True);self.broadcast_group.addAction(action)
+            action.setChecked(filename=='lmb-telemetry-v1.json')
+            action.triggered.connect(lambda checked=False,p=root/'profiles'/filename:self.select_broadcast(p))
+        self.profile.setText(str(root/'profiles'/'lmb-telemetry-v1.json'))
         if (root/'models'/'model.json').is_file():
             self.model.setText(str(root/'models'/'model.json'))
         if (root/'models'/'broadcast.json').is_file():
@@ -130,6 +144,11 @@ class Window(QMainWindow):
         path,_=QFileDialog.getOpenFileName(self,'JSON 선택','','JSON (*.json)')
         if path:edit.setText(path)
 
+    def select_broadcast(self,path):
+        if self.job and self.job.isRunning():
+            self.error('분석이 끝난 뒤 중계 유형을 변경하세요.');return
+        self.profile.setText(str(path));self.check_model()
+
     def check_model(self):
         # Legacy model fields remain developer-only. A generic action model is
         # never required to accept a rule-based pitch candidate.
@@ -139,9 +158,9 @@ class Window(QMainWindow):
         try:
             from bsae.vision.rules import load_profile
             from bsae.ingest.media import tool
-            profile=load_profile()
+            profile=load_profile(self.profile.text() or None)
             for name in ('ffmpeg','ffprobe','tesseract'):tool(name)
-            self.availability.setText('구도·움직임·OCR 자동 탐색 — 중계 레이아웃과 모든 후보를 검수하세요.')
+            self.availability.setText('다중 중계 학습 탐색 시험 — 선수 자동 식별 미지원 · 투구/리플레이/종료 검수 필수' if profile['camera'].get('mode')=='learned_scene' else 'KBO MBC 구도 시험 — 선수 이름 자동 식별 미지원 · 모든 후보의 신원과 경계 검수 필수' if profile['camera'].get('mode')=='field_geometry' else '구도·움직임·OCR 자동 탐색 — 중계 레이아웃과 모든 후보를 검수하세요.')
             self.analyze_button.setEnabled(not(self.job and self.job.isRunning()))
         except Exception as exc:
             self.availability.setText('자동 탐색 준비 안 됨: '+str(exc));self.analyze_button.setEnabled(False)
@@ -270,6 +289,34 @@ class Window(QMainWindow):
             self.start.setValue(e['start']);self.end.setValue(e['end']);self.evidence.setText(e['reason']);return
         self.start.setValue(e.timeline_start);self.end.setValue(e.timeline_end)
         self.evidence.setText('\n'.join(e.warnings)+'\n'+ '; '.join(x.kind+': '+x.value[:150] for x in e.evidence))
+
+    def selected_event_ids(self):
+        rows=sorted({index.row() for index in self.table.selectionModel().selectedRows()})
+        if not rows:raise ValueError('검수할 후보 행을 선택하세요')
+        selected=[self.visible_events[i] for i in rows]
+        if any(isinstance(e,dict) for e in selected):raise ValueError('누락 의심 구간은 투구 후보가 아니므로 일괄 검수할 수 없습니다.')
+        return [e.id for e in selected]
+
+    def approve_selected(self):
+        try:
+            from bsae.core.review import review_many
+            ids=self.selected_event_ids()
+            if QMessageBox.question(self,'선택 후보 일괄 승인',f'선택한 {len(ids)}개 후보의 구간과 대상 선수를 모두 확인했나요?\n각 후보의 현재 시작·종료 시각을 그대로 승인합니다.')!=QMessageBox.Yes:return
+            count=review_many(self.session,ids,confirm_identity=True)
+            self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 승인 완료 · 프로젝트를 저장하세요')
+        except Exception as exc:self.error(exc)
+
+    def edit_inning(self):
+        try:
+            from bsae.core.review import set_innings
+            ids=self.selected_event_ids()
+            values={e.inning for e in self.session.events if e.id in ids}
+            initial=next(iter(values)) if len(values)==1 else ''
+            value,ok=QInputDialog.getText(self,'선택 후보 이닝 수정',f'{len(ids)}개 후보에 적용 (예: 9초, 9회말 / 빈칸: 미확정)',text=initial or '')
+            if not ok:return
+            count=set_innings(self.session,ids,value)
+            self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 이닝 수정 · 프로젝트를 저장하세요')
+        except Exception as exc:self.error(exc)
 
     def classify_selected(self,kind):
         try:

@@ -75,3 +75,50 @@ def merge_previous_plate(session,event_id):
     session.appearances.remove(current)
     event.history.append(ReviewRecord('PLATE_MERGE',before,dict(plate_id=previous.id),'검수자가 동일 타석 확인 후 병합',datetime.now(timezone.utc).isoformat()))
     session.validate()
+
+
+def _selection(session,event_ids):
+    ids=list(dict.fromkeys(event_ids))
+    by_id={e.id:e for e in session.events}
+    if not ids or any(i not in by_id for i in ids):
+        raise ValueError('실제 후보를 하나 이상 선택하세요')
+    return [by_id[i] for i in ids]
+
+
+def review_many(session,event_ids,action='APPROVED',*,confirm_identity=False,note='GUI 선택 후보 일괄 검수'):
+    """Commit the whole selection or leave the original project unchanged."""
+    from copy import deepcopy
+    selected=_selection(session,event_ids)
+    if action=='APPROVED' and any(e.event_type in ('replay','other_player_or_ocr_error') for e in selected):
+        raise ValueError('리플레이·다른 선수 후보는 분류를 확인한 뒤 승인하세요')
+    working=deepcopy(session)
+    for e in selected:
+        review(working,e.id,action,confirm_identity=confirm_identity,note=note)
+    session.events,session.appearances=working.events,working.appearances
+    return len(selected)
+
+
+def set_innings(session,event_ids,value):
+    """Edit event metadata and reconcile affected plate groups, with an audit."""
+    import re
+    from copy import deepcopy
+    selected=_selection(session,event_ids)
+    text=re.sub(r'\s+','',value)
+    if text in ('','?'):inning=None
+    else:
+        match=re.fullmatch(r'([1-9][0-9]?)(?:회)?(초|말)?',text)
+        if not match:raise ValueError('이닝은 1~99, 9초, 9회말처럼 입력하세요. 비우면 미확정입니다.')
+        inning=match.group(1)+(match.group(2) or '')
+    working=deepcopy(session);ids={e.id for e in selected};changed=set()
+    for event in working.events:
+        if event.id not in ids or event.inning==inning:continue
+        before=dict(inning=event.inning);event.inning=inning;changed.add(event.id)
+        event.history.append(ReviewRecord('INNING_CHANGED',before,dict(inning=inning),'검수자 직접 입력',datetime.now(timezone.utc).isoformat()))
+    by_id={e.id:e for e in working.events}
+    for plate in working.appearances:
+        if not changed.intersection(plate.event_ids):continue
+        innings={by_id[i].inning for i in plate.event_ids}
+        plate.inning=next(iter(innings)) if len(innings)==1 else None
+        plate.confirmed=False
+    working.validate();session.events,session.appearances=working.events,working.appearances
+    return len(changed)

@@ -31,8 +31,8 @@ if __name__=='__main__':
         from PySide6.QtWidgets import QApplication
         from bsae.gui.window import Window
         from bsae.core.models import GameSession,PlayerIdentity,PitchEvent
-        from bsae.core.review import review
-        from bsae.ingest.media import run,add_sources,fingerprint
+        from bsae.core.review import review,review_many,set_innings
+        from bsae.ingest.media import run,add_sources,fingerprint,probe
         from bsae.vision.model import TemporalModel
         from bsae.export.render import export
         root=Path(sys._MEIPASS)
@@ -57,25 +57,32 @@ if __name__=='__main__':
             original=fingerprint(video)
             game=GameSession('Synthetic smoke',PlayerIdentity('Synthetic'),add_sources([video]))
             if policy['kind']=='rules-preview':
-                from bsae.vision.rules import analyze_plays,load_profile
+                from bsae.vision.rules import analyze_plays,load_profile,VERSION
+                window.select_broadcast(root/'profiles'/'multi-broadcast-scene-v1.json')
                 assert window.analyze_button.isEnabled()
-                analyze_plays(game,load_profile(),d/'auto.sqlite')
-                assert game.analysis['engine']=='broadcast-rules-v1'
+                analyze_plays(game,load_profile(window.profile.text() or None),d/'auto.sqlite')
+                assert game.analysis['engine']==VERSION
                 assert all(e.status!='APPROVED' for e in game.events)
                 auto_scan='PASS'
                 game.events=[];game.appearances=[]
             window.registered(game)
-            window.start.setValue(.2);window.end.setValue(1.5);window.manual()
+            window.start.setValue(.2);window.end.setValue(.8);window.manual()
+            window.start.setValue(1.0);window.end.setValue(1.5);window.manual()
             window.table.selectRow(0);window.confirm.setChecked(True);window.apply('APPROVED')
             game=window.session
-            assert len(game.events)==1 and game.events[0].status=='APPROVED'
+            review_many(game,[e.id for e in game.events],confirm_identity=True)
+            set_innings(game,[e.id for e in game.events],'9초')
+            assert len(game.events)==2 and all(e.status=='APPROVED' and e.inning=='9초' for e in game.events)
             game.save(d/'project.json');game=GameSession.load(d/'project.json')
             export(game,d/'output')
+            v=next(v for v in probe(d/'output'/'all_0001.mp4')['streams'] if v['codec_type']=='video')
+            assert (v['width'],v['height'],v['avg_frame_rate'])==(1280,720,'30/1')
             assert original==fingerprint(video)
         window.dirty=False;window.close()
         # Explicitly does not assert baseball model accuracy or native playback.
         Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
             executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+            scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
             model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
     else:
         from bsae.app import main
