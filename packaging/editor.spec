@@ -11,6 +11,7 @@ for p in (assets/'tools').rglob('*'):
 for folder in (('licenses','models') if os.environ.get('BSAE_BUILD_KIND')=='release' else ('licenses',)):
     datas.append((str(assets/folder),folder))
 datas += [(str(root/'profiles'),'profiles'),(str(root/'docs'),'docs'),(str(root/'README.md'),'.'),(str(assets/'build-policy.json'),'.')]
+datas += [(str(root/'tests'/'fixtures'/name),'test-fixtures') for name in ('av1-8bit.mp4','av1-10bit.mp4')]
 a=Analysis([str(root/'packaging'/'entry.py')],pathex=[str(root/'src')],
     binaries=binaries,datas=datas,hiddenimports=['cv2','numpy'],
     excludes=['pytest','PyQt5','PyQt6','tkinter','torch','torchvision','onnx','onnxruntime'],noarchive=False)

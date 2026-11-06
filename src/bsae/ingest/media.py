@@ -26,6 +26,15 @@ def tool(name):
     return found
 
 
+def media_error(name,stderr):
+    message=stderr.decode('utf-8',errors='replace') if isinstance(stderr,bytes) else str(stderr)
+    missing=re.search(r'no decoder found for:\s*([a-z0-9_]+)',message,re.I)
+    if missing:
+        codec=missing.group(1).upper()
+        return RuntimeError(f'{codec} 영상 코덱을 현재 동봉된 도구로 읽을 수 없습니다. 해당 코덱을 지원하는 프로그램 업데이트가 필요합니다. 파일 확장자만 바꿔서는 해결되지 않습니다.')
+    return RuntimeError(name+': '+message[-4000:])
+
+
 def run(name, args, **kwargs):
     if sys.platform == 'win32':
         kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
@@ -39,7 +48,7 @@ def run(name, args, **kwargs):
         kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
     result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
     if result.returncode:
-        raise RuntimeError(name+': '+result.stderr.decode('utf-8', errors='replace')[-4000:])
+        raise media_error(name,result.stderr)
     return result.stdout
 
 
@@ -153,7 +162,7 @@ def frames(path, fps=4, width=160, height=90, start=0, end=None):
                 raise RuntimeError('FFmpeg PTS를 읽을 수 없습니다')
             yield timestamp, np.frombuffer(block, dtype=np.uint8).reshape(height, width, 3)
         if process.wait() != 0:
-            raise RuntimeError(b''.join(errors).decode(errors='replace'))
+            raise media_error('ffmpeg',b''.join(errors))
     finally:
         process.stdout.close()
         if process.poll() is None:

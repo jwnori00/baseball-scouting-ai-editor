@@ -65,6 +65,9 @@ if __name__=='__main__':
             cv2.putText(text_frame,'MARTINEZ',(10,65),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,0),3)
             checkpoint('ocr_text')
             assert 'MARTINEZ' in ScoreboardOCR({'language':'eng+kor+jpn','regions':{'pitcher_name':[0,0,1,1]}}).read(text_frame)['pitcher_name']
+            checkpoint('av1_decode')
+            for name in ('av1-8bit.mp4','av1-10bit.mp4'):
+                run('ffmpeg',['-v','error','-xerror','-i',root/'test-fixtures'/name,'-f','null','-'])
             checkpoint('gui')
             app=QApplication([]);window=Window();window.show();app.processEvents()
             def fail_test(message):raise RuntimeError('GUI self-test: '+str(message))
@@ -119,7 +122,7 @@ if __name__=='__main__':
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:

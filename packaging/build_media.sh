@@ -18,12 +18,23 @@ fetch_source() {
     git -C "$tree" archive --format=tar --prefix="$name/" HEAD | gzip -n > "$assets/corresponding-source/media/$name-$revision.tar.gz"
 }
 fetch_source x264 https://github.com/mirror/x264.git c24e06c2e184345ceb33eb20a15d1024d9fd3497
+fetch_source dav1d https://github.com/videolan/dav1d.git c720f4d3556a01916324aea155555d3efba842e8
 fetch_source ffmpeg https://github.com/FFmpeg/FFmpeg.git f46e514491172d15bd74b4abb1814cd2f05a763e
 export PATH="/mingw64/bin:/usr/bin:$PATH"
 export PKG_CONFIG_PATH="$prefix/lib/pkgconfig"
 jobs=$(nproc)
 if (( jobs > 4 )); then jobs=4; fi
 printf 'Native media build jobs: %s\n' "$jobs"
+dav1d_build="$root/build/media/dav1d-build"
+if [[ -f "$dav1d_build/build.ninja" ]]; then
+    meson setup --reconfigure "$dav1d_build" "$root/build/media/dav1d" --prefix="$prefix" --libdir=lib --buildtype=release --default-library=static -Denable_tools=false -Denable_tests=false -Denable_examples=false -Dxxhash_muxer=disabled
+else
+    meson setup "$dav1d_build" "$root/build/media/dav1d" --prefix="$prefix" --libdir=lib --buildtype=release --default-library=static -Denable_tools=false -Denable_tests=false -Denable_examples=false -Dxxhash_muxer=disabled
+fi
+meson compile -C "$dav1d_build" -j "$jobs"
+meson install -C "$dav1d_build"
+cp "$root/build/media/dav1d/COPYING" "$assets/licenses/media/dav1d-COPYING"
+meson introspect --buildoptions "$dav1d_build" > "$assets/corresponding-source/media/dav1d-build-options.json"
 cd "$root/build/media/x264"
 ./configure --prefix="$prefix" --enable-static --disable-cli --disable-opencl --extra-ldflags=-static
 make -j"$jobs"
@@ -32,8 +43,8 @@ cp COPYING "$assets/licenses/media/x264-COPYING"
 cd "$root/build/media/ffmpeg"
 ./configure --prefix="$prefix" --target-os=mingw32 --arch=x86_64 --cc=gcc --cxx=g++ \
     --disable-shared --enable-static --disable-autodetect --disable-doc --disable-debug \
-    --disable-network --enable-gpl --enable-libx264 --pkg-config-flags=--static --extra-ldflags=-static \
-    --disable-decoders --enable-decoder=h264,hevc,vp9,vp8,mpeg4,mpeg2video,mjpeg,ffv1,rawvideo,aac,aac_fixed,mp3,mp3float,pcm_u8,wrapped_avframe,pcm_s16le,pcm_s24le,pcm_f32le,flac,opus,vorbis,ac3,eac3,alac \
+    --disable-network --enable-gpl --enable-libx264 --enable-libdav1d --pkg-config-flags=--static --extra-ldflags=-static \
+    --disable-decoders --enable-decoder=libdav1d,h264,hevc,vp9,vp8,mpeg4,mpeg2video,mjpeg,ffv1,rawvideo,aac,aac_fixed,mp3,mp3float,pcm_u8,wrapped_avframe,pcm_s16le,pcm_s24le,pcm_f32le,flac,opus,vorbis,ac3,eac3,alac \
     --disable-demuxers --enable-demuxer=mov,matroska,mpegts,mpegps,avi,rawvideo,concat \
     --disable-encoders --enable-encoder=libx264,aac,ffv1,rawvideo,pcm_s16le,wrapped_avframe \
     --disable-muxers --enable-muxer=mp4,matroska,rawvideo,null \
@@ -56,3 +67,6 @@ pacman -Q > "$assets/corresponding-source/media/msys2-package-versions.txt"
 
 "$assets/tools/ffmpeg.exe" -v error -nostdin -f lavfi -i 'testsrc2=size=160x90:rate=10:duration=1' -f lavfi -i 'anullsrc=r=48000:cl=stereo' -t 1 -c:v libx264 -c:a aac -f mp4 -y "$root/build/media/native-smoke.mp4"
 "$assets/tools/ffmpeg.exe" -v error -xerror -nostdin -i "$root/build/media/native-smoke.mp4" -f null -
+
+"$assets/tools/ffmpeg.exe" -v error -xerror -nostdin -i "$root/tests/fixtures/av1-8bit.mp4" -f null -
+"$assets/tools/ffmpeg.exe" -v error -xerror -nostdin -i "$root/tests/fixtures/av1-10bit.mp4" -f null -

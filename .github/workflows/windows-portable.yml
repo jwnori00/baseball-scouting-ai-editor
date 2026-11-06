@@ -1,7 +1,7 @@
 name: Windows portable EXE
 on:
   push:
-    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery]
+    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -105,6 +105,8 @@ jobs:
           install: >-
             git make nasm diffutils
             mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-meson
+            mingw-w64-x86_64-ninja
             mingw-w64-x86_64-pkgconf
             mingw-w64-x86_64-tesseract-ocr
       - name: Compiler identity for safe object reuse
