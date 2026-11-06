@@ -218,3 +218,21 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Private scouting media, labels, models and analysis output
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.ts
+*.m4v
+*.npz
+*.onnx
+*.sqlite*
+*.zip
+*.sha256
+.cache/
+private/
+local-data/
+vendor/
+build-evidence/
