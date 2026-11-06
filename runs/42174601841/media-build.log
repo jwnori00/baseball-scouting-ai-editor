@@ -1,0 +1,3170 @@
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/x264/.git/
+From https://github.com/mirror/x264
+ * branch            c24e06c2e184345ceb33eb20a15d1024d9fd3497 -> FETCH_HEAD
+HEAD is now at c24e06c configure: Check for SVE support in MS armasm64 via as_check
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/ffmpeg/.git/
+From https://github.com/FFmpeg/FFmpeg
+ * branch            f46e514491172d15bd74b4abb1814cd2f05a763e -> FETCH_HEAD
+HEAD is now at f46e514 Changelog: update
+platform:       X86_64
+byte order:     little-endian
+system:         WINDOWS
+cli:            no
+libx264:        internal
+shared:         no
+static:         yes
+bashcompletion: no
+asm:            yes
+interlaced:     yes
+avs:            no
+lavf:           no
+ffms:           no
+mp4:            no
+gpl:            yes
+thread:         win32
+opencl:         no
+filters:        crop select_every
+lto:            no
+debug:          no
+gprof:          no
+strip:          no
+PIC:            no
+bit depth:      all
+chroma format:  all
+
+You can run 'make' or 'make fprofiled' now.
+dependency file generation...
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/osdep.c -o common/osdep.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/base.c -o common/base.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/cpu.c -o common/cpu.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/tables.c -o common/tables.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/api.c -o encoder/api.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/win32thread.c -o common/win32thread.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mc.c -o common/mc-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/predict.c -o common/predict-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/pixel.c -o common/pixel-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/macroblock.c -o common/macroblock-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/frame.c -o common/frame-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/dct.c -o common/dct-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/cabac.c -o common/cabac-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/common.c -o common/common-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/rectangle.c -o common/rectangle-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/set.c -o common/set-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/quant.c -o common/quant-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/deblock.c -o common/deblock-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/vlc.c -o common/vlc-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mvpred.c -o common/mvpred-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/bitstream.c -o common/bitstream-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/analyse.c -o encoder/analyse-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/me.c -o encoder/me-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+In file included from encoder/rdo.c:53,
+                 from encoder/analyse.c:33:
+encoder/cavlc.c: In function 'cavlc_block_residual_internal':
+encoder/cavlc.c:128:18: warning: variable 'i_sign' set but not used [-Wunused-but-set-variable=]
+  128 |     unsigned int i_sign;
+      |                  ^~~~~~
+encoder/rdo.c: In function 'quant_trellis_cabac':
+encoder/rdo.c:834:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  834 |             ssd0[k] = ssd1[k];\
+      |                       ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:17: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |             ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:46: warning: dangling pointer to 'cost_siglast' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |                                  ~~~~~~~~~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:789:13: note: 'cost_siglast' declared here
+  789 |         int cost_siglast[3]; /* { zero, nonzero, nonzero-and-last } */\
+      |             ^~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:72: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                    ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:80: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                            ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/ratecontrol.c -o encoder/ratecontrol-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+encoder/ratecontrol.c: In function 'vbv_pass2':
+encoder/ratecontrol.c:2883:9: warning: variable 'iterations' set but not used [-Wunused-but-set-variable=]
+ 2883 |     int iterations = 0;
+      |         ^~~~~~~~~~
+In function 'get_diff_limited_q',
+    inlined from 'init_pass2' at encoder/ratecontrol.c:3049:25,
+    inlined from 'x264_8_ratecontrol_new' at encoder/ratecontrol.c:1149:17:
+encoder/ratecontrol.c:2082:25: warning: array subscript [0, 2] is outside array bounds of 'double[3]' [-Warray-bounds=]
+ 2082 |     rcc->last_qscale_for[pict_type] = q;
+      |     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+encoder/ratecontrol.c: In function 'x264_8_ratecontrol_new':
+encoder/ratecontrol.c:132:12: note: while referencing 'last_qscale_for'
+  132 |     double last_qscale_for[3];  /* last qscale for a specific pict type, used for max_diff & ipb factor stuff */
+      |            ^~~~~~~~~~~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/set.c -o encoder/set-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/macroblock.c -o encoder/macroblock-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cabac.c -o encoder/cabac-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cavlc.c -o encoder/cavlc-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/encoder.c -o encoder/encoder-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/lookahead.c -o encoder/lookahead-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/threadpool.c -o common/threadpool-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/mc-c.c -o common/x86/mc-c-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/predict-c.c -o common/x86/predict-c-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mc.c -o common/mc-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/predict.c -o common/predict-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/pixel.c -o common/pixel-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/macroblock.c -o common/macroblock-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/frame.c -o common/frame-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/dct.c -o common/dct-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/cabac.c -o common/cabac-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/common.c -o common/common-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/rectangle.c -o common/rectangle-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/set.c -o common/set-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/quant.c -o common/quant-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/deblock.c -o common/deblock-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/vlc.c -o common/vlc-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mvpred.c -o common/mvpred-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/bitstream.c -o common/bitstream-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/analyse.c -o encoder/analyse-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/me.c -o encoder/me-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+In file included from encoder/rdo.c:53,
+                 from encoder/analyse.c:33:
+encoder/cavlc.c: In function 'cavlc_block_residual_internal':
+encoder/cavlc.c:128:18: warning: variable 'i_sign' set but not used [-Wunused-but-set-variable=]
+  128 |     unsigned int i_sign;
+      |                  ^~~~~~
+encoder/rdo.c: In function 'quant_trellis_cabac':
+encoder/rdo.c:834:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  834 |             ssd0[k] = ssd1[k];\
+      |                       ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:17: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |             ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:46: warning: dangling pointer to 'cost_siglast' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |                                  ~~~~~~~~~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:789:13: note: 'cost_siglast' declared here
+  789 |         int cost_siglast[3]; /* { zero, nonzero, nonzero-and-last } */\
+      |             ^~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:72: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                    ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:80: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                            ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/ratecontrol.c -o encoder/ratecontrol-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+encoder/ratecontrol.c: In function 'vbv_pass2':
+encoder/ratecontrol.c:2883:9: warning: variable 'iterations' set but not used [-Wunused-but-set-variable=]
+ 2883 |     int iterations = 0;
+      |         ^~~~~~~~~~
+In function 'get_diff_limited_q',
+    inlined from 'init_pass2' at encoder/ratecontrol.c:3049:25,
+    inlined from 'x264_10_ratecontrol_new' at encoder/ratecontrol.c:1149:17:
+encoder/ratecontrol.c:2082:25: warning: array subscript [0, 2] is outside array bounds of 'double[3]' [-Warray-bounds=]
+ 2082 |     rcc->last_qscale_for[pict_type] = q;
+      |     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+encoder/ratecontrol.c: In function 'x264_10_ratecontrol_new':
+encoder/ratecontrol.c:132:12: note: while referencing 'last_qscale_for'
+  132 |     double last_qscale_for[3];  /* last qscale for a specific pict type, used for max_diff & ipb factor stuff */
+      |            ^~~~~~~~~~~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/set.c -o encoder/set-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/macroblock.c -o encoder/macroblock-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cabac.c -o encoder/cabac-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cavlc.c -o encoder/cavlc-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/encoder.c -o encoder/encoder-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/lookahead.c -o encoder/lookahead-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/threadpool.c -o common/threadpool-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/mc-c.c -o common/x86/mc-c-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/predict-c.c -o common/x86/predict-c-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/cpu-a.o common/x86/cpu-a.asm
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-64-8.o common/x86/dct-64.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/trellis-64-8.o common/x86/trellis-64.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/bitstream-a-8.o common/x86/bitstream-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/const-a-8.o common/x86/const-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/cabac-a-8.o common/x86/cabac-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-a-8.o common/x86/dct-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/deblock-a-8.o common/x86/deblock-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a-8.o common/x86/mc-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a2-8.o common/x86/mc-a2.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/pixel-a-8.o common/x86/pixel-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/predict-a-8.o common/x86/predict-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/quant-a-8.o common/x86/quant-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/sad-a-8.o common/x86/sad-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-64-10.o common/x86/dct-64.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/trellis-64-10.o common/x86/trellis-64.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/bitstream-a-10.o common/x86/bitstream-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/const-a-10.o common/x86/const-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/cabac-a-10.o common/x86/cabac-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-a-10.o common/x86/dct-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/deblock-a-10.o common/x86/deblock-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a-10.o common/x86/mc-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a2-10.o common/x86/mc-a2.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/pixel-a-10.o common/x86/pixel-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/predict-a-10.o common/x86/predict-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/quant-a-10.o common/x86/quant-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/sad16-a-10.o common/x86/sad16-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+rm -f libx264.a
+gcc-ar rc libx264.a common/osdep.o common/base.o common/cpu.o common/tables.o encoder/api.o common/win32thread.o common/mc-8.o common/predict-8.o common/pixel-8.o common/macroblock-8.o common/frame-8.o common/dct-8.o common/cabac-8.o common/common-8.o common/rectangle-8.o common/set-8.o common/quant-8.o common/deblock-8.o common/vlc-8.o common/mvpred-8.o common/bitstream-8.o encoder/analyse-8.o encoder/me-8.o encoder/ratecontrol-8.o encoder/set-8.o encoder/macroblock-8.o encoder/cabac-8.o encoder/cavlc-8.o encoder/encoder-8.o encoder/lookahead-8.o common/threadpool-8.o common/x86/mc-c-8.o common/x86/predict-c-8.o  common/mc-10.o common/predict-10.o common/pixel-10.o common/macroblock-10.o common/frame-10.o common/dct-10.o common/cabac-10.o common/common-10.o common/rectangle-10.o common/set-10.o common/quant-10.o common/deblock-10.o common/vlc-10.o common/mvpred-10.o common/bitstream-10.o encoder/analyse-10.o encoder/me-10.o encoder/ratecontrol-10.o encoder/set-10.o encoder/macroblock-10.o encoder/cabac-10.o encoder/cavlc-10.o encoder/encoder-10.o encoder/lookahead-10.o common/threadpool-10.o common/x86/mc-c-10.o common/x86/predict-c-10.o common/x86/cpu-a.o common/x86/dct-64-8.o common/x86/trellis-64-8.o common/x86/bitstream-a-8.o common/x86/const-a-8.o common/x86/cabac-a-8.o common/x86/dct-a-8.o common/x86/deblock-a-8.o common/x86/mc-a-8.o common/x86/mc-a2-8.o common/x86/pixel-a-8.o common/x86/predict-a-8.o common/x86/quant-a-8.o common/x86/sad-a-8.o common/x86/dct-64-10.o common/x86/trellis-64-10.o common/x86/bitstream-a-10.o common/x86/const-a-10.o common/x86/cabac-a-10.o common/x86/dct-a-10.o common/x86/deblock-a-10.o common/x86/mc-a-10.o common/x86/mc-a2-10.o common/x86/pixel-a-10.o common/x86/predict-a-10.o common/x86/quant-a-10.o common/x86/sad16-a-10.o
+gcc-ranlib libx264.a
+install -d /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include
+install -d /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/pkgconfig
+install -m 644 ./x264.h x264_config.h /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include
+install -m 644 x264.pc /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/pkgconfig
+install -d /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib
+install -m 644 libx264.a /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib
+gcc-ranlib /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/libx264.a
+install prefix            /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media
+source path               .
+C compiler                gcc
+C library                 mingw64
+ARCH                      x86 (generic)
+big-endian                no
+runtime cpu detection     yes
+standalone assembly       yes
+x86 assembler             nasm
+MMX enabled               yes
+MMXEXT enabled            yes
+3DNow! enabled            yes
+3DNow! extended enabled   yes
+SSE enabled               yes
+SSSE3 enabled             yes
+AESNI enabled             yes
+AVX enabled               yes
+AVX2 enabled              yes
+AVX-512 enabled           yes
+AVX-512ICL enabled        yes
+XOP enabled               yes
+FMA3 enabled              yes
+FMA4 enabled              yes
+i686 features enabled     yes
+CMOV is fast              yes
+EBX available             yes
+EBP available             yes
+debug symbols             no
+strip symbols             yes
+optimize for size         no
+optimizations             yes
+static                    yes
+shared                    no
+postprocessing support    yes
+network support           no
+threading support         w32threads
+safe bitstream reader     yes
+texi2html enabled         no
+perl enabled              yes
+pod2man enabled           yes
+makeinfo enabled          no
+makeinfo supports HTML    no
+xmllint enabled           no
+
+External libraries:
+libx264
+
+External libraries providing hardware acceleration:
+
+Libraries:
+avcodec                 avformat                swresample
+avdevice                avutil                  swscale
+avfilter                postproc
+
+Programs:
+ffmpeg                  ffprobe
+
+Enabled decoders:
+aac                     ffv1                    pfm
+aac_fixed               ffvhuff                 pgm
+aac_latm                ffwavesynth             pgmyuv
+aasc                    fic                     pgssub
+ac3                     fits                    pgx
+ac3_fixed               flac                    phm
+acelp_kelvin            flic                    photocd
+adpcm_4xm               flv                     pictor
+adpcm_adx               fmvc                    pixlet
+adpcm_afc               fourxm                  pjs
+adpcm_agm               fraps                   ppm
+adpcm_aica              frwu                    prores
+adpcm_argo              ftr                     prosumer
+adpcm_ct                g723_1                  psd
+adpcm_dtk               g729                    ptx
+adpcm_ea                gdv                     qcelp
+adpcm_ea_maxis_xa       gem                     qdm2
+adpcm_ea_r1             gif                     qdmc
+adpcm_ea_r2             gremlin_dpcm            qdraw
+adpcm_ea_r3             gsm                     qoa
+adpcm_ea_xas            gsm_ms                  qoi
+adpcm_g722              h261                    qpeg
+adpcm_g726              h263                    qtrle
+adpcm_g726le            h263i                   r10k
+adpcm_ima_acorn         h263p                   r210
+adpcm_ima_alp           h264                    ra_144
+adpcm_ima_amv           hap                     ra_288
+adpcm_ima_apc           hca                     ralf
+adpcm_ima_apm           hcom                    rawvideo
+adpcm_ima_cunning       hdr                     realtext
+adpcm_ima_dat4          hevc                    rka
+adpcm_ima_dk3           hnm4_video              rl2
+adpcm_ima_dk4           hq_hqa                  roq
+adpcm_ima_ea_eacs       hqx                     roq_dpcm
+adpcm_ima_ea_sead       huffyuv                 rpza
+adpcm_ima_iss           hymt                    rtv1
+adpcm_ima_moflex        iac                     rv10
+adpcm_ima_mtf           idcin                   rv20
+adpcm_ima_oki           idf                     rv30
+adpcm_ima_qt            iff_ilbm                rv40
+adpcm_ima_rad           ilbc                    s302m
+adpcm_ima_smjpeg        imc                     sami
+adpcm_ima_ssi           imm4                    sanm
+adpcm_ima_wav           imm5                    sbc
+adpcm_ima_ws            indeo2                  scpr
+adpcm_ms                indeo3                  sdx2_dpcm
+adpcm_mtaf              indeo4                  sga
+adpcm_psx               indeo5                  sgi
+adpcm_sbpro_2           interplay_acm           sgirle
+adpcm_sbpro_3           interplay_dpcm          sheervideo
+adpcm_sbpro_4           interplay_video         shorten
+adpcm_swf               ipu                     simbiosis_imx
+adpcm_thp               jacosub                 sipr
+adpcm_thp_le            jpeg2000                siren
+adpcm_vima              jpegls                  smackaud
+adpcm_xa                jv                      smacker
+adpcm_xmd               kgv1                    smc
+adpcm_yamaha            kmvc                    smvjpeg
+adpcm_zork              lagarith                snow
+agm                     lead                    sol_dpcm
+aic                     loco                    sonic
+alac                    m101                    sp5x
+alias_pix               mace3                   speedhq
+als                     mace6                   speex
+amrnb                   magicyuv                srt
+amrwb                   mdec                    ssa
+amv                     media100                stl
+anm                     metasound               subrip
+ansi                    microdvd                subviewer
+anull                   mimic                   subviewer1
+apac                    misc4                   sunrast
+ape                     mjpeg                   svq1
+aptx                    mjpegb                  svq3
+aptx_hd                 mlp                     tak
+arbc                    mmvideo                 targa
+argo                    mobiclip                targa_y216
+ass                     motionpixels            text
+asv1                    movtext                 theora
+asv2                    mp1                     thp
+atrac1                  mp1float                tiertexseqvideo
+atrac3                  mp2                     tiff
+atrac3al                mp2float                tmv
+atrac3p                 mp3                     truehd
+atrac3pal               mp3adu                  truemotion1
+atrac9                  mp3adufloat             truemotion2
+aura                    mp3float                truemotion2rt
+aura2                   mp3on4                  truespeech
+av1                     mp3on4float             tscc2
+avrn                    mpc7                    tta
+avrp                    mpc8                    twinvq
+avs                     mpeg1video              txd
+avui                    mpeg2video              ulti
+bethsoftvid             mpeg4                   utvideo
+bfi                     mpegvideo               v210
+bink                    mpl2                    v210x
+binkaudio_dct           msa1                    v308
+binkaudio_rdft          msmpeg4v1               v408
+bintext                 msmpeg4v2               v410
+bitpacked               msmpeg4v3               vb
+bmp                     msnsiren                vble
+bmv_audio               msp2                    vbn
+bmv_video               msrle                   vc1
+bonk                    mss1                    vc1image
+brender_pix             mss2                    vcr1
+c93                     msvideo1                vmdaudio
+cavs                    mszh                    vmdvideo
+cbd2_dpcm               mts2                    vmix
+ccaption                mv30                    vmnc
+cdgraphics              mvc1                    vnull
+cdtoons                 mvc2                    vorbis
+cdxl                    mvdv                    vp3
+cfhd                    mxpeg                   vp4
+cinepak                 nellymoser              vp5
+clearvideo              notchlc                 vp6
+cljr                    nuv                     vp6a
+cllc                    on2avc                  vp6f
+comfortnoise            opus                    vp7
+cook                    osq                     vp8
+cpia                    paf_audio               vp9
+cri                     paf_video               vplayer
+cscd                    pam                     vqa
+cyuv                    pbm                     vqc
+dca                     pcm_alaw                vvc
+dds                     pcm_bluray              wady_dpcm
+derf_dpcm               pcm_dvd                 wavarc
+dfa                     pcm_f16le               wavpack
+dfpwm                   pcm_f24le               wbmp
+dirac                   pcm_f32be               webp
+dnxhd                   pcm_f32le               webvtt
+dolby_e                 pcm_f64be               wmalossless
+dpx                     pcm_f64le               wmapro
+dsd_lsbf                pcm_lxf                 wmav1
+dsd_lsbf_planar         pcm_mulaw               wmav2
+dsd_msbf                pcm_s16be               wmavoice
+dsd_msbf_planar         pcm_s16be_planar        wmv1
+dsicinaudio             pcm_s16le               wmv2
+dsicinvideo             pcm_s16le_planar        wmv3
+dss_sp                  pcm_s24be               wmv3image
+dst                     pcm_s24daud             wnv1
+dvaudio                 pcm_s24le               wrapped_avframe
+dvbsub                  pcm_s24le_planar        ws_snd1
+dvdsub                  pcm_s32be               xan_dpcm
+dvvideo                 pcm_s32le               xan_wc3
+dxtory                  pcm_s32le_planar        xan_wc4
+dxv                     pcm_s64be               xbin
+eac3                    pcm_s64le               xbm
+eacmv                   pcm_s8                  xface
+eamad                   pcm_s8_planar           xl
+eatgq                   pcm_sga                 xma1
+eatgv                   pcm_u16be               xma2
+eatqi                   pcm_u16le               xpm
+eightbps                pcm_u24be               xsub
+eightsvx_exp            pcm_u24le               xwd
+eightsvx_fib            pcm_u32be               y41p
+escape124               pcm_u32le               ylc
+escape130               pcm_u8                  yop
+evrc                    pcm_vidc                yuv4
+fastaudio               pcx                     zero12v
+
+Enabled encoders:
+a64multi                jpeg2000                ppm
+a64multi5               jpegls                  prores
+aac                     libx264                 prores_aw
+ac3                     libx264rgb              prores_ks
+ac3_fixed               ljpeg                   qoi
+adpcm_adx               magicyuv                qtrle
+adpcm_argo              mjpeg                   r10k
+adpcm_g722              mlp                     r210
+adpcm_g726              movtext                 ra_144
+adpcm_g726le            mp2                     rawvideo
+adpcm_ima_alp           mp2fixed                roq
+adpcm_ima_amv           mpeg1video              roq_dpcm
+adpcm_ima_apm           mpeg2video              rpza
+adpcm_ima_qt            mpeg4                   rv10
+adpcm_ima_ssi           msmpeg4v2               rv20
+adpcm_ima_wav           msmpeg4v3               s302m
+adpcm_ima_ws            msrle                   sbc
+adpcm_ms                msvideo1                sgi
+adpcm_swf               nellymoser              smc
+adpcm_yamaha            opus                    snow
+alac                    pam                     sonic
+alias_pix               pbm                     sonic_ls
+amv                     pcm_alaw                speedhq
+anull                   pcm_bluray              srt
+aptx                    pcm_dvd                 ssa
+aptx_hd                 pcm_f32be               subrip
+ass                     pcm_f32le               sunrast
+asv1                    pcm_f64be               svq1
+asv2                    pcm_f64le               targa
+avrp                    pcm_mulaw               text
+avui                    pcm_s16be               tiff
+bitpacked               pcm_s16be_planar        truehd
+bmp                     pcm_s16le               tta
+cfhd                    pcm_s16le_planar        ttml
+cinepak                 pcm_s24be               utvideo
+cljr                    pcm_s24daud             v210
+comfortnoise            pcm_s24le               v308
+dca                     pcm_s24le_planar        v408
+dfpwm                   pcm_s32be               v410
+dnxhd                   pcm_s32le               vbn
+dpx                     pcm_s32le_planar        vc2
+dvbsub                  pcm_s64be               vnull
+dvdsub                  pcm_s64le               vorbis
+dvvideo                 pcm_s8                  wavpack
+dxv                     pcm_s8_planar           wbmp
+eac3                    pcm_u16be               webvtt
+ffv1                    pcm_u16le               wmav1
+ffvhuff                 pcm_u24be               wmav2
+fits                    pcm_u24le               wmv1
+flac                    pcm_u32be               wmv2
+flv                     pcm_u32le               wrapped_avframe
+g723_1                  pcm_u8                  xbm
+gif                     pcm_vidc                xface
+h261                    pcx                     xsub
+h263                    pfm                     xwd
+h263p                   pgm                     y41p
+hdr                     pgmyuv                  yuv4
+huffyuv                 phm
+
+Enabled hwaccels:
+
+Enabled parsers:
+aac                     dvdsub                  mpegaudio
+aac_latm                evc                     mpegvideo
+ac3                     flac                    opus
+adx                     ftr                     png
+amr                     g723_1                  pnm
+av1                     g729                    qoi
+avs2                    gif                     rv34
+avs3                    gsm                     sbc
+bmp                     h261                    sipr
+cavsvideo               h263                    tak
+cook                    h264                    vc1
+cri                     hdr                     vorbis
+dca                     hevc                    vp3
+dirac                   ipu                     vp8
+dnxhd                   jpeg2000                vp9
+dolby_e                 jpegxl                  vvc
+dpx                     misc4                   webp
+dvaudio                 mjpeg                   xbm
+dvbsub                  mlp                     xma
+dvd_nav                 mpeg4video              xwd
+
+Enabled demuxers:
+aa                      idcin                   pcm_f64le
+aac                     idf                     pcm_mulaw
+aax                     iff                     pcm_s16be
+ac3                     ifv                     pcm_s16le
+ac4                     ilbc                    pcm_s24be
+ace                     image2                  pcm_s24le
+acm                     image2_alias_pix        pcm_s32be
+act                     image2_brender_pix      pcm_s32le
+adf                     image2pipe              pcm_s8
+adp                     image_bmp_pipe          pcm_u16be
+ads                     image_cri_pipe          pcm_u16le
+adx                     image_dds_pipe          pcm_u24be
+aea                     image_dpx_pipe          pcm_u24le
+afc                     image_exr_pipe          pcm_u32be
+aiff                    image_gem_pipe          pcm_u32le
+aix                     image_gif_pipe          pcm_u8
+alp                     image_hdr_pipe          pcm_vidc
+amr                     image_j2k_pipe          pdv
+amrnb                   image_jpeg_pipe         pjs
+amrwb                   image_jpegls_pipe       pmp
+anm                     image_jpegxl_pipe       pp_bnk
+apac                    image_pam_pipe          pva
+apc                     image_pbm_pipe          pvf
+ape                     image_pcx_pipe          qcp
+apm                     image_pfm_pipe          qoa
+apng                    image_pgm_pipe          r3d
+aptx                    image_pgmyuv_pipe       rawvideo
+aptx_hd                 image_pgx_pipe          rcwt
+aqtitle                 image_phm_pipe          realtext
+argo_asf                image_photocd_pipe      redspark
+argo_brp                image_pictor_pipe       rka
+argo_cvg                image_png_pipe          rl2
+asf                     image_ppm_pipe          rm
+asf_o                   image_psd_pipe          roq
+ass                     image_qdraw_pipe        rpl
+ast                     image_qoi_pipe          rsd
+au                      image_sgi_pipe          rso
+av1                     image_sunrast_pipe      s337m
+avi                     image_svg_pipe          sami
+avr                     image_tiff_pipe         sbc
+avs                     image_vbn_pipe          sbg
+avs2                    image_webp_pipe         scc
+avs3                    image_xbm_pipe          scd
+bethsoftvid             image_xpm_pipe          sdns
+bfi                     image_xwd_pipe          sdr2
+bfstm                   ingenient               sds
+bink                    ipmovie                 sdx
+binka                   ipu                     segafilm
+bintext                 ircam                   ser
+bit                     iss                     sga
+bitpacked               iv8                     shorten
+bmv                     ivf                     siff
+boa                     ivr                     simbiosis_imx
+bonk                    jacosub                 sln
+brstm                   jpegxl_anim             smacker
+c93                     jv                      smjpeg
+caf                     kux                     smush
+cavsvideo               kvag                    sol
+cdg                     laf                     sox
+cdxl                    lc3                     spdif
+cine                    live_flv                srt
+codec2                  lmlm4                   stl
+codec2raw               loas                    str
+concat                  lrc                     subviewer
+data                    luodat                  subviewer1
+daud                    lvf                     sup
+dcstr                   lxf                     svag
+derf                    m4v                     svs
+dfa                     matroska                swf
+dfpwm                   mca                     tak
+dhav                    mcc                     tedcaptions
+dirac                   mgsts                   thp
+dnxhd                   microdvd                threedostr
+dsf                     mjpeg                   tiertexseq
+dsicin                  mjpeg_2000              tmv
+dss                     mlp                     truehd
+dts                     mlv                     tta
+dtshd                   mm                      tty
+dv                      mmf                     txd
+dvbsub                  mods                    ty
+dvbtxt                  moflex                  usm
+dxa                     mov                     v210
+ea                      mp3                     v210x
+ea_cdata                mpc                     vag
+eac3                    mpc8                    vc1
+epaf                    mpegps                  vc1t
+evc                     mpegts                  vividas
+ffmetadata              mpegtsraw               vivo
+filmstrip               mpegvideo               vmd
+fits                    mpjpeg                  vobsub
+flac                    mpl2                    voc
+flic                    mpsub                   vpk
+flv                     msf                     vplayer
+fourxm                  msnwc_tcp               vqf
+frm                     msp                     vvc
+fsb                     mtaf                    w64
+fwse                    mtv                     wady
+g722                    musx                    wav
+g723_1                  mv                      wavarc
+g726                    mvi                     wc3
+g726le                  mxf                     webm_dash_manifest
+g729                    mxg                     webvtt
+gdv                     nc                      wsaud
+genh                    nistsphere              wsd
+gif                     nsp                     wsvqa
+gsm                     nsv                     wtv
+gxf                     nut                     wv
+h261                    nuv                     wve
+h263                    obu                     xa
+h264                    ogg                     xbin
+hca                     oma                     xmd
+hcom                    osq                     xmv
+hevc                    paf                     xvag
+hls                     pcm_alaw                xwma
+hnm                     pcm_f32be               yop
+iamf                    pcm_f32le               yuv4mpegpipe
+ico                     pcm_f64be
+
+Enabled muxers:
+a64                     h263                    pcm_s16le
+ac3                     h264                    pcm_s24be
+ac4                     hash                    pcm_s24le
+adts                    hds                     pcm_s32be
+adx                     hevc                    pcm_s32le
+aea                     hls                     pcm_s8
+aiff                    iamf                    pcm_u16be
+alp                     ico                     pcm_u16le
+amr                     ilbc                    pcm_u24be
+amv                     image2                  pcm_u24le
+apm                     image2pipe              pcm_u32be
+apng                    ipod                    pcm_u32le
+aptx                    ircam                   pcm_u8
+aptx_hd                 ismv                    pcm_vidc
+argo_asf                ivf                     psp
+argo_cvg                jacosub                 rawvideo
+asf                     kvag                    rcwt
+asf_stream              latm                    rm
+ass                     lc3                     roq
+ast                     lrc                     rso
+au                      m4v                     rtp
+avi                     matroska                rtp_mpegts
+avif                    matroska_audio          sbc
+avm2                    md5                     scc
+avs2                    microdvd                segafilm
+avs3                    mjpeg                   segment
+bit                     mkvtimestamp_v2         smjpeg
+caf                     mlp                     smoothstreaming
+cavsvideo               mmf                     sox
+codec2                  mov                     spdif
+codec2raw               mp2                     spx
+crc                     mp3                     srt
+dash                    mp4                     stream_segment
+data                    mpeg1system             streamhash
+daud                    mpeg1vcd                sup
+dfpwm                   mpeg1video              swf
+dirac                   mpeg2dvd                tee
+dnxhd                   mpeg2svcd               tg2
+dts                     mpeg2video              tgp
+dv                      mpeg2vob                truehd
+eac3                    mpegts                  tta
+evc                     mpjpeg                  ttml
+f4v                     mxf                     uncodedframecrc
+ffmetadata              mxf_d10                 vc1
+fifo                    mxf_opatom              vc1t
+filmstrip               null                    voc
+fits                    nut                     vvc
+flac                    obu                     w64
+flv                     oga                     wav
+framecrc                ogg                     webm
+framehash               ogv                     webm_chunk
+framemd5                oma                     webm_dash_manifest
+g722                    opus                    webp
+g723_1                  pcm_alaw                webvtt
+g726                    pcm_f32be               wsaud
+g726le                  pcm_f32le               wtv
+gif                     pcm_f64be               wv
+gsm                     pcm_f64le               yuv4mpegpipe
+gxf                     pcm_mulaw
+h261                    pcm_s16be
+
+Enabled protocols:
+async                   data                    pipe
+cache                   fd                      prompeg
+concat                  file                    subfile
+concatf                 hls                     tee
+crypto                  md5
+
+Enabled filters:
+a3dscope                corr                    oscilloscope
+aap                     cover_rect              overlay
+abench                  crop                    owdenoise
+abitscope               cropdetect              pad
+acompressor             crossfeed               pal100bars
+acontrast               crystalizer             pal75bars
+acopy                   cue                     palettegen
+acrossfade              curves                  paletteuse
+acrossover              datascope               pan
+acrusher                dblur                   perlin
+acue                    dcshift                 perms
+addroi                  dctdnoiz                perspective
+adeclick                deband                  phase
+adeclip                 deblock                 photosensitivity
+adecorrelate            decimate                pixdesctest
+adelay                  deconvolve              pixelize
+adenorm                 dedot                   pixscope
+aderivative             deesser                 pp
+adrawgraph              deflate                 pp7
+adrc                    deflicker               premultiply
+adynamicequalizer       dejudder                prewitt
+adynamicsmooth          delogo                  pseudocolor
+aecho                   deshake                 psnr
+aemphasis               despill                 pullup
+aeval                   detelecine              qp
+aevalsrc                dialoguenhance          random
+aexciter                dilation                readeia608
+afade                   displace                readvitc
+afdelaysrc              doubleweave             realtime
+afftdn                  drawbox                 remap
+afftfilt                drawgraph               removegrain
+afir                    drawgrid                removelogo
+afireqsrc               drmeter                 repeatfields
+afirsrc                 dynaudnorm              replaygain
+aformat                 earwax                  reverse
+afreqshift              ebur128                 rgbashift
+afwtdn                  edgedetect              rgbtestsrc
+agate                   elbg                    roberts
+agraphmonitor           entropy                 rotate
+ahistogram              epx                     sab
+aiir                    eq                      scale
+aintegral               equalizer               scale2ref
+ainterleave             erosion                 scdet
+alatency                estdif                  scharr
+alimiter                exposure                scroll
+allpass                 extractplanes           segment
+allrgb                  extrastereo             select
+allyuv                  fade                    selectivecolor
+aloop                   feedback                sendcmd
+alphaextract            fftdnoiz                separatefields
+alphamerge              fftfilt                 setdar
+amerge                  field                   setfield
+ametadata               fieldhint               setparams
+amix                    fieldmatch              setpts
+amovie                  fieldorder              setrange
+amplify                 fillborders             setsar
+amultiply               find_rect               settb
+anequalizer             firequalizer            shear
+anlmdn                  flanger                 showcqt
+anlmf                   floodfill               showcwt
+anlms                   format                  showfreqs
+anoisesrc               fps                     showinfo
+anull                   framepack               showpalette
+anullsink               framerate               showspatial
+anullsrc                framestep               showspectrum
+apad                    freezedetect            showspectrumpic
+aperms                  freezeframes            showvolume
+aphasemeter             fspp                    showwaves
+aphaser                 fsync                   showwavespic
+aphaseshift             gblur                   shuffleframes
+apsnr                   geq                     shufflepixels
+apsyclip                gradfun                 shuffleplanes
+apulsator               gradients               sidechaincompress
+arealtime               graphmonitor            sidechaingate
+aresample               grayworld               sidedata
+areverse                greyedge                sierpinski
+arls                    guided                  signalstats
+arnndn                  haas                    signature
+asdr                    haldclut                silencedetect
+asegment                haldclutsrc             silenceremove
+aselect                 hdcd                    sinc
+asendcmd                headphone               sine
+asetnsamples            hflip                   siti
+asetpts                 highpass                smartblur
+asetrate                highshelf               smptebars
+asettb                  hilbert                 smptehdbars
+ashowinfo               histeq                  sobel
+asidedata               histogram               spectrumsynth
+asisdr                  hqdn3d                  speechnorm
+asoftclip               hqx                     split
+aspectralstats          hstack                  spp
+asplit                  hsvhold                 ssim
+astats                  hsvkey                  ssim360
+astreamselect           hue                     stereo3d
+asubboost               huesaturation           stereotools
+asubcut                 hwdownload              stereowiden
+asupercut               hwmap                   streamselect
+asuperpass              hwupload                super2xsai
+asuperstop              hysteresis              superequalizer
+atadenoise              identity                surround
+atempo                  idet                    swaprect
+atilt                   il                      swapuv
+atrim                   inflate                 tblend
+avectorscope            interlace               telecine
+avgblur                 interleave              testsrc
+avsynctest              join                    testsrc2
+axcorrelate             kerndeint               thistogram
+backgroundkey           kirsch                  threshold
+bandpass                lagfun                  thumbnail
+bandreject              latency                 tile
+bass                    lenscorrection          tiltandshift
+bbox                    life                    tiltshelf
+bench                   limitdiff               tinterlace
+bilateral               limiter                 tlut2
+biquad                  loop                    tmedian
+bitplanenoise           loudnorm                tmidequalizer
+blackdetect             lowpass                 tmix
+blackframe              lowshelf                tonemap
+blend                   lumakey                 tpad
+blockdetect             lut                     transpose
+blurdetect              lut1d                   treble
+bm3d                    lut2                    tremolo
+boxblur                 lut3d                   trim
+bwdif                   lutrgb                  unpremultiply
+cas                     lutyuv                  unsharp
+ccrepack                mandelbrot              untile
+cellauto                maskedclamp             uspp
+channelmap              maskedmax               v360
+channelsplit            maskedmerge             vaguedenoiser
+chorus                  maskedmin               varblur
+chromahold              maskedthreshold         vectorscope
+chromakey               maskfun                 vflip
+chromanr                mcdeint                 vfrdet
+chromashift             mcompand                vibrance
+ciescope                median                  vibrato
+codecview               mergeplanes             vif
+color                   mestimate               vignette
+colorbalance            metadata                virtualbass
+colorchannelmixer       midequalizer            vmafmotion
+colorchart              minterpolate            volume
+colorcontrast           mix                     volumedetect
+colorcorrect            monochrome              vstack
+colorhold               morpho                  w3fdif
+colorize                movie                   waveform
+colorkey                mpdecimate              weave
+colorlevels             mptestsrc               xbr
+colormap                msad                    xcorrelate
+colormatrix             multiply                xfade
+colorspace              negate                  xmedian
+colorspectrum           nlmeans                 xpsnr
+colortemperature        nnedi                   xstack
+compand                 noformat                yadif
+compensationdelay       noise                   yaepblur
+concat                  normalize               yuvtestsrc
+convolution             null                    zoneplate
+convolve                nullsink                zoompan
+copy                    nullsrc
+
+Enabled bsfs:
+aac_adtstoasc           h264_mp4toannexb        pcm_rechunk
+av1_frame_merge         h264_redundant_pps      pgs_frame_merge
+av1_frame_split         hapqa_extract           prores_metadata
+av1_metadata            hevc_metadata           remove_extradata
+chomp                   hevc_mp4toannexb        setts
+dca_core                imx_dump_header         showinfo
+dovi_rpu                media100_to_mjpegb      text2movsub
+dts2pts                 mjpeg2jpeg              trace_headers
+dump_extradata          mjpega_dump_header      truehd_core
+dv_error_marker         mov2textsub             vp9_metadata
+eac3_core               mpeg2_metadata          vp9_raw_reorder
+evc_frame_merge         mpeg4_unpack_bframes    vp9_superframe
+extract_extradata       noise                   vp9_superframe_split
+filter_units            null                    vvc_metadata
+h264_metadata           opus_metadata           vvc_mp4toannexb
+
+Enabled indevs:
+dshow                   lavfi
+gdigrab                 vfwcap
+
+Enabled outdevs:
+
+License: GPL version 2 or later
+GEN	libavdevice/libavdevice.version
+GEN	libavfilter/libavfilter.version
+GEN	libavformat/libavformat.version
+GEN	libavcodec/libavcodec.version
+GEN	libpostproc/libpostproc.version
+GEN	libswresample/libswresample.version
+GEN	libswscale/libswscale.version
+GEN	libavutil/libavutil.version
+CC	libavdevice/alldevices.o
+CC	libavdevice/avdevice.o
+CC	libavdevice/dshow.o
+CC	libavdevice/dshow_common.o
+libavdevice/dshow.c: In function 'dshow_cycle_formats':
+libavdevice/dshow.c:988:39: warning: unused variable 'acaps' [-Wunused-variable]
+  988 |             AUDIO_STREAM_CONFIG_CAPS *acaps = caps;
+      |                                       ^~~~~
+CC	libavdevice/dshow_crossbar.o
+CC	libavdevice/dshow_enummediatypes.o
+CC	libavdevice/dshow_enumpins.o
+CC	libavdevice/dshow_filter.o
+CC	libavdevice/dshow_pin.o
+CC	libavdevice/gdigrab.o
+CC	libavdevice/lavfi.o
+CC	libavdevice/utils.o
+CC	libavdevice/version.o
+CC	libavdevice/vfwcap.o
+GEN	libavdevice/libavdevice.pc
+CC	libavfilter/aeval.o
+CC	libavfilter/af_aap.o
+CC	libavfilter/af_acontrast.o
+CC	libavfilter/af_acopy.o
+CC	libavfilter/af_acrossover.o
+CC	libavfilter/af_acrusher.o
+CC	libavfilter/af_adeclick.o
+CC	libavfilter/af_adecorrelate.o
+CC	libavfilter/af_adelay.o
+CC	libavfilter/af_adenorm.o
+CC	libavfilter/af_aderivative.o
+CC	libavfilter/af_adrc.o
+CC	libavfilter/af_adynamicequalizer.o
+CC	libavfilter/af_adynamicsmooth.o
+CC	libavfilter/af_aecho.o
+CC	libavfilter/af_aemphasis.o
+CC	libavfilter/af_aexciter.o
+CC	libavfilter/af_afade.o
+CC	libavfilter/af_afftdn.o
+CC	libavfilter/af_afftfilt.o
+libavfilter/af_afftfilt.c: In function 'filter_channel':
+libavfilter/af_afftfilt.c:297:9: warning: 'memmove' specified bound between 18446744065119617024 and 18446744073709551608 exceeds maximum object size 9223372036854775807 [-Wstringop-overflow=]
+  297 |         memmove(buf, buf + s->hop_size, window_size * sizeof(float));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavfilter/af_afir.o
+CC	libavfilter/af_aformat.o
+CC	libavfilter/af_afreqshift.o
+CC	libavfilter/af_afwtdn.o
+CC	libavfilter/af_agate.o
+CC	libavfilter/af_aiir.o
+CC	libavfilter/af_alimiter.o
+CC	libavfilter/af_amerge.o
+CC	libavfilter/af_amix.o
+CC	libavfilter/af_amultiply.o
+CC	libavfilter/af_anequalizer.o
+CC	libavfilter/af_anlmdn.o
+CC	libavfilter/af_anlms.o
+CC	libavfilter/af_anull.o
+CC	libavfilter/af_apad.o
+CC	libavfilter/af_aphaser.o
+CC	libavfilter/af_apsyclip.o
+CC	libavfilter/af_apulsator.o
+CC	libavfilter/af_aresample.o
+CC	libavfilter/af_arls.o
+CC	libavfilter/af_arnndn.o
+CC	libavfilter/af_asdr.o
+CC	libavfilter/af_asetnsamples.o
+CC	libavfilter/af_asetrate.o
+CC	libavfilter/af_ashowinfo.o
+CC	libavfilter/af_asoftclip.o
+CC	libavfilter/af_aspectralstats.o
+CC	libavfilter/af_astats.o
+CC	libavfilter/af_asubboost.o
+CC	libavfilter/af_asupercut.o
+CC	libavfilter/af_atempo.o
+CC	libavfilter/af_atilt.o
+CC	libavfilter/af_axcorrelate.o
+CC	libavfilter/af_biquads.o
+CC	libavfilter/af_channelmap.o
+CC	libavfilter/af_channelsplit.o
+CC	libavfilter/af_chorus.o
+CC	libavfilter/af_compand.o
+CC	libavfilter/af_compensationdelay.o
+CC	libavfilter/af_crossfeed.o
+CC	libavfilter/af_crystalizer.o
+CC	libavfilter/af_dcshift.o
+CC	libavfilter/af_deesser.o
+CC	libavfilter/af_dialoguenhance.o
+CC	libavfilter/af_drmeter.o
+CC	libavfilter/af_dynaudnorm.o
+CC	libavfilter/af_earwax.o
+CC	libavfilter/af_extrastereo.o
+CC	libavfilter/af_firequalizer.o
+CC	libavfilter/af_flanger.o
+CC	libavfilter/af_haas.o
+In function 'generate_min_phase_kernel',
+    inlined from 'generate_kernel' at libavfilter/af_firequalizer.c:691:13:
+libavfilter/af_firequalizer.c:559:5: warning: 'memset' specified bound between 18446744069414584316 and 18446744073709551608 exceeds maximum object size 9223372036854775807 [-Wstringop-overflow=]
+  559 |     memset(s->cepstrum_buf + cepstrum_len/2 + 1, 0, (cepstrum_len/2 - 1) * sizeof(*s->cepstrum_buf));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavfilter/af_hdcd.o
+CC	libavfilter/af_headphone.o
+CC	libavfilter/af_join.o
+CC	libavfilter/af_loudnorm.o
+CC	libavfilter/af_mcompand.o
+CC	libavfilter/af_pan.o
+CC	libavfilter/af_replaygain.o
+CC	libavfilter/af_sidechaincompress.o
+CC	libavfilter/af_silencedetect.o
+CC	libavfilter/af_silenceremove.o
+CC	libavfilter/af_speechnorm.o
+CC	libavfilter/af_stereotools.o
+CC	libavfilter/af_stereowiden.o
+CC	libavfilter/af_superequalizer.o
+CC	libavfilter/af_surround.o
+CC	libavfilter/af_tremolo.o
+CC	libavfilter/af_vibrato.o
+CC	libavfilter/af_virtualbass.o
+CC	libavfilter/af_volume.o
+CC	libavfilter/af_volumedetect.o
+CC	libavfilter/allfilters.o
+CC	libavfilter/asink_anullsink.o
+CC	libavfilter/asrc_afdelaysrc.o
+CC	libavfilter/asrc_afirsrc.o
+CC	libavfilter/asrc_anoisesrc.o
+CC	libavfilter/asrc_anullsrc.o
+CC	libavfilter/asrc_hilbert.o
+CC	libavfilter/asrc_sinc.o
+CC	libavfilter/asrc_sine.o
+CC	libavfilter/audio.o
+CC	libavfilter/avf_a3dscope.o
+CC	libavfilter/avf_abitscope.o
+CC	libavfilter/avf_ahistogram.o
+CC	libavfilter/avf_aphasemeter.o
+CC	libavfilter/avf_avectorscope.o
+CC	libavfilter/avf_concat.o
+CC	libavfilter/avf_showcqt.o
+CC	libavfilter/avf_showcwt.o
+CC	libavfilter/avf_showfreqs.o
+CC	libavfilter/avf_showspatial.o
+CC	libavfilter/avf_showspectrum.o
+CC	libavfilter/avf_showvolume.o
+CC	libavfilter/avf_showwaves.o
+CC	libavfilter/avfilter.o
+CC	libavfilter/avfiltergraph.o
+CC	libavfilter/bbox.o
+CC	libavfilter/boxblur.o
+CC	libavfilter/buffersink.o
+CC	libavfilter/buffersrc.o
+CC	libavfilter/bwdifdsp.o
+CC	libavfilter/ccfifo.o
+CC	libavfilter/colorspace.o
+CC	libavfilter/colorspacedsp.o
+CC	libavfilter/drawutils.o
+CC	libavfilter/ebur128.o
+CC	libavfilter/edge_common.o
+CC	libavfilter/f_bench.o
+CC	libavfilter/f_cue.o
+CC	libavfilter/f_drawgraph.o
+CC	libavfilter/f_ebur128.o
+CC	libavfilter/f_graphmonitor.o
+CC	libavfilter/f_interleave.o
+CC	libavfilter/f_latency.o
+CC	libavfilter/f_loop.o
+CC	libavfilter/f_metadata.o
+CC	libavfilter/f_perms.o
+CC	libavfilter/f_realtime.o
+CC	libavfilter/f_reverse.o
+CC	libavfilter/f_segment.o
+CC	libavfilter/f_select.o
+CC	libavfilter/f_sendcmd.o
+CC	libavfilter/f_sidedata.o
+CC	libavfilter/f_streamselect.o
+CC	libavfilter/formats.o
+CC	libavfilter/framepool.o
+CC	libavfilter/framequeue.o
+CC	libavfilter/framesync.o
+CC	libavfilter/generate_wave_table.o
+CC	libavfilter/graphdump.o
+CC	libavfilter/graphparser.o
+CC	libavfilter/lavfutils.o
+CC	libavfilter/lswsutils.o
+CC	libavfilter/motion_estimation.o
+CC	libavfilter/palette.o
+CC	libavfilter/perlin.o
+CC	libavfilter/pthread.o
+CC	libavfilter/qp_table.o
+CC	libavfilter/scale_eval.o
+CC	libavfilter/scene_sad.o
+CC	libavfilter/setpts.o
+CC	libavfilter/settb.o
+CC	libavfilter/split.o
+CC	libavfilter/src_avsynctest.o
+CC	libavfilter/src_movie.o
+CC	libavfilter/transform.o
+CC	libavfilter/trim.o
+CC	libavfilter/vaf_spectrumsynth.o
+CC	libavfilter/version.o
+CC	libavfilter/vf_addroi.o
+CC	libavfilter/vf_alphamerge.o
+CC	libavfilter/vf_amplify.o
+CC	libavfilter/vf_aspect.o
+CC	libavfilter/vf_atadenoise.o
+CC	libavfilter/vf_avgblur.o
+CC	libavfilter/vf_backgroundkey.o
+CC	libavfilter/vf_bbox.o
+CC	libavfilter/vf_bilateral.o
+CC	libavfilter/vf_bitplanenoise.o
+CC	libavfilter/vf_blackdetect.o
+CC	libavfilter/vf_blackframe.o
+CC	libavfilter/vf_blend.o
+CC	libavfilter/vf_blockdetect.o
+CC	libavfilter/vf_blurdetect.o
+CC	libavfilter/vf_bm3d.o
+CC	libavfilter/vf_boxblur.o
+CC	libavfilter/vf_bwdif.o
+CC	libavfilter/vf_cas.o
+CC	libavfilter/vf_ccrepack.o
+CC	libavfilter/vf_chromakey.o
+CC	libavfilter/vf_chromanr.o
+CC	libavfilter/vf_chromashift.o
+CC	libavfilter/vf_ciescope.o
+CC	libavfilter/vf_codecview.o
+CC	libavfilter/vf_colorbalance.o
+CC	libavfilter/vf_colorchannelmixer.o
+CC	libavfilter/vf_colorconstancy.o
+CC	libavfilter/vf_colorcontrast.o
+CC	libavfilter/vf_colorcorrect.o
+CC	libavfilter/vf_colorize.o
+CC	libavfilter/vf_colorkey.o
+CC	libavfilter/vf_colorlevels.o
+CC	libavfilter/vf_colormap.o
+CC	libavfilter/vf_colormatrix.o
+CC	libavfilter/vf_colorspace.o
+CC	libavfilter/vf_colortemperature.o
+CC	libavfilter/vf_convolution.o
+CC	libavfilter/vf_convolve.o
+CC	libavfilter/vf_copy.o
+CC	libavfilter/vf_corr.o
+CC	libavfilter/vf_cover_rect.o
+CC	libavfilter/vf_crop.o
+CC	libavfilter/vf_cropdetect.o
+CC	libavfilter/vf_curves.o
+CC	libavfilter/vf_datascope.o
+CC	libavfilter/vf_dblur.o
+CC	libavfilter/vf_dctdnoiz.o
+CC	libavfilter/vf_deband.o
+CC	libavfilter/vf_deblock.o
+CC	libavfilter/vf_decimate.o
+CC	libavfilter/vf_dedot.o
+CC	libavfilter/vf_deflicker.o
+CC	libavfilter/vf_dejudder.o
+CC	libavfilter/vf_delogo.o
+CC	libavfilter/vf_deshake.o
+CC	libavfilter/vf_despill.o
+CC	libavfilter/vf_detelecine.o
+CC	libavfilter/vf_displace.o
+CC	libavfilter/vf_drawbox.o
+CC	libavfilter/vf_edgedetect.o
+CC	libavfilter/vf_elbg.o
+CC	libavfilter/vf_entropy.o
+CC	libavfilter/vf_epx.o
+CC	libavfilter/vf_eq.o
+CC	libavfilter/vf_estdif.o
+CC	libavfilter/vf_exposure.o
+CC	libavfilter/vf_extractplanes.o
+CC	libavfilter/vf_fade.o
+CC	libavfilter/vf_feedback.o
+CC	libavfilter/vf_fftdnoiz.o
+CC	libavfilter/vf_fftfilt.o
+CC	libavfilter/vf_field.o
+CC	libavfilter/vf_fieldhint.o
+CC	libavfilter/vf_fieldmatch.o
+CC	libavfilter/vf_fieldorder.o
+CC	libavfilter/vf_fillborders.o
+CC	libavfilter/vf_find_rect.o
+CC	libavfilter/vf_floodfill.o
+CC	libavfilter/vf_format.o
+CC	libavfilter/vf_fps.o
+CC	libavfilter/vf_framepack.o
+CC	libavfilter/vf_framerate.o
+CC	libavfilter/vf_framestep.o
+CC	libavfilter/vf_freezedetect.o
+CC	libavfilter/vf_freezeframes.o
+CC	libavfilter/vf_fspp.o
+CC	libavfilter/vf_fsync.o
+CC	libavfilter/vf_gblur.o
+CC	libavfilter/vf_geq.o
+CC	libavfilter/vf_gradfun.o
+CC	libavfilter/vf_grayworld.o
+CC	libavfilter/vf_guided.o
+CC	libavfilter/vf_hflip.o
+CC	libavfilter/vf_histeq.o
+CC	libavfilter/vf_histogram.o
+CC	libavfilter/vf_hqdn3d.o
+CC	libavfilter/vf_hqx.o
+CC	libavfilter/vf_hsvkey.o
+CC	libavfilter/vf_hue.o
+CC	libavfilter/vf_huesaturation.o
+CC	libavfilter/vf_hwdownload.o
+CC	libavfilter/vf_hwmap.o
+CC	libavfilter/vf_hwupload.o
+CC	libavfilter/vf_hysteresis.o
+CC	libavfilter/vf_identity.o
+CC	libavfilter/vf_idet.o
+CC	libavfilter/vf_il.o
+CC	libavfilter/vf_kerndeint.o
+CC	libavfilter/vf_lagfun.o
+CC	libavfilter/vf_lenscorrection.o
+CC	libavfilter/vf_limitdiff.o
+CC	libavfilter/vf_limiter.o
+CC	libavfilter/vf_lumakey.o
+CC	libavfilter/vf_lut.o
+CC	libavfilter/vf_lut2.o
+CC	libavfilter/vf_lut3d.o
+CC	libavfilter/vf_maskedclamp.o
+CC	libavfilter/vf_maskedmerge.o
+CC	libavfilter/vf_maskedminmax.o
+CC	libavfilter/vf_maskedthreshold.o
+CC	libavfilter/vf_maskfun.o
+CC	libavfilter/vf_mcdeint.o
+CC	libavfilter/vf_median.o
+CC	libavfilter/vf_mergeplanes.o
+CC	libavfilter/vf_mestimate.o
+CC	libavfilter/vf_midequalizer.o
+CC	libavfilter/vf_minterpolate.o
+CC	libavfilter/vf_mix.o
+CC	libavfilter/vf_monochrome.o
+CC	libavfilter/vf_morpho.o
+CC	libavfilter/vf_mpdecimate.o
+CC	libavfilter/vf_multiply.o
+CC	libavfilter/vf_negate.o
+CC	libavfilter/vf_neighbor.o
+CC	libavfilter/vf_nlmeans.o
+CC	libavfilter/vf_nnedi.o
+CC	libavfilter/vf_noise.o
+CC	libavfilter/vf_normalize.o
+CC	libavfilter/vf_null.o
+CC	libavfilter/vf_overlay.o
+CC	libavfilter/vf_owdenoise.o
+CC	libavfilter/vf_pad.o
+CC	libavfilter/vf_palettegen.o
+CC	libavfilter/vf_paletteuse.o
+CC	libavfilter/vf_perspective.o
+CC	libavfilter/vf_phase.o
+CC	libavfilter/vf_photosensitivity.o
+CC	libavfilter/vf_pixdesctest.o
+CC	libavfilter/vf_pixelize.o
+CC	libavfilter/vf_pp.o
+CC	libavfilter/vf_pp7.o
+CC	libavfilter/vf_premultiply.o
+CC	libavfilter/vf_pseudocolor.o
+CC	libavfilter/vf_psnr.o
+CC	libavfilter/vf_pullup.o
+CC	libavfilter/vf_qp.o
+CC	libavfilter/vf_random.o
+CC	libavfilter/vf_readeia608.o
+CC	libavfilter/vf_readvitc.o
+CC	libavfilter/vf_remap.o
+CC	libavfilter/vf_removegrain.o
+CC	libavfilter/vf_removelogo.o
+CC	libavfilter/vf_repeatfields.o
+CC	libavfilter/vf_rotate.o
+CC	libavfilter/vf_sab.o
+CC	libavfilter/vf_scale.o
+CC	libavfilter/vf_scdet.o
+CC	libavfilter/vf_scroll.o
+CC	libavfilter/vf_selectivecolor.o
+CC	libavfilter/vf_separatefields.o
+CC	libavfilter/vf_setparams.o
+CC	libavfilter/vf_shear.o
+CC	libavfilter/vf_showinfo.o
+CC	libavfilter/vf_showpalette.o
+CC	libavfilter/vf_shuffleframes.o
+CC	libavfilter/vf_shufflepixels.o
+CC	libavfilter/vf_shuffleplanes.o
+CC	libavfilter/vf_signalstats.o
+CC	libavfilter/vf_signature.o
+CC	libavfilter/vf_siti.o
+CC	libavfilter/vf_smartblur.o
+CC	libavfilter/vf_spp.o
+CC	libavfilter/vf_ssim.o
+CC	libavfilter/vf_ssim360.o
+CC	libavfilter/vf_stack.o
+CC	libavfilter/vf_stereo3d.o
+CC	libavfilter/vf_super2xsai.o
+CC	libavfilter/vf_swaprect.o
+CC	libavfilter/vf_swapuv.o
+CC	libavfilter/vf_telecine.o
+CC	libavfilter/vf_threshold.o
+CC	libavfilter/vf_thumbnail.o
+CC	libavfilter/vf_tile.o
+CC	libavfilter/vf_tiltandshift.o
+CC	libavfilter/vf_tinterlace.o
+CC	libavfilter/vf_tmidequalizer.o
+CC	libavfilter/vf_tonemap.o
+CC	libavfilter/vf_tpad.o
+CC	libavfilter/vf_transpose.o
+CC	libavfilter/vf_unsharp.o
+CC	libavfilter/vf_untile.o
+CC	libavfilter/vf_uspp.o
+CC	libavfilter/vf_v360.o
+CC	libavfilter/vf_vaguedenoiser.o
+CC	libavfilter/vf_varblur.o
+CC	libavfilter/vf_vectorscope.o
+CC	libavfilter/vf_vflip.o
+CC	libavfilter/vf_vfrdet.o
+CC	libavfilter/vf_vibrance.o
+CC	libavfilter/vf_vif.o
+CC	libavfilter/vf_vignette.o
+CC	libavfilter/vf_vmafmotion.o
+CC	libavfilter/vf_w3fdif.o
+CC	libavfilter/vf_waveform.o
+CC	libavfilter/vf_weave.o
+CC	libavfilter/vf_xbr.o
+CC	libavfilter/vf_xfade.o
+CC	libavfilter/vf_xmedian.o
+CC	libavfilter/vf_xpsnr.o
+CC	libavfilter/vf_yadif.o
+CC	libavfilter/vf_yaepblur.o
+CC	libavfilter/vf_zoompan.o
+CC	libavfilter/video.o
+CC	libavfilter/vsink_nullsink.o
+CC	libavfilter/vsrc_cellauto.o
+CC	libavfilter/vsrc_gradients.o
+CC	libavfilter/vsrc_life.o
+CC	libavfilter/vsrc_mandelbrot.o
+CC	libavfilter/vsrc_mptestsrc.o
+CC	libavfilter/vsrc_perlin.o
+CC	libavfilter/vsrc_sierpinski.o
+CC	libavfilter/vsrc_testsrc.o
+X86ASM	libavfilter/x86/af_afir.o
+STRIP	libavfilter/x86/af_afir.o
+CC	libavfilter/x86/af_afir_init.o
+X86ASM	libavfilter/x86/af_anlmdn.o
+STRIP	libavfilter/x86/af_anlmdn.o
+CC	libavfilter/x86/af_anlmdn_init.o
+X86ASM	libavfilter/x86/af_volume.o
+CC	libavfilter/x86/af_volume_init.o
+X86ASM	libavfilter/x86/avf_showcqt.o
+STRIP	libavfilter/x86/af_volume.o
+CC	libavfilter/x86/avf_showcqt_init.o
+X86ASM	libavfilter/x86/colorspacedsp.o
+STRIP	libavfilter/x86/avf_showcqt.o
+CC	libavfilter/x86/colorspacedsp_init.o
+X86ASM	libavfilter/x86/scene_sad.o
+STRIP	libavfilter/x86/scene_sad.o
+CC	libavfilter/x86/scene_sad_init.o
+X86ASM	libavfilter/x86/vf_atadenoise.o
+STRIP	libavfilter/x86/vf_atadenoise.o
+CC	libavfilter/x86/vf_atadenoise_init.o
+X86ASM	libavfilter/x86/vf_blend.o
+STRIP	libavfilter/x86/vf_blend.o
+CC	libavfilter/x86/vf_blend_init.o
+X86ASM	libavfilter/x86/vf_bwdif.o
+STRIP	libavfilter/x86/vf_bwdif.o
+CC	libavfilter/x86/vf_bwdif_init.o
+X86ASM	libavfilter/x86/vf_convolution.o
+STRIP	libavfilter/x86/vf_convolution.o
+CC	libavfilter/x86/vf_convolution_init.o
+X86ASM	libavfilter/x86/vf_eq.o
+STRIP	libavfilter/x86/vf_eq.o
+CC	libavfilter/x86/vf_eq_init.o
+X86ASM	libavfilter/x86/vf_framerate.o
+STRIP	libavfilter/x86/colorspacedsp.o
+CC	libavfilter/x86/vf_framerate_init.o
+STRIP	libavfilter/x86/vf_framerate.o
+X86ASM	libavfilter/x86/vf_fspp.o
+CC	libavfilter/x86/vf_fspp_init.o
+X86ASM	libavfilter/x86/vf_gblur.o
+STRIP	libavfilter/x86/vf_fspp.o
+CC	libavfilter/x86/vf_gblur_init.o
+X86ASM	libavfilter/x86/vf_gradfun.o
+STRIP	libavfilter/x86/vf_gblur.o
+CC	libavfilter/x86/vf_gradfun_init.o
+X86ASM	libavfilter/x86/vf_hflip.o
+STRIP	libavfilter/x86/vf_gradfun.o
+CC	libavfilter/x86/vf_hflip_init.o
+X86ASM	libavfilter/x86/vf_hqdn3d.o
+STRIP	libavfilter/x86/vf_hflip.o
+CC	libavfilter/x86/vf_hqdn3d_init.o
+X86ASM	libavfilter/x86/vf_idet.o
+STRIP	libavfilter/x86/vf_hqdn3d.o
+CC	libavfilter/x86/vf_idet_init.o
+X86ASM	libavfilter/x86/vf_interlace.o
+STRIP	libavfilter/x86/vf_idet.o
+X86ASM	libavfilter/x86/vf_limiter.o
+STRIP	libavfilter/x86/vf_limiter.o
+CC	libavfilter/x86/vf_limiter_init.o
+X86ASM	libavfilter/x86/vf_lut3d.o
+STRIP	libavfilter/x86/vf_interlace.o
+CC	libavfilter/x86/vf_lut3d_init.o
+X86ASM	libavfilter/x86/vf_maskedclamp.o
+STRIP	libavfilter/x86/vf_maskedclamp.o
+CC	libavfilter/x86/vf_maskedclamp_init.o
+X86ASM	libavfilter/x86/vf_maskedmerge.o
+STRIP	libavfilter/x86/vf_maskedmerge.o
+CC	libavfilter/x86/vf_maskedmerge_init.o
+X86ASM	libavfilter/x86/vf_nlmeans.o
+STRIP	libavfilter/x86/vf_nlmeans.o
+CC	libavfilter/x86/vf_nlmeans_init.o
+CC	libavfilter/x86/vf_noise.o
+X86ASM	libavfilter/x86/vf_overlay.o
+STRIP	libavfilter/x86/vf_overlay.o
+CC	libavfilter/x86/vf_overlay_init.o
+X86ASM	libavfilter/x86/vf_pp7.o
+STRIP	libavfilter/x86/vf_pp7.o
+CC	libavfilter/x86/vf_pp7_init.o
+X86ASM	libavfilter/x86/vf_psnr.o
+STRIP	libavfilter/x86/vf_psnr.o
+CC	libavfilter/x86/vf_psnr_init.o
+X86ASM	libavfilter/x86/vf_pullup.o
+STRIP	libavfilter/x86/vf_pullup.o
+CC	libavfilter/x86/vf_pullup_init.o
+X86ASM	libavfilter/x86/vf_removegrain.o
+STRIP	libavfilter/x86/vf_lut3d.o
+CC	libavfilter/x86/vf_removegrain_init.o
+CC	libavfilter/x86/vf_spp.o
+X86ASM	libavfilter/x86/vf_ssim.o
+STRIP	libavfilter/x86/vf_ssim.o
+CC	libavfilter/x86/vf_ssim_init.o
+X86ASM	libavfilter/x86/vf_stereo3d.o
+STRIP	libavfilter/x86/vf_stereo3d.o
+CC	libavfilter/x86/vf_stereo3d_init.o
+X86ASM	libavfilter/x86/vf_threshold.o
+STRIP	libavfilter/x86/vf_threshold.o
+CC	libavfilter/x86/vf_threshold_init.o
+CC	libavfilter/x86/vf_tinterlace_init.o
+STRIP	libavfilter/x86/vf_removegrain.o
+X86ASM	libavfilter/x86/vf_transpose.o
+CC	libavfilter/x86/vf_transpose_init.o
+X86ASM	libavfilter/x86/vf_v360.o
+STRIP	libavfilter/x86/vf_transpose.o
+CC	libavfilter/x86/vf_v360_init.o
+X86ASM	libavfilter/x86/vf_w3fdif.o
+STRIP	libavfilter/x86/vf_v360.o
+CC	libavfilter/x86/vf_w3fdif_init.o
+CC	libavfilter/x86/vf_xpsnr_init.o
+X86ASM	libavfilter/x86/vf_yadif.o
+STRIP	libavfilter/x86/vf_w3fdif.o
+CC	libavfilter/x86/vf_yadif_init.o
+X86ASM	libavfilter/x86/yadif-10.o
+STRIP	libavfilter/x86/yadif-10.o
+X86ASM	libavfilter/x86/yadif-16.o
+STRIP	libavfilter/x86/vf_yadif.o
+CC	libavfilter/yadif_common.o
+GEN	libavfilter/libavfilter.pc
+CC	libavformat/3dostr.o
+CC	libavformat/4xm.o
+CC	libavformat/a64.o
+CC	libavformat/aacdec.o
+CC	libavformat/aadec.o
+CC	libavformat/aaxdec.o
+CC	libavformat/ac3dec.o
+CC	libavformat/ac4dec.o
+CC	libavformat/ac4enc.o
+CC	libavformat/acedec.o
+CC	libavformat/acm.o
+STRIP	libavfilter/x86/yadif-16.o
+CC	libavformat/act.o
+CC	libavformat/adp.o
+CC	libavformat/ads.o
+CC	libavformat/adtsenc.o
+CC	libavformat/adxdec.o
+CC	libavformat/aeadec.o
+CC	libavformat/aeaenc.o
+CC	libavformat/afc.o
+CC	libavformat/aiff.o
+CC	libavformat/aiffdec.o
+CC	libavformat/aiffenc.o
+CC	libavformat/aixdec.o
+CC	libavformat/allformats.o
+CC	libavformat/alp.o
+CC	libavformat/amr.o
+CC	libavformat/amvenc.o
+CC	libavformat/anm.o
+CC	libavformat/apac.o
+CC	libavformat/apc.o
+CC	libavformat/ape.o
+CC	libavformat/apetag.o
+CC	libavformat/apm.o
+CC	libavformat/apngdec.o
+CC	libavformat/apngenc.o
+CC	libavformat/aptxdec.o
+CC	libavformat/aqtitledec.o
+CC	libavformat/argo_asf.o
+CC	libavformat/argo_brp.o
+CC	libavformat/argo_cvg.o
+CC	libavformat/asf.o
+CC	libavformat/asf_tags.o
+CC	libavformat/asfcrypt.o
+CC	libavformat/asfdec_f.o
+libavformat/asfdec_f.c: In function 'get_tag':
+libavformat/asfdec_f.c:244:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  244 |         int ret = ffio_read_size(s->pb, value, len);
+      |         ^~~
+CC	libavformat/asfdec_o.o
+CC	libavformat/asfenc.o
+CC	libavformat/assdec.o
+CC	libavformat/assenc.o
+CC	libavformat/ast.o
+CC	libavformat/astdec.o
+CC	libavformat/astenc.o
+CC	libavformat/async.o
+CC	libavformat/au.o
+CC	libavformat/av1.o
+CC	libavformat/av1dec.o
+CC	libavformat/avc.o
+CC	libavformat/avformat.o
+CC	libavformat/avidec.o
+libavformat/avidec.c: In function 'read_gab2_sub':
+libavformat/avidec.c:1129:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1129 |         AVIOContext *pb = avio_alloc_context(pkt->data + 7,
+      |         ^~~~~~~~~~~
+CC	libavformat/avienc.o
+CC	libavformat/avio.o
+CC	libavformat/aviobuf.o
+CC	libavformat/avlanguage.o
+CC	libavformat/avr.o
+CC	libavformat/avs.o
+CC	libavformat/avs2dec.o
+CC	libavformat/avs3dec.o
+CC	libavformat/bethsoftvid.o
+CC	libavformat/bfi.o
+CC	libavformat/bink.o
+CC	libavformat/binka.o
+CC	libavformat/bintext.o
+CC	libavformat/bit.o
+CC	libavformat/bmv.o
+CC	libavformat/boadec.o
+CC	libavformat/bonk.o
+CC	libavformat/brstm.o
+CC	libavformat/c93.o
+CC	libavformat/cache.o
+CC	libavformat/caf.o
+CC	libavformat/cafdec.o
+CC	libavformat/cafenc.o
+CC	libavformat/cavsvideodec.o
+CC	libavformat/cdg.o
+CC	libavformat/cdxl.o
+CC	libavformat/cinedec.o
+CC	libavformat/codec2.o
+CC	libavformat/concat.o
+CC	libavformat/concatdec.o
+CC	libavformat/crcenc.o
+CC	libavformat/crypto.o
+CC	libavformat/dash.o
+CC	libavformat/dashenc.o
+CC	libavformat/data_uri.o
+libavformat/dashenc.c: In function 'flush_init_segment':
+libavformat/dashenc.c:594:49: warning: '%s' directive output may be truncated writing up to 1023 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  594 |         snprintf(filename, sizeof(filename), "%s%s", c->dirname, os->initfile);
+      |                                                 ^~
+libavformat/dashenc.c:594:9: note: 'snprintf' output between 1 and 2047 bytes into a destination of size 1024
+  594 |         snprintf(filename, sizeof(filename), "%s%s", c->dirname, os->initfile);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/dauddec.o
+libavformat/dashenc.c: In function 'dash_init':
+libavformat/dashenc.c:1577:65: warning: '-stream' directive output may be truncated writing 7 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+ 1577 |                 snprintf(os->initfile, sizeof(os->initfile), "%s-stream%d.%s", basename, i, os->format_name);
+      |                                                                 ^~~~~~~
+libavformat/dashenc.c:1577:62: note: directive argument in the range [0, 2147483647]
+ 1577 |                 snprintf(os->initfile, sizeof(os->initfile), "%s-stream%d.%s", basename, i, os->format_name);
+      |                                                              ^~~~~~~~~~~~~~~~
+libavformat/dashenc.c:1577:17: note: 'snprintf' output 10 or more bytes (assuming 1042) into a destination of size 1024
+ 1577 |                 snprintf(os->initfile, sizeof(os->initfile), "%s-stream%d.%s", basename, i, os->format_name);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/daudenc.o
+libavformat/dashenc.c: In function 'write_hls_media_playlist':
+libavformat/dashenc.c:488:49: warning: 'media_' directive output may be truncated writing 6 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  488 |         snprintf(playlist_name, string_size, "%smedia_%d.m3u8", base_url, id);
+      |                                                 ^~~~~~
+In function 'get_hls_playlist_name',
+    inlined from 'write_hls_media_playlist' at libavformat/dashenc.c:524:5:
+libavformat/dashenc.c:488:9: note: 'snprintf' output between 13 and 1046 bytes into a destination of size 1024
+  488 |         snprintf(playlist_name, string_size, "%smedia_%d.m3u8", base_url, id);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/dcstr.o
+CC	libavformat/demux.o
+libavformat/dashenc.c: In function 'dash_flush':
+libavformat/dashenc.c:1957:63: warning: '%s' directive output may be truncated writing up to 1023 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+ 1957 |             snprintf(os->full_path, sizeof(os->full_path), "%s%s", c->dirname, os->initfile);
+      |                                                               ^~
+libavformat/dashenc.c:1957:13: note: 'snprintf' output between 1 and 2047 bytes into a destination of size 1024
+ 1957 |             snprintf(os->full_path, sizeof(os->full_path), "%s%s", c->dirname, os->initfile);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/dashenc.c:1957:63: warning: '%s' directive output may be truncated writing up to 1023 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+ 1957 |             snprintf(os->full_path, sizeof(os->full_path), "%s%s", c->dirname, os->initfile);
+      |                                                               ^~
+libavformat/dashenc.c:1957:13: note: 'snprintf' output between 1 and 2047 bytes into a destination of size 1024
+ 1957 |             snprintf(os->full_path, sizeof(os->full_path), "%s%s", c->dirname, os->initfile);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/demux.c: In function 'read_frame_internal':
+libavformat/demux.c:1374:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1374 |         int new_extradata = !!av_packet_side_data_get(pkt->side_data, pkt->side_data_elems,
+      |         ^~~
+libavformat/dashenc.c: In function 'dash_write_trailer':
+libavformat/dashenc.c:488:49: warning: 'media_' directive output may be truncated writing 6 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  488 |         snprintf(playlist_name, string_size, "%smedia_%d.m3u8", base_url, id);
+      |                                                 ^~~~~~
+In function 'get_hls_playlist_name',
+    inlined from 'dash_write_trailer' at libavformat/dashenc.c:2320:17:
+libavformat/dashenc.c:488:46: note: directive argument in the range [0, 2147483647]
+  488 |         snprintf(playlist_name, string_size, "%smedia_%d.m3u8", base_url, id);
+      |                                              ^~~~~~~~~~~~~~~~~
+libavformat/dashenc.c:488:9: note: 'snprintf' output between 13 and 1045 bytes into a destination of size 1024
+  488 |         snprintf(playlist_name, string_size, "%smedia_%d.m3u8", base_url, id);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/dashenc.c: In function 'dash_write_packet':
+libavformat/dashenc.c:2254:59: warning: '%s' directive output may be truncated writing up to 1023 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+ 2254 |         snprintf(os->full_path, sizeof(os->full_path), "%s%s", c->dirname,
+      |                                                           ^~
+libavformat/dashenc.c:2254:9: note: 'snprintf' output between 1 and 2047 bytes into a destination of size 1024
+ 2254 |         snprintf(os->full_path, sizeof(os->full_path), "%s%s", c->dirname,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2255 |                  os->filename);
+      |                  ~~~~~~~~~~~~~
+CC	libavformat/demux_utils.o
+CC	libavformat/derf.o
+CC	libavformat/dfa.o
+CC	libavformat/dfpwmdec.o
+CC	libavformat/dhav.o
+CC	libavformat/diracdec.o
+CC	libavformat/dnxhddec.o
+CC	libavformat/dovi_isom.o
+CC	libavformat/dsfdec.o
+CC	libavformat/dsicin.o
+CC	libavformat/dss.o
+CC	libavformat/dtsdec.o
+CC	libavformat/dtshddec.o
+CC	libavformat/dump.o
+CC	libavformat/dv.o
+CC	libavformat/dvbsub.o
+CC	libavformat/dvbtxt.o
+CC	libavformat/dvenc.o
+CC	libavformat/dxa.o
+CC	libavformat/eacdata.o
+CC	libavformat/electronicarts.o
+CC	libavformat/epafdec.o
+CC	libavformat/evc.o
+CC	libavformat/evcdec.o
+CC	libavformat/ffmetadec.o
+CC	libavformat/ffmetaenc.o
+CC	libavformat/fifo.o
+CC	libavformat/file.o
+CC	libavformat/filmstripdec.o
+CC	libavformat/filmstripenc.o
+CC	libavformat/fitsdec.o
+CC	libavformat/fitsenc.o
+CC	libavformat/flac_picture.o
+CC	libavformat/flacdec.o
+CC	libavformat/flacenc.o
+CC	libavformat/flacenc_header.o
+CC	libavformat/flic.o
+CC	libavformat/flvdec.o
+CC	libavformat/flvenc.o
+CC	libavformat/format.o
+CC	libavformat/framecrcenc.o
+CC	libavformat/framehash.o
+CC	libavformat/frmdec.o
+CC	libavformat/fsb.o
+CC	libavformat/fwse.o
+CC	libavformat/g722.o
+CC	libavformat/g723_1.o
+CC	libavformat/g726.o
+CC	libavformat/g729dec.o
+CC	libavformat/gdv.o
+CC	libavformat/genh.o
+CC	libavformat/gif.o
+CC	libavformat/gifdec.o
+CC	libavformat/gsmdec.o
+CC	libavformat/gxf.o
+CC	libavformat/gxfenc.o
+CC	libavformat/h261dec.o
+CC	libavformat/h263dec.o
+CC	libavformat/h264dec.o
+CC	libavformat/hashenc.o
+CC	libavformat/hca.o
+CC	libavformat/hcom.o
+CC	libavformat/hdsenc.o
+CC	libavformat/hevc.o
+CC	libavformat/hevcdec.o
+CC	libavformat/hls.o
+CC	libavformat/hls_sample_encryption.o
+CC	libavformat/hlsenc.o
+CC	libavformat/hlsplaylist.o
+CC	libavformat/hlsproto.o
+libavformat/hlsenc.c: In function 'get_default_pattern_localtime_fmt':
+libavformat/hlsenc.c:1902:57: warning: unknown conversion type character 's' in format [-Wformat=]
+ 1902 |     int strftime_s_supported = strftime(b, sizeof(b), "%s", p) && strcmp(b, "%s");
+      |                                                         ^
+CC	libavformat/hnm.o
+CC	libavformat/iamf.o
+CC	libavformat/iamf_parse.o
+CC	libavformat/iamf_reader.o
+CC	libavformat/iamf_writer.o
+CC	libavformat/iamfdec.o
+CC	libavformat/iamfenc.o
+CC	libavformat/icodec.o
+CC	libavformat/icoenc.o
+CC	libavformat/id3v1.o
+CC	libavformat/id3v2.o
+CC	libavformat/id3v2enc.o
+CC	libavformat/idcin.o
+CC	libavformat/idroqdec.o
+CC	libavformat/idroqenc.o
+CC	libavformat/iff.o
+CC	libavformat/ifv.o
+CC	libavformat/ilbc.o
+CC	libavformat/img2.o
+CC	libavformat/img2_alias_pix.o
+CC	libavformat/img2_brender_pix.o
+CC	libavformat/img2dec.o
+CC	libavformat/img2enc.o
+libavformat/img2enc.c: In function 'write_packet':
+libavformat/img2enc.c:183:55: warning: '.tmp' directive output may be truncated writing 4 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  183 |         snprintf(img->tmp[i], sizeof(img->tmp[i]), "%s.tmp", filename);
+      |                                                       ^~~~
+libavformat/img2enc.c:183:9: note: 'snprintf' output between 5 and 1028 bytes into a destination of size 1024
+  183 |         snprintf(img->tmp[i], sizeof(img->tmp[i]), "%s.tmp", filename);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/imx.o
+CC	libavformat/ingenientdec.o
+CC	libavformat/ipmovie.o
+CC	libavformat/ipudec.o
+CC	libavformat/ircam.o
+CC	libavformat/ircamdec.o
+CC	libavformat/ircamenc.o
+CC	libavformat/isom.o
+CC	libavformat/isom_tags.o
+CC	libavformat/iss.o
+CC	libavformat/iv8.o
+CC	libavformat/ivfdec.o
+CC	libavformat/ivfenc.o
+CC	libavformat/jacosubdec.o
+CC	libavformat/jacosubenc.o
+CC	libavformat/jpegxl_anim_dec.o
+CC	libavformat/jvdec.o
+CC	libavformat/kvag.o
+CC	libavformat/lafdec.o
+CC	libavformat/latmenc.o
+CC	libavformat/lc3.o
+CC	libavformat/lmlm4.o
+CC	libavformat/loasdec.o
+CC	libavformat/lrc.o
+CC	libavformat/lrcdec.o
+CC	libavformat/lrcenc.o
+libavformat/lrcdec.c: In function 'read_ts':
+libavformat/lrcdec.c:91:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   91 |     int ret = sscanf(p, "%2[[-]%"SCNu32":%lf]", prefix, &mm, &ss);
+      |     ^~~
+CC	libavformat/luodatdec.o
+CC	libavformat/lvfdec.o
+CC	libavformat/lxfdec.o
+CC	libavformat/m4vdec.o
+CC	libavformat/matroska.o
+CC	libavformat/matroskadec.o
+CC	libavformat/matroskaenc.o
+libavformat/matroskaenc.c: In function 'mkv_write_trailer':
+libavformat/matroskaenc.c:3341:79: warning: '%012.9f' directive output may be truncated writing between 12 and 320 bytes into a region of size between 8 and 14 [-Wformat-truncation=]
+ 3341 |                 snprintf(duration_string, sizeof(duration_string), "%02d:%02d:%012.9f",
+      |                                                                               ^~~~~~~
+libavformat/matroskaenc.c:3341:17: note: 'snprintf' output between 19 and 333 bytes into a destination of size 20
+ 3341 |                 snprintf(duration_string, sizeof(duration_string), "%02d:%02d:%012.9f",
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 3342 |                          (int) duration_sec / 3600, ((int) duration_sec / 60) % 60,
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 3343 |                          fmod(duration_sec, 60));
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/mca.o
+CC	libavformat/mccdec.o
+CC	libavformat/md5proto.o
+CC	libavformat/metadata.o
+CC	libavformat/mgsts.o
+CC	libavformat/microdvddec.o
+CC	libavformat/microdvdenc.o
+CC	libavformat/mj2kdec.o
+CC	libavformat/mkvtimestamp_v2.o
+CC	libavformat/mlpdec.o
+CC	libavformat/mlvdec.o
+CC	libavformat/mm.o
+CC	libavformat/mmf.o
+CC	libavformat/mods.o
+CC	libavformat/moflex.o
+CC	libavformat/mov.o
+CC	libavformat/mov_chan.o
+CC	libavformat/mov_esds.o
+CC	libavformat/movenc.o
+CC	libavformat/movenc_ttml.o
+CC	libavformat/movenccenc.o
+CC	libavformat/movenchint.o
+CC	libavformat/mp3dec.o
+CC	libavformat/mp3enc.o
+CC	libavformat/mpc.o
+CC	libavformat/mpc8.o
+CC	libavformat/mpeg.o
+CC	libavformat/mpegenc.o
+CC	libavformat/mpegts.o
+CC	libavformat/mpegtsenc.o
+CC	libavformat/mpegvideodec.o
+CC	libavformat/mpjpeg.o
+CC	libavformat/mpjpegdec.o
+CC	libavformat/mpl2dec.o
+CC	libavformat/mpsubdec.o
+CC	libavformat/msf.o
+CC	libavformat/msnwc_tcp.o
+CC	libavformat/mspdec.o
+CC	libavformat/mtaf.o
+CC	libavformat/mtv.o
+CC	libavformat/musx.o
+CC	libavformat/mux.o
+CC	libavformat/mux_utils.o
+CC	libavformat/mvdec.o
+CC	libavformat/mvi.o
+CC	libavformat/mxf.o
+CC	libavformat/mxfdec.o
+CC	libavformat/mxfenc.o
+CC	libavformat/mxg.o
+CC	libavformat/nal.o
+CC	libavformat/ncdec.o
+CC	libavformat/nistspheredec.o
+CC	libavformat/nspdec.o
+CC	libavformat/nsvdec.o
+CC	libavformat/nullenc.o
+CC	libavformat/nut.o
+CC	libavformat/nutdec.o
+CC	libavformat/nutenc.o
+CC	libavformat/nuv.o
+CC	libavformat/oggdec.o
+CC	libavformat/oggenc.o
+CC	libavformat/oggparsecelt.o
+CC	libavformat/oggparsedirac.o
+CC	libavformat/oggparseflac.o
+CC	libavformat/oggparseogm.o
+CC	libavformat/oggparseopus.o
+CC	libavformat/oggparseskeleton.o
+CC	libavformat/oggparsespeex.o
+CC	libavformat/oggparsetheora.o
+CC	libavformat/oggparsevorbis.o
+CC	libavformat/oggparsevp8.o
+CC	libavformat/oma.o
+CC	libavformat/omadec.o
+CC	libavformat/omaenc.o
+CC	libavformat/options.o
+CC	libavformat/os_support.o
+CC	libavformat/osq.o
+CC	libavformat/paf.o
+CC	libavformat/pcm.o
+CC	libavformat/pcmdec.o
+CC	libavformat/pcmenc.o
+CC	libavformat/pdvdec.o
+CC	libavformat/pjsdec.o
+CC	libavformat/pmpdec.o
+CC	libavformat/pp_bnk.o
+CC	libavformat/prompeg.o
+CC	libavformat/protocols.o
+CC	libavformat/psxstr.o
+CC	libavformat/pva.o
+CC	libavformat/pvfdec.o
+CC	libavformat/qcp.o
+CC	libavformat/qoadec.o
+CC	libavformat/qtpalette.o
+CC	libavformat/r3d.o
+CC	libavformat/rawdec.o
+CC	libavformat/rawenc.o
+CC	libavformat/rawutils.o
+CC	libavformat/rawvideodec.o
+CC	libavformat/rcwtdec.o
+CC	libavformat/rcwtenc.o
+CC	libavformat/realtextdec.o
+CC	libavformat/redspark.o
+CC	libavformat/replaygain.o
+CC	libavformat/riff.o
+CC	libavformat/riffdec.o
+CC	libavformat/riffenc.o
+CC	libavformat/rka.o
+CC	libavformat/rl2.o
+CC	libavformat/rm.o
+CC	libavformat/rmdec.o
+CC	libavformat/rmenc.o
+CC	libavformat/rmsipr.o
+CC	libavformat/rpl.o
+CC	libavformat/rsd.o
+CC	libavformat/rso.o
+CC	libavformat/rsodec.o
+CC	libavformat/rsoenc.o
+CC	libavformat/rtp.o
+CC	libavformat/rtpenc.o
+CC	libavformat/rtpenc_aac.o
+CC	libavformat/rtpenc_amr.o
+CC	libavformat/rtpenc_chain.o
+CC	libavformat/rtpenc_h261.o
+CC	libavformat/rtpenc_h263.o
+CC	libavformat/rtpenc_h263_rfc2190.o
+CC	libavformat/rtpenc_h264_hevc.o
+CC	libavformat/rtpenc_jpeg.o
+CC	libavformat/rtpenc_latm.o
+CC	libavformat/rtpenc_mpegts.o
+CC	libavformat/rtpenc_mpv.o
+CC	libavformat/rtpenc_rfc4175.o
+CC	libavformat/rtpenc_vc2hq.o
+CC	libavformat/rtpenc_vp8.o
+CC	libavformat/rtpenc_vp9.o
+CC	libavformat/rtpenc_xiph.o
+CC	libavformat/s337m.o
+CC	libavformat/samidec.o
+CC	libavformat/sauce.o
+CC	libavformat/sbcdec.o
+CC	libavformat/sbgdec.o
+CC	libavformat/sccdec.o
+CC	libavformat/sccenc.o
+CC	libavformat/scd.o
+CC	libavformat/sdns.o
+CC	libavformat/sdp.o
+CC	libavformat/sdr2.o
+CC	libavformat/sdsdec.o
+CC	libavformat/sdxdec.o
+CC	libavformat/seek.o
+CC	libavformat/segafilm.o
+CC	libavformat/segafilmenc.o
+CC	libavformat/segment.o
+CC	libavformat/serdec.o
+CC	libavformat/sga.o
+CC	libavformat/shortendec.o
+CC	libavformat/sierravmd.o
+CC	libavformat/siff.o
+CC	libavformat/smacker.o
+CC	libavformat/smjpeg.o
+CC	libavformat/smjpegdec.o
+CC	libavformat/smjpegenc.o
+CC	libavformat/smoothstreamingenc.o
+CC	libavformat/smush.o
+CC	libavformat/sol.o
+CC	libavformat/soxdec.o
+CC	libavformat/soxenc.o
+CC	libavformat/spdif.o
+libavformat/smoothstreamingenc.c: In function 'ism_flush':
+libavformat/smoothstreamingenc.c:512:49: warning: '/temp' directive output may be truncated writing 5 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  512 |         snprintf(filename, sizeof(filename), "%s/temp", os->dirname);
+      |                                                 ^~~~~
+libavformat/smoothstreamingenc.c:512:9: note: 'snprintf' output between 6 and 1029 bytes into a destination of size 1024
+  512 |         snprintf(filename, sizeof(filename), "%s/temp", os->dirname);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/smoothstreamingenc.c:540:53: warning: '/temp' directive output may be truncated writing 5 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  540 |             snprintf(filename, sizeof(filename), "%s/temp", os->dirname);
+      |                                                     ^~~~~
+libavformat/smoothstreamingenc.c:540:13: note: 'snprintf' output between 6 and 1029 bytes into a destination of size 1024
+  540 |             snprintf(filename, sizeof(filename), "%s/temp", os->dirname);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/smoothstreamingenc.c:547:63: warning: '/FragmentInfo(' directive output may be truncated writing 14 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  547 |         snprintf(header_filename, sizeof(header_filename), "%s/FragmentInfo(%s=%"PRIu64")", os->dirname, os->stream_type_tag, start_ts);
+      |                                                               ^~~~~~~~~~~~~~
+libavformat/smoothstreamingenc.c:547:9: note: 'snprintf' output 18 or more bytes (assuming 1041) into a destination of size 1024
+  547 |         snprintf(header_filename, sizeof(header_filename), "%s/FragmentInfo(%s=%"PRIu64")", os->dirname, os->stream_type_tag, start_ts);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/smoothstreamingenc.c:548:63: warning: '/Fragments(' directive output may be truncated writing 11 bytes into a region of size between 1 and 1024 [-Wformat-truncation=]
+  548 |         snprintf(target_filename, sizeof(target_filename), "%s/Fragments(%s=%"PRIu64")", os->dirname, os->stream_type_tag, start_ts);
+      |                                                               ^~~~~~~~~~~
+libavformat/smoothstreamingenc.c:548:9: note: 'snprintf' output 15 or more bytes (assuming 1038) into a destination of size 1024
+  548 |         snprintf(target_filename, sizeof(target_filename), "%s/Fragments(%s=%"PRIu64")", os->dirname, os->stream_type_tag, start_ts);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/spdifdec.o
+CC	libavformat/spdifenc.o
+CC	libavformat/srtdec.o
+CC	libavformat/srtenc.o
+CC	libavformat/stldec.o
+CC	libavformat/subfile.o
+CC	libavformat/subtitles.o
+CC	libavformat/subviewer1dec.o
+CC	libavformat/subviewerdec.o
+CC	libavformat/supdec.o
+CC	libavformat/supenc.o
+CC	libavformat/svag.o
+CC	libavformat/svs.o
+CC	libavformat/swf.o
+CC	libavformat/swfdec.o
+CC	libavformat/swfenc.o
+CC	libavformat/takdec.o
+CC	libavformat/tedcaptionsdec.o
+CC	libavformat/tee.o
+CC	libavformat/tee_common.o
+CC	libavformat/teeproto.o
+CC	libavformat/thp.o
+CC	libavformat/tiertexseq.o
+CC	libavformat/tmv.o
+CC	libavformat/tta.o
+CC	libavformat/ttaenc.o
+CC	libavformat/ttmlenc.o
+CC	libavformat/tty.o
+CC	libavformat/txd.o
+CC	libavformat/ty.o
+CC	libavformat/uncodedframecrcenc.o
+CC	libavformat/url.o
+CC	libavformat/usmdec.o
+CC	libavformat/utils.o
+CC	libavformat/vag.o
+CC	libavformat/vc1dec.o
+CC	libavformat/vc1test.o
+CC	libavformat/vc1testenc.o
+CC	libavformat/version.o
+CC	libavformat/vividas.o
+CC	libavformat/vivo.o
+CC	libavformat/voc.o
+CC	libavformat/voc_packet.o
+CC	libavformat/vocdec.o
+CC	libavformat/vocenc.o
+CC	libavformat/vorbiscomment.o
+CC	libavformat/vpcc.o
+libavformat/vorbiscomment.c: In function 'ff_vorbiscomment_write':
+libavformat/vorbiscomment.c:103:63: warning: '%03d' directive output may be truncated writing between 3 and 10 bytes into a region of size 4 [-Wformat-truncation=]
+  103 |             snprintf(chapter_number, sizeof(chapter_number), "%03d", i);
+      |                                                               ^~~~
+libavformat/vorbiscomment.c:103:62: note: directive argument in the range [0, 2147483647]
+  103 |             snprintf(chapter_number, sizeof(chapter_number), "%03d", i);
+      |                                                              ^~~~~~
+libavformat/vorbiscomment.c:103:13: note: 'snprintf' output between 4 and 11 bytes into a destination of size 4
+  103 |             snprintf(chapter_number, sizeof(chapter_number), "%03d", i);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/vorbiscomment.c:104:69: warning: '%02d' directive output may be truncated writing between 2 and 3 bytes into a region of size between 1 and 7 [-Wformat-truncation=]
+  104 |             snprintf(chapter_time, sizeof(chapter_time), "%02d:%02d:%02d.%03d", h, m, s, ms);
+      |                                                                     ^~~~
+libavformat/vorbiscomment.c:104:58: note: directive argument in the range [-59, 59]
+  104 |             snprintf(chapter_time, sizeof(chapter_time), "%02d:%02d:%02d.%03d", h, m, s, ms);
+      |                                                          ^~~~~~~~~~~~~~~~~~~~~
+libavformat/vorbiscomment.c:104:58: note: directive argument in the range [-999, 999]
+libavformat/vorbiscomment.c:104:13: note: 'snprintf' output between 13 and 21 bytes into a destination of size 13
+  104 |             snprintf(chapter_time, sizeof(chapter_time), "%02d:%02d:%02d.%03d", h, m, s, ms);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/vpk.o
+CC	libavformat/vplayerdec.o
+CC	libavformat/vqf.o
+CC	libavformat/vvc.o
+CC	libavformat/vvcdec.o
+CC	libavformat/w64.o
+CC	libavformat/wady.o
+CC	libavformat/wavarc.o
+CC	libavformat/wavdec.o
+CC	libavformat/wavenc.o
+CC	libavformat/wc3movie.o
+CC	libavformat/webm_chunk.o
+CC	libavformat/webmdashenc.o
+CC	libavformat/webpenc.o
+CC	libavformat/webvttdec.o
+CC	libavformat/webvttenc.o
+CC	libavformat/westwood_aud.o
+CC	libavformat/westwood_audenc.o
+CC	libavformat/westwood_vqa.o
+CC	libavformat/wsddec.o
+CC	libavformat/wtv_common.o
+CC	libavformat/wtvdec.o
+CC	libavformat/wtvenc.o
+CC	libavformat/wv.o
+CC	libavformat/wvdec.o
+CC	libavformat/wvedec.o
+CC	libavformat/wvenc.o
+CC	libavformat/xa.o
+CC	libavformat/xmd.o
+CC	libavformat/xmv.o
+CC	libavformat/xvag.o
+CC	libavformat/xwma.o
+CC	libavformat/yop.o
+CC	libavformat/yuv4mpegdec.o
+CC	libavformat/yuv4mpegenc.o
+GEN	libavformat/libavformat.pc
+CC	libavcodec/012v.o
+CC	libavcodec/4xm.o
+CC	libavcodec/8bps.o
+CC	libavcodec/8svx.o
+CC	libavcodec/a64multienc.o
+CC	libavcodec/aac/aacdec.o
+libavcodec/aac/aacdec.c: In function 'decode_close':
+libavcodec/aac/aacdec.c:1132:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1132 |         AACUSACConfig *usac = &oc->usac;
+      |         ^~~~~~~~~~~~~
+CC	libavcodec/aac/aacdec_ac.o
+CC	libavcodec/aac/aacdec_fixed.o
+CC	libavcodec/aac/aacdec_float.o
+CC	libavcodec/aac/aacdec_lpd.o
+CC	libavcodec/aac/aacdec_tab.o
+CC	libavcodec/aac/aacdec_usac.o
+CC	libavcodec/aac_ac3_parser.o
+libavcodec/aac_ac3_parser.c: In function 'ff_aac_ac3_parse':
+libavcodec/aac_ac3_parser.c:151:17: warning: unused variable 'profile' [-Wunused-variable]
+  151 |             int profile;
+      |                 ^~~~~~~
+CC	libavcodec/aac_parser.o
+CC	libavcodec/aaccoder.o
+CC	libavcodec/aacenc.o
+CC	libavcodec/aacenc_is.o
+CC	libavcodec/aacenc_ltp.o
+CC	libavcodec/aacenc_pred.o
+CC	libavcodec/aacenc_tns.o
+CC	libavcodec/aacenctab.o
+CC	libavcodec/aacps_common.o
+CC	libavcodec/aacps_fixed.o
+CC	libavcodec/aacps_float.o
+CC	libavcodec/aacpsdsp_fixed.o
+CC	libavcodec/aacpsdsp_float.o
+CC	libavcodec/aacpsy.o
+CC	libavcodec/aacsbr.o
+CC	libavcodec/aacsbr_fixed.o
+In file included from libavcodec/aacsbr.c:383:
+libavcodec/aacsbr_template.c: In function 'read_sbr_grid':
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aacsbr.c:31:
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967295] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967294] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967293] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967292] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+CC	libavcodec/aactab.o
+In file included from libavcodec/aacsbr_fixed.c:610:
+libavcodec/aacsbr_template.c: In function 'read_sbr_grid':
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aacsbr_fixed.c:60:
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -1] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -2] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -3] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -4] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+CC	libavcodec/aandcttab.o
+CC	libavcodec/aasc.o
+CC	libavcodec/ac3.o
+CC	libavcodec/ac3_channel_layout_tab.o
+CC	libavcodec/ac3_parser.o
+CC	libavcodec/ac3dec_data.o
+CC	libavcodec/ac3dec_fixed.o
+CC	libavcodec/ac3dec_float.o
+In file included from libavcodec/ac3dec_fixed.c:156:
+In function 'spx_strategy',
+    inlined from 'decode_audio_block' at libavcodec/ac3dec.c:1142:24:
+libavcodec/ac3dec.c:854:37: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  854 |             s->channel_uses_spx[ch] = get_bits1(bc);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+In file included from libavcodec/ac3dec_fixed.c:51:
+libavcodec/ac3dec.h: In function 'decode_audio_block':
+libavcodec/ac3dec.h:144:13: note: at offset 7 into destination object 'channel_uses_spx' of size 7
+  144 |     uint8_t channel_uses_spx[AC3_MAX_CHANNELS]; ///< channel uses spectral extension        (chinspx)
+      |             ^~~~~~~~~~~~~~~~
+In file included from libavcodec/ac3dec_float.c:38:
+In function 'spx_strategy',
+    inlined from 'decode_audio_block' at libavcodec/ac3dec.c:1142:24:
+libavcodec/ac3dec.c:854:37: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  854 |             s->channel_uses_spx[ch] = get_bits1(bc);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+In file included from libavcodec/ac3dec_float.c:34:
+libavcodec/ac3dec.h: In function 'decode_audio_block':
+libavcodec/ac3dec.h:144:13: note: at offset 7 into destination object 'channel_uses_spx' of size 7
+  144 |     uint8_t channel_uses_spx[AC3_MAX_CHANNELS]; ///< channel uses spectral extension        (chinspx)
+      |             ^~~~~~~~~~~~~~~~
+CC	libavcodec/ac3dsp.o
+CC	libavcodec/ac3enc.o
+CC	libavcodec/ac3enc_fixed.o
+CC	libavcodec/ac3enc_float.o
+CC	libavcodec/ac3tab.o
+CC	libavcodec/acelp_filters.o
+CC	libavcodec/acelp_pitch_delay.o
+CC	libavcodec/acelp_vectors.o
+CC	libavcodec/adpcm.o
+CC	libavcodec/adpcm_data.o
+CC	libavcodec/adpcmenc.o
+CC	libavcodec/adts_header.o
+CC	libavcodec/adts_parser.o
+CC	libavcodec/adx.o
+CC	libavcodec/adx_parser.o
+CC	libavcodec/adxdec.o
+CC	libavcodec/adxenc.o
+CC	libavcodec/agm.o
+CC	libavcodec/aic.o
+CC	libavcodec/alac.o
+CC	libavcodec/alac_data.o
+CC	libavcodec/alacdsp.o
+CC	libavcodec/alacenc.o
+CC	libavcodec/aliaspixdec.o
+CC	libavcodec/aliaspixenc.o
+CC	libavcodec/allcodecs.o
+CC	libavcodec/alsdec.o
+CC	libavcodec/amr_parser.o
+CC	libavcodec/amrnbdec.o
+CC	libavcodec/amrwbdec.o
+CC	libavcodec/anm.o
+CC	libavcodec/ansi.o
+CC	libavcodec/aom_film_grain.o
+CC	libavcodec/apac.o
+CC	libavcodec/apedec.o
+CC	libavcodec/aptx.o
+CC	libavcodec/aptxdec.o
+CC	libavcodec/aptxenc.o
+CC	libavcodec/arbc.o
+CC	libavcodec/argo.o
+CC	libavcodec/ass.o
+CC	libavcodec/ass_split.o
+CC	libavcodec/assdec.o
+CC	libavcodec/assenc.o
+CC	libavcodec/asv.o
+CC	libavcodec/asvdec.o
+CC	libavcodec/asvenc.o
+CC	libavcodec/atrac.o
+CC	libavcodec/atrac1.o
+CC	libavcodec/atrac3.o
+CC	libavcodec/atrac3plus.o
+CC	libavcodec/atrac3plusdec.o
+CC	libavcodec/atrac3plusdsp.o
+CC	libavcodec/atrac9dec.o
+CC	libavcodec/atsc_a53.o
+CC	libavcodec/audio_frame_queue.o
+CC	libavcodec/audiodsp.o
+CC	libavcodec/aura.o
+CC	libavcodec/av1_parse.o
+CC	libavcodec/av1_parser.o
+CC	libavcodec/av1dec.o
+CC	libavcodec/avcodec.o
+CC	libavcodec/avdct.o
+CC	libavcodec/avfft.o
+CC	libavcodec/avrndec.o
+CC	libavcodec/avs.o
+CC	libavcodec/avs2.o
+CC	libavcodec/avs2_parser.o
+CC	libavcodec/avs3_parser.o
+CC	libavcodec/avuidec.o
+CC	libavcodec/avuienc.o
+CC	libavcodec/bethsoftvideo.o
+CC	libavcodec/bfi.o
+CC	libavcodec/bgmc.o
+CC	libavcodec/bink.o
+CC	libavcodec/binkaudio.o
+CC	libavcodec/binkdsp.o
+CC	libavcodec/bintext.o
+CC	libavcodec/bitpacked_dec.o
+CC	libavcodec/bitpacked_enc.o
+CC	libavcodec/bitstream.o
+CC	libavcodec/bitstream_filters.o
+CC	libavcodec/blockdsp.o
+CC	libavcodec/bmp.o
+CC	libavcodec/bmp_parser.o
+CC	libavcodec/bmpenc.o
+CC	libavcodec/bmvaudio.o
+CC	libavcodec/bmvvideo.o
+CC	libavcodec/bonk.o
+CC	libavcodec/brenderpix.o
+CC	libavcodec/bsf.o
+CC	libavcodec/bsf/aac_adtstoasc.o
+CC	libavcodec/bsf/av1_frame_merge.o
+CC	libavcodec/bsf/av1_frame_split.o
+CC	libavcodec/bsf/av1_metadata.o
+CC	libavcodec/bsf/chomp.o
+CC	libavcodec/bsf/dca_core.o
+CC	libavcodec/bsf/dovi_rpu.o
+CC	libavcodec/bsf/dts2pts.o
+CC	libavcodec/bsf/dump_extradata.o
+CC	libavcodec/bsf/dv_error_marker.o
+CC	libavcodec/bsf/eac3_core.o
+CC	libavcodec/bsf/evc_frame_merge.o
+CC	libavcodec/bsf/extract_extradata.o
+CC	libavcodec/bsf/filter_units.o
+CC	libavcodec/bsf/h264_metadata.o
+CC	libavcodec/bsf/h264_mp4toannexb.o
+CC	libavcodec/bsf/h264_redundant_pps.o
+CC	libavcodec/bsf/h265_metadata.o
+CC	libavcodec/bsf/h266_metadata.o
+CC	libavcodec/bsf/hapqa_extract.o
+CC	libavcodec/bsf/hevc_mp4toannexb.o
+CC	libavcodec/bsf/imx_dump_header.o
+CC	libavcodec/bsf/media100_to_mjpegb.o
+CC	libavcodec/bsf/mjpeg2jpeg.o
+CC	libavcodec/bsf/mjpega_dump_header.o
+CC	libavcodec/bsf/movsub.o
+CC	libavcodec/bsf/mpeg2_metadata.o
+CC	libavcodec/bsf/mpeg4_unpack_bframes.o
+CC	libavcodec/bsf/noise.o
+CC	libavcodec/bsf/null.o
+CC	libavcodec/bsf/opus_metadata.o
+CC	libavcodec/bsf/pcm_rechunk.o
+CC	libavcodec/bsf/pgs_frame_merge.o
+CC	libavcodec/bsf/prores_metadata.o
+CC	libavcodec/bsf/remove_extradata.o
+CC	libavcodec/bsf/setts.o
+CC	libavcodec/bsf/showinfo.o
+CC	libavcodec/bsf/trace_headers.o
+CC	libavcodec/bsf/truehd_core.o
+CC	libavcodec/bsf/vp9_metadata.o
+CC	libavcodec/bsf/vp9_raw_reorder.o
+CC	libavcodec/bsf/vp9_superframe.o
+CC	libavcodec/bsf/vp9_superframe_split.o
+CC	libavcodec/bsf/vvc_mp4toannexb.o
+CC	libavcodec/bswapdsp.o
+CC	libavcodec/c93.o
+CC	libavcodec/cabac.o
+CC	libavcodec/canopus.o
+CC	libavcodec/cavs.o
+CC	libavcodec/cavs_parser.o
+CC	libavcodec/cavsdata.o
+CC	libavcodec/cavsdec.o
+CC	libavcodec/cavsdsp.o
+CC	libavcodec/cbrt_data.o
+CC	libavcodec/cbrt_data_fixed.o
+CC	libavcodec/cbs.o
+CC	libavcodec/cbs_av1.o
+CC	libavcodec/cbs_bsf.o
+CC	libavcodec/cbs_h2645.o
+CC	libavcodec/cbs_mpeg2.o
+CC	libavcodec/cbs_sei.o
+CC	libavcodec/cbs_vp8.o
+CC	libavcodec/cbs_vp9.o
+CC	libavcodec/ccaption_dec.o
+CC	libavcodec/cdgraphics.o
+CC	libavcodec/cdtoons.o
+CC	libavcodec/cdxl.o
+CC	libavcodec/celp_filters.o
+CC	libavcodec/celp_math.o
+CC	libavcodec/cfhd.o
+CC	libavcodec/cfhddata.o
+CC	libavcodec/cfhddsp.o
+CC	libavcodec/cfhdenc.o
+CC	libavcodec/cfhdencdsp.o
+CC	libavcodec/cga_data.o
+CC	libavcodec/cinepak.o
+CC	libavcodec/cinepakenc.o
+CC	libavcodec/clearvideo.o
+CC	libavcodec/cljrdec.o
+CC	libavcodec/cljrenc.o
+CC	libavcodec/cllc.o
+CC	libavcodec/cngdec.o
+CC	libavcodec/cngenc.o
+CC	libavcodec/codec_desc.o
+CC	libavcodec/codec_par.o
+CC	libavcodec/container_fifo.o
+CC	libavcodec/cook.o
+CC	libavcodec/cook_parser.o
+CC	libavcodec/cpia.o
+CC	libavcodec/cri.o
+libavcodec/cri.c: In function 'cri_decode_frame':
+libavcodec/cri.c:224:13: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  224 |             int read_len = FFMIN(length, sizeof(codec_name) - 1);
+      |             ^~~
+CC	libavcodec/cri_parser.o
+CC	libavcodec/cscd.o
+CC	libavcodec/cyuv.o
+CC	libavcodec/d3d11va.o
+CC	libavcodec/dca.o
+CC	libavcodec/dca_core.o
+CC	libavcodec/dca_exss.o
+CC	libavcodec/dca_lbr.o
+CC	libavcodec/dca_parser.o
+CC	libavcodec/dca_sample_rate_tab.o
+CC	libavcodec/dca_xll.o
+CC	libavcodec/dcaadpcm.o
+CC	libavcodec/dcadata.o
+CC	libavcodec/dcadct.o
+CC	libavcodec/dcadec.o
+CC	libavcodec/dcadsp.o
+CC	libavcodec/dcaenc.o
+CC	libavcodec/dcahuff.o
+CC	libavcodec/dct32_fixed.o
+CC	libavcodec/dct32_float.o
+CC	libavcodec/dds.o
+CC	libavcodec/decode.o
+CC	libavcodec/dfa.o
+CC	libavcodec/dfpwmdec.o
+CC	libavcodec/dfpwmenc.o
+CC	libavcodec/dirac.o
+CC	libavcodec/dirac_arith.o
+CC	libavcodec/dirac_dwt.o
+CC	libavcodec/dirac_parser.o
+CC	libavcodec/dirac_vlc.o
+CC	libavcodec/diracdec.o
+CC	libavcodec/diracdsp.o
+CC	libavcodec/diractab.o
+CC	libavcodec/dnxhd_parser.o
+CC	libavcodec/dnxhddata.o
+CC	libavcodec/dnxhddec.o
+CC	libavcodec/dnxhdenc.o
+CC	libavcodec/dolby_e.o
+CC	libavcodec/dolby_e_parse.o
+CC	libavcodec/dolby_e_parser.o
+CC	libavcodec/dovi_rpu.o
+CC	libavcodec/dovi_rpudec.o
+CC	libavcodec/dovi_rpuenc.o
+CC	libavcodec/dpcm.o
+CC	libavcodec/dpx.o
+CC	libavcodec/dpx_parser.o
+CC	libavcodec/dpxenc.o
+CC	libavcodec/dsd.o
+CC	libavcodec/dsddec.o
+CC	libavcodec/dsicinaudio.o
+CC	libavcodec/dsicinvideo.o
+CC	libavcodec/dss_sp.o
+CC	libavcodec/dstdec.o
+CC	libavcodec/dv.o
+CC	libavcodec/dv_profile.o
+CC	libavcodec/dvaudio_parser.o
+CC	libavcodec/dvaudiodec.o
+CC	libavcodec/dvbsub_parser.o
+CC	libavcodec/dvbsubdec.o
+CC	libavcodec/dvbsubenc.o
+CC	libavcodec/dvd_nav_parser.o
+CC	libavcodec/dvdata.o
+CC	libavcodec/dvdec.o
+CC	libavcodec/dvdsub.o
+CC	libavcodec/dvdsub_parser.o
+CC	libavcodec/dvdsubdec.o
+CC	libavcodec/dvdsubenc.o
+CC	libavcodec/dvenc.o
+CC	libavcodec/dxtory.o
+CC	libavcodec/dxv.o
+libavcodec/dxv.c: In function 'dxv_decompress_opcodes':
+libavcodec/dxv.c:280:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  280 |         int read_size = bytestream2_get_buffer(gb, dstp, op_size);
+      |         ^~~
+libavcodec/dxv.c: In function 'dxv_decode':
+libavcodec/dxv.c:979:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  979 |     unsigned old_size = ctx->tex_data_size;
+      |     ^~~~~~~~
+CC	libavcodec/dxvenc.o
+CC	libavcodec/dynamic_hdr_vivid.o
+CC	libavcodec/eac3_data.o
+CC	libavcodec/eac3enc.o
+CC	libavcodec/eacmv.o
+CC	libavcodec/eaidct.o
+CC	libavcodec/eamad.o
+CC	libavcodec/eatgq.o
+CC	libavcodec/eatgv.o
+CC	libavcodec/eatqi.o
+CC	libavcodec/elbg.o
+CC	libavcodec/encode.o
+CC	libavcodec/error_resilience.o
+CC	libavcodec/escape124.o
+CC	libavcodec/escape130.o
+CC	libavcodec/evc_parse.o
+CC	libavcodec/evc_parser.o
+CC	libavcodec/evc_ps.o
+CC	libavcodec/evrcdec.o
+CC	libavcodec/exif.o
+CC	libavcodec/faandct.o
+CC	libavcodec/faanidct.o
+CC	libavcodec/fastaudio.o
+CC	libavcodec/faxcompr.o
+CC	libavcodec/fdctdsp.o
+CC	libavcodec/ffv1.o
+CC	libavcodec/ffv1dec.o
+CC	libavcodec/ffv1enc.o
+CC	libavcodec/ffwavesynth.o
+CC	libavcodec/fic.o
+CC	libavcodec/fits.o
+CC	libavcodec/fitsdec.o
+CC	libavcodec/fitsenc.o
+CC	libavcodec/flac.o
+CC	libavcodec/flac_parser.o
+CC	libavcodec/flacdata.o
+CC	libavcodec/flacdec.o
+CC	libavcodec/flacdsp.o
+CC	libavcodec/flacenc.o
+CC	libavcodec/flacencdsp.o
+CC	libavcodec/flicvideo.o
+CC	libavcodec/float2half.o
+CC	libavcodec/flvdec.o
+CC	libavcodec/flvenc.o
+CC	libavcodec/fmtconvert.o
+CC	libavcodec/fmvc.o
+CC	libavcodec/frame_thread_encoder.o
+CC	libavcodec/fraps.o
+CC	libavcodec/frwu.o
+CC	libavcodec/ftr.o
+CC	libavcodec/ftr_parser.o
+CC	libavcodec/g722.o
+CC	libavcodec/g722dec.o
+CC	libavcodec/g722dsp.o
+CC	libavcodec/g722enc.o
+CC	libavcodec/g723_1.o
+CC	libavcodec/g723_1_parser.o
+CC	libavcodec/g723_1dec.o
+CC	libavcodec/g723_1enc.o
+CC	libavcodec/g726.o
+CC	libavcodec/g729_parser.o
+CC	libavcodec/g729dec.o
+CC	libavcodec/g729postfilter.o
+CC	libavcodec/gdv.o
+CC	libavcodec/gemdec.o
+CC	libavcodec/get_buffer.o
+CC	libavcodec/gif.o
+CC	libavcodec/gif_parser.o
+CC	libavcodec/gifdec.o
+CC	libavcodec/golomb.o
+CC	libavcodec/gsm_parser.o
+CC	libavcodec/gsmdec.o
+CC	libavcodec/gsmdec_data.o
+CC	libavcodec/h261.o
+CC	libavcodec/h261_parser.o
+CC	libavcodec/h261data.o
+CC	libavcodec/h261dec.o
+CC	libavcodec/h261enc.o
+CC	libavcodec/h263.o
+CC	libavcodec/h263_parser.o
+CC	libavcodec/h263data.o
+CC	libavcodec/h263dec.o
+CC	libavcodec/h263dsp.o
+CC	libavcodec/h2645_parse.o
+CC	libavcodec/h2645_sei.o
+CC	libavcodec/h2645_vui.o
+CC	libavcodec/h2645data.o
+CC	libavcodec/h264_cabac.o
+CC	libavcodec/h264_cavlc.o
+CC	libavcodec/h264_direct.o
+CC	libavcodec/h264_levels.o
+CC	libavcodec/h264_loopfilter.o
+CC	libavcodec/h264_mb.o
+CC	libavcodec/h264_parse.o
+CC	libavcodec/h264_parser.o
+CC	libavcodec/h264_picture.o
+CC	libavcodec/h264_ps.o
+CC	libavcodec/h264_refs.o
+CC	libavcodec/h264_sei.o
+CC	libavcodec/h264_slice.o
+CC	libavcodec/h264chroma.o
+CC	libavcodec/h264data.o
+CC	libavcodec/h264dec.o
+CC	libavcodec/h264dsp.o
+CC	libavcodec/h264idct.o
+CC	libavcodec/h264pred.o
+CC	libavcodec/h264qpel.o
+CC	libavcodec/h265_profile_level.o
+CC	libavcodec/h274.o
+CC	libavcodec/half2float.o
+CC	libavcodec/hap.o
+CC	libavcodec/hapdec.o
+CC	libavcodec/hcadec.o
+CC	libavcodec/hcom.o
+CC	libavcodec/hdr_parser.o
+CC	libavcodec/hdrdec.o
+CC	libavcodec/hdrenc.o
+CC	libavcodec/hevc/cabac.o
+CC	libavcodec/hevc/data.o
+CC	libavcodec/hevc/dsp.o
+CC	libavcodec/hevc/filter.o
+CC	libavcodec/hevc/hevcdec.o
+libavcodec/hevc/hevcdec.c: In function 'pred_weight_table':
+libavcodec/hevc/hevcdec.c:199:32: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  199 |         luma_weight_l0_flag[i] = get_bits1(gb);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:177:13: note: at offset 16 into destination object 'luma_weight_l0_flag' of size 16
+  177 |     uint8_t luma_weight_l0_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:207:38: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  207 |             chroma_weight_l0_flag[i] = get_bits1(gb);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:178:13: note: at offset 16 into destination object 'chroma_weight_l0_flag' of size 16
+  178 |     uint8_t chroma_weight_l0_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:243:36: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  243 |             luma_weight_l1_flag[i] = get_bits1(gb);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:179:13: note: at offset 16 into destination object 'luma_weight_l1_flag' of size 16
+  179 |     uint8_t luma_weight_l1_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:251:42: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  251 |                 chroma_weight_l1_flag[i] = get_bits1(gb);
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:180:13: note: at offset 16 into destination object 'chroma_weight_l1_flag' of size 16
+  180 |     uint8_t chroma_weight_l1_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/hevc/mvs.o
+CC	libavcodec/hevc/parse.o
+CC	libavcodec/hevc/parser.o
+CC	libavcodec/hevc/pred.o
+CC	libavcodec/hevc/ps.o
+CC	libavcodec/hevc/refs.o
+CC	libavcodec/hevc/sei.o
+CC	libavcodec/hnm4video.o
+CC	libavcodec/hpeldsp.o
+CC	libavcodec/hq_hqa.o
+CC	libavcodec/hq_hqadsp.o
+CC	libavcodec/hqx.o
+CC	libavcodec/hqxdsp.o
+CC	libavcodec/hqxvlc.o
+CC	libavcodec/htmlsubtitles.o
+CC	libavcodec/huffman.o
+CC	libavcodec/huffyuv.o
+CC	libavcodec/huffyuvdec.o
+CC	libavcodec/huffyuvdsp.o
+CC	libavcodec/huffyuvenc.o
+CC	libavcodec/huffyuvencdsp.o
+CC	libavcodec/idcinvideo.o
+CC	libavcodec/idctdsp.o
+CC	libavcodec/iff.o
+CC	libavcodec/iirfilter.o
+CC	libavcodec/ilbcdec.o
+CC	libavcodec/imc.o
+CC	libavcodec/imgconvert.o
+CC	libavcodec/imm4.o
+CC	libavcodec/imm5.o
+CC	libavcodec/imx.o
+CC	libavcodec/indeo2.o
+CC	libavcodec/indeo3.o
+CC	libavcodec/indeo4.o
+CC	libavcodec/indeo5.o
+CC	libavcodec/intelh263dec.o
+CC	libavcodec/interplayacm.o
+CC	libavcodec/interplayvideo.o
+CC	libavcodec/intrax8.o
+CC	libavcodec/intrax8dsp.o
+CC	libavcodec/ipu_parser.o
+CC	libavcodec/ituh263dec.o
+CC	libavcodec/ituh263enc.o
+CC	libavcodec/ivi.o
+CC	libavcodec/ivi_dsp.o
+CC	libavcodec/j2kenc.o
+CC	libavcodec/jacosubdec.o
+CC	libavcodec/jfdctfst.o
+CC	libavcodec/jfdctint.o
+libavcodec/j2kenc.c: In function 'makelayers':
+libavcodec/j2kenc.c:1271:53: warning: variable 'lev' set but not used [-Wunused-but-set-variable=]
+ 1271 |     int precno, compno, reslevelno, bandno, cblkno, lev, passno, layno;
+      |                                                     ^~~
+CC	libavcodec/jni.o
+CC	libavcodec/jpeg2000.o
+CC	libavcodec/jpeg2000_parser.o
+CC	libavcodec/jpeg2000dec.o
+libavcodec/jpeg2000dec.c: In function 'get_siz':
+libavcodec/jpeg2000dec.c:285:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  285 |     int cdef_used = 0;
+      |     ^~~
+libavcodec/jpeg2000dec.c:305:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  305 |         int i_remapped = s->cdef[i] ? s->cdef[i]-1 : (s->ncomponents-1);
+      |         ^~~
+CC	libavcodec/jpeg2000dsp.o
+CC	libavcodec/jpeg2000dwt.o
+CC	libavcodec/jpeg2000htdec.o
+CC	libavcodec/jpegls.o
+CC	libavcodec/jpeglsdec.o
+CC	libavcodec/jpeglsenc.o
+CC	libavcodec/jpegquanttables.o
+CC	libavcodec/jpegtables.o
+CC	libavcodec/jpegxl_parse.o
+CC	libavcodec/jpegxl_parser.o
+CC	libavcodec/jrevdct.o
+libavcodec/jrevdct.c:215:28: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+  215 | void ff_j_rev_dct(DCTBLOCK data)
+      |                   ~~~~~~~~~^~~~
+In file included from libavcodec/jrevdct.c:70:
+libavcodec/dct.h:30:28: note: previously declared as 'int16_t *' {aka 'short int *'}
+   30 | void ff_j_rev_dct(int16_t *data);
+      |                   ~~~~~~~~~^~~~
+libavcodec/jrevdct.c:953:29: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+  953 | void ff_j_rev_dct4(DCTBLOCK data)
+      |                    ~~~~~~~~~^~~~
+libavcodec/dct.h:31:29: note: previously declared as 'int16_t *' {aka 'short int *'}
+   31 | void ff_j_rev_dct4(int16_t *data);
+      |                    ~~~~~~~~~^~~~
+libavcodec/jrevdct.c:1140:29: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+ 1140 | void ff_j_rev_dct2(DCTBLOCK data){
+      |                    ~~~~~~~~~^~~~
+libavcodec/dct.h:32:29: note: previously declared as 'int16_t *' {aka 'short int *'}
+   32 | void ff_j_rev_dct2(int16_t *data);
+      |                    ~~~~~~~~~^~~~
+libavcodec/jrevdct.c:1155:29: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+ 1155 | void ff_j_rev_dct1(DCTBLOCK data){
+      |                    ~~~~~~~~~^~~~
+libavcodec/dct.h:33:29: note: previously declared as 'int16_t *' {aka 'short int *'}
+   33 | void ff_j_rev_dct1(int16_t *data);
+      |                    ~~~~~~~~~^~~~
+CC	libavcodec/jvdec.o
+CC	libavcodec/kbdwin.o
+CC	libavcodec/kgv1dec.o
+CC	libavcodec/kmvc.o
+CC	libavcodec/lagarith.o
+CC	libavcodec/lagarithrac.o
+CC	libavcodec/latm_parser.o
+CC	libavcodec/lcevcdec.o
+CC	libavcodec/lcldec.o
+CC	libavcodec/leaddec.o
+CC	libavcodec/libx264.o
+CC	libavcodec/ljpegenc.o
+CC	libavcodec/loco.o
+CC	libavcodec/lossless_audiodsp.o
+CC	libavcodec/lossless_videodsp.o
+CC	libavcodec/lossless_videoencdsp.o
+CC	libavcodec/lpc.o
+CC	libavcodec/lsp.o
+CC	libavcodec/lzf.o
+CC	libavcodec/lzw.o
+libavcodec/lzf.c: In function 'ff_lzf_uncompress':
+libavcodec/lzf.c:73:13: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   73 |             int s2 = bytestream2_get_buffer(gb, p, s);
+      |             ^~~
+CC	libavcodec/lzwenc.o
+CC	libavcodec/m101.o
+CC	libavcodec/mace.o
+CC	libavcodec/magicyuv.o
+CC	libavcodec/magicyuvenc.o
+CC	libavcodec/mathtables.o
+CC	libavcodec/mdec.o
+CC	libavcodec/me_cmp.o
+CC	libavcodec/mediacodec.o
+CC	libavcodec/metasound.o
+CC	libavcodec/microdvddec.o
+CC	libavcodec/midivid.o
+CC	libavcodec/mimic.o
+CC	libavcodec/misc4.o
+CC	libavcodec/misc4_parser.o
+CC	libavcodec/mjpeg_parser.o
+CC	libavcodec/mjpegbdec.o
+CC	libavcodec/mjpegdec.o
+CC	libavcodec/mjpegdec_common.o
+CC	libavcodec/mjpegenc.o
+CC	libavcodec/mjpegenc_common.o
+CC	libavcodec/mjpegenc_huffman.o
+CC	libavcodec/mlp.o
+CC	libavcodec/mlp_parse.o
+CC	libavcodec/mlp_parser.o
+CC	libavcodec/mlpdec.o
+CC	libavcodec/mlpdsp.o
+CC	libavcodec/mlpenc.o
+CC	libavcodec/mlz.o
+CC	libavcodec/mmvideo.o
+CC	libavcodec/mobiclip.o
+CC	libavcodec/motion_est.o
+CC	libavcodec/motionpixels.o
+CC	libavcodec/movtextdec.o
+CC	libavcodec/movtextenc.o
+CC	libavcodec/mpc.o
+CC	libavcodec/mpc7.o
+CC	libavcodec/mpc8.o
+CC	libavcodec/mpeg12.o
+libavcodec/mpc8.c: In function 'mpc8_decode_init':
+libavcodec/mpc8.c:158:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  158 |     uint8_t sample_rate_idx = get_bits(&gb, 3);
+      |     ^~~~~~~
+CC	libavcodec/mpeg12data.o
+CC	libavcodec/mpeg12dec.o
+CC	libavcodec/mpeg12enc.o
