@@ -99,8 +99,8 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
                     if not audio:
                         args += ['-f','lavfi','-i','anullsrc=r=48000:cl=stereo']
                     args += ['-t',str(seg.end-seg.start),'-map','0:v:0','-map','0:a:0' if audio else '1:a:0',
-                        '-vf',prefix+f'scale=trunc(iw*sar/2)*2:ih,setsar=1,scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2',
-                        '-r','30','-c:v','libx264','-threads','2','-pix_fmt','yuv420p','-c:a','aac','-ar','48000','-ac','2','-movflags','+faststart',str(path)]
+                        '-vf',prefix+f'scale=trunc(iw*sar/2)*2:ih:flags=lanczos,setsar=1,scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2:flags=lanczos,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2',
+                        '-r','30','-c:v','libx264','-crf','18','-preset','medium','-threads','2','-pix_fmt','yuv420p','-c:a','aac','-ar','48000','-ac','2','-movflags','+faststart',str(path)]
                     run('ffmpeg', args)
                     verify(path, seg.end-seg.start)
                     pieces.append(path)

@@ -16,7 +16,7 @@ permissions:
   actions: read
 concurrency:
   group: windows-portable-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: windows-latest
