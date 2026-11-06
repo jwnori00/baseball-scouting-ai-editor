@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="42" time="11.303" timestamp="2026-11-06T16:02:30.236066+00:00" hostname="runnervmm7ud1"><testcase classname="tests.test_export_framing" name="test_union_preserves_late_fullscreen_and_caption" time="0.035" /><testcase classname="tests.test_export_framing" name="test_real_export_expands_padded_video_and_can_disable" time="0.147"><failure message="RuntimeError: ffmpeg: [AVFilterGraph @ 000001eed4296680] No such filter: 'color'&#13;&#10;[AVFilterGraph @ 000001eed4296680] Error processing filtergraph: Filter not found&#13;&#10;[in#0 @ 000001eed4295b00] Error opening input: Filter not found&#13;&#10;Error opening input file color=c=red:s=160x90:r=30:d=1.&#13;&#10;Error opening input files: Filter not found">tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_real_export_expands_padde0')
+
+    def test_real_export_expands_padded_video_and_can_disable(tmp_path):
+        import json
+        from bsae.ingest.media import run,add_sources,frames
+        from bsae.core.models import GameSession,PlayerIdentity,PitchEvent
+        from bsae.core.review import review
+        from bsae.export.render import export
+        path=tmp_path/'padded.mp4'
+&gt;       run('ffmpeg',['-v','error','-f','lavfi','-i','color=c=red:s=160x90:r=30:d=1',
+            '-vf','pad=640:360:240:134','-c:v','libx264','-pix_fmt','yuv420p',path])
+
+tests\test_export_framing.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'ffmpeg'
+args = ['-v', 'error', '-f', 'lavfi', '-i', 'color=c=red:s=160x90:r=30:d=1', ...]
+kwargs = {'creationflags': 134217728}
+executable = 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE'
+result = CompletedProcess(args=['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmp...t found\r\nError opening input file color=c=red:s=160x90:r=30:d=1.\r\nError opening input files: Filter not found\r\n")
+
+    def run(name, args, **kwargs):
+        if sys.platform == 'win32':
+            kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
+        executable = tool(name)
+        if name=='tesseract' and sys.platform=='win32':
+            from .ocr_runtime import prepare
+            executable,args,environment,working_directory=prepare(executable,list(map(str,args)))
+            kwargs['env']=environment;kwargs['cwd']=working_directory
+        elif name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
+            import os
+            kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
+        result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
+        if result.returncode:
+&gt;           raise RuntimeError(name+': '+result.stderr.decode('utf-8', errors='replace')[-4000:])
+E           RuntimeError: ffmpeg: [AVFilterGraph @ 000001eed4296680] No such filter: 'color'
+E           [AVFilterGraph @ 000001eed4296680] Error processing filtergraph: Filter not found
+E           [in#0 @ 000001eed4295b00] Error opening input: Filter not found
+E           Error opening input file color=c=red:s=160x90:r=30:d=1.
+E           Error opening input files: Filter not found
+
+src\bsae\ingest\media.py:42: RuntimeError</failure></testcase><testcase classname="tests.test_rules" name="test_short_delivery_is_not_lost_to_high_episode_median" time="0.007" /><testcase classname="tests.test_rules" name="test_camera_changes_alone_are_not_pitches" time="0.003" /><testcase classname="tests.test_rules" name="test_return_motion_does_not_become_second_pitch" time="0.029" /><testcase classname="tests.test_rules" name="test_unchanged_foul_count_keeps_both_pitches_one_plate" time="0.013" /><testcase classname="tests.test_rules" name="test_other_batter_and_inning_split_plate" time="0.013" /><testcase classname="tests.test_rules" name="test_ocr_name_change_invalidates_old_support" time="0.001" /><testcase classname="tests.test_rules" name="test_unidentified_candidates_are_preserved" time="0.004" /><testcase classname="tests.test_rules" name="test_inplay_camera_cut_preserves_fielding_and_running" time="0.006" /><testcase classname="tests.test_rules" name="test_replay_markers_exclude_without_approving" time="0.004" /><testcase classname="tests.test_rules" name="test_large_constant_camera_buffer_is_bounded" time="0.030" /><testcase classname="tests.test_rules" name="test_count_parser_and_graphic_noise" time="0.001" /><testcase classname="tests.test_rules" name="test_pickoff_classification_is_audited_and_needs_review" time="0.001" /><testcase classname="tests.test_rules" name="test_streaming_motion_video_to_candidates_and_cached_resume" time="1.305" /><testcase classname="tests.test_rules" name="test_cross_source_candidate_maps_real_segments" time="0.006" /><testcase classname="tests.test_rules" name="test_gui_button_calls_rules_engine_and_saves_results" time="1.665" /><testcase classname="tests.test_rules" name="test_replay_cannot_be_exported_as_approved_pitch" time="0.002" /><testcase classname="tests.test_rules" name="test_reviewed_comparison_preserves_unevaluated_status" time="0.016" /><testcase classname="tests.test_rules" name="test_reference_plate_split_merge_preserves_pitch_cuts" time="0.001" /><testcase classname="tests.test_unicode_ocr" name="test_unicode_language_and_executable_are_staged_without_source_changes" time="0.008" /><testcase classname="tests.test_unicode_ocr" name="test_ocr_language_path_traversal_is_rejected" time="0.003" /><testcase classname="tests.test_workflow" name="test_stream_pts_and_multifile" time="0.376" /><testcase classname="tests.test_workflow" name="test_real_inference_to_review_and_render" time="4.047" /><testcase classname="tests.test_workflow" name="test_missing_or_tampered_model_fails" time="0.098" /><testcase classname="tests.test_workflow" name="test_cache_cancel_resume" time="0.358" /><testcase classname="tests.test_workflow" name="test_identity_accent_and_multiple_evidence" time="0.001" /><testcase classname="tests.test_workflow" name="test_camera_changes_do_not_finish_active_play" time="0.136" /><testcase classname="tests.test_workflow" name="test_batter_groups_and_substitution" time="0.125" /><testcase classname="tests.test_workflow" name="test_cross_file_event_render" time="0.717" /><testcase classname="tests.test_workflow" name="test_metrics_no_claim_without_truth" time="0.001" /><testcase classname="tests.test_workflow" name="test_source_protection_and_changed_media" time="0.150" /><testcase classname="tests.test_workflow" name="test_gui_rules_runtime_gate" time="0.038" /><testcase classname="tests.test_workflow" name="test_replay_model_state_does_not_create_pitch" time="0.349" /><testcase classname="tests.test_workflow" name="test_exact_overlap_requires_motion" time="0.001" /><testcase classname="tests.test_workflow" name="test_local_ocr_reads_rendered_text" time="0.268" /><testcase classname="tests.test_workflow" name="test_vfr_nonzero_pts_are_normalized" time="0.142" /><testcase classname="tests.test_workflow" name="test_portable_bundled_model_is_selected" time="0.010" /><testcase classname="tests.test_workflow" name="test_acceptance_does_not_autoapprove_predictions" time="0.769" /><testcase classname="tests.test_workflow" name="test_development_package_disables_even_supplied_model" time="0.012" /><testcase classname="tests.test_workflow" name="test_development_media_registration_without_ai" time="0.099" /><testcase classname="tests.test_workflow" name="test_asset_gate_separates_development_and_release" time="0.069" /></testsuite></testsuites>
