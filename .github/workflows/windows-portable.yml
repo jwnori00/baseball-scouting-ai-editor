@@ -65,12 +65,38 @@ jobs:
         with:
           path: vendor/portable
           key: windows-native-portable-v2-${{ hashFiles('packaging/build_media.sh', 'packaging/prepare_assets.py', 'requirements-dev.txt') }}
+          restore-keys: windows-native-portable-v2-
+      - name: Compiler identity for safe object reuse
+        id: compiler
+        if: steps.native-assets.outputs.cache-hit != 'true'
+        shell: msys2 {0}
+        run: |
+          identity=$( (gcc -dumpmachine; gcc -dumpfullversion; pacman -Q mingw-w64-x86_64-gcc nasm make) | sha256sum | cut -d ' ' -f 1)
+          echo "identity=$identity" >> "$(cygpath -u "$GITHUB_OUTPUT")"
+      - uses: actions/cache/restore@v4
+        id: media-objects
+        if: steps.native-assets.outputs.cache-hit != 'true'
+        with:
+          path: |
+            build/media
+            vendor/media
+          key: windows-media-objects-f46e514-c24e06c-${{ steps.compiler.outputs.identity }}-${{ hashFiles('packaging/build_media.sh') }}
+          restore-keys: windows-media-objects-f46e514-c24e06c-${{ steps.compiler.outputs.identity }}-
       - name: Build native FFmpeg and collect native OCR
         if: steps.native-assets.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           set -o pipefail
           bash packaging/build_media.sh 2>&1 | tee build-evidence/media-build.log
+      - name: Cache successful native compilation
+        if: steps.native-assets.outputs.cache-hit != 'true' && steps.media-objects.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        continue-on-error: true
+        with:
+          path: |
+            build/media
+            vendor/media
+          key: ${{ steps.media-objects.outputs.cache-primary-key }}
       - name: Prepare verified data and corresponding source
         if: steps.native-assets.outputs.cache-hit != 'true'
         shell: pwsh

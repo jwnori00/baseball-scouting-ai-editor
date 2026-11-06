@@ -124,3 +124,14 @@ EXE/ZIP 게시 단계는 실행하지 않았습니다.
 - 빌드는 일반 중계 코덱(H.264/HEVC/VP8/VP9/MPEG-2/MPEG-4 등)과 MP4/MOV/MKV/TS/AVI,
   출력·합성 테스트에 필요한 코덱으로 제한하고 실행기 CPU 수에 맞춰 최대 4개 작업 사용.
   모든 특수 영상 코덱을 지원한다는 주장은 하지 않음.
+
+### Windows native decoder correction — 42178472482
+
+Actual retained log: 17 passed / 3 failed. `anullsrc` requires decoder `pcm_u8`,
+and lavfi video sources require decoder `wrapped_avframe`; the encoder of the
+same name does not provide the decoder. Both are now explicitly selected.
+Native encode/decode smoke is run before application tests. Existing tests remain.
+Prepared assets reuse the prior cache for unchanged Qt/OCR source downloads;
+source/object caches are isolated by exact media revisions and compiler identity.
+AI research is preserved separately on feat/real-video-discovery (e9ef417),
+not merged into the portable branch as a verified detection feature.

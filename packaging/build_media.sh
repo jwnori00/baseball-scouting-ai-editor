@@ -33,7 +33,7 @@ cd "$root/build/media/ffmpeg"
 ./configure --prefix="$prefix" --target-os=mingw32 --arch=x86_64 --cc=gcc --cxx=g++ \
     --disable-shared --enable-static --disable-autodetect --disable-doc --disable-debug \
     --disable-network --enable-gpl --enable-libx264 --pkg-config-flags=--static --extra-ldflags=-static \
-    --disable-decoders --enable-decoder=h264,hevc,vp9,vp8,mpeg4,mpeg2video,mjpeg,ffv1,rawvideo,aac,aac_fixed,mp3,mp3float,pcm_s16le,pcm_s24le,pcm_f32le,flac,opus,vorbis,ac3,eac3,alac \
+    --disable-decoders --enable-decoder=h264,hevc,vp9,vp8,mpeg4,mpeg2video,mjpeg,ffv1,rawvideo,aac,aac_fixed,mp3,mp3float,pcm_u8,wrapped_avframe,pcm_s16le,pcm_s24le,pcm_f32le,flac,opus,vorbis,ac3,eac3,alac \
     --disable-demuxers --enable-demuxer=mov,matroska,mpegts,mpegps,avi,rawvideo,concat \
     --disable-encoders --enable-encoder=libx264,aac,ffv1,rawvideo,pcm_s16le,wrapped_avframe \
     --disable-muxers --enable-muxer=mp4,matroska,rawvideo,null \
@@ -50,5 +50,9 @@ gcc --version > "$assets/corresponding-source/media/compiler.txt"
 # MSYS2's MINGW64 Tesseract is a native Windows executable, no MSYS shell needed.
 cp /mingw64/bin/tesseract.exe "$assets/tools/"
 while IFS= read -r dll; do cp "$dll" "$assets/tools/"; done < <(ldd /mingw64/bin/tesseract.exe | awk '/=> \/mingw64\// {print $3}')
-cp -R /mingw64/share/licenses "$assets/licenses/msys2"
+mkdir -p "$assets/licenses/msys2"
+cp -RL /mingw64/share/licenses/. "$assets/licenses/msys2/"
 pacman -Q > "$assets/corresponding-source/media/msys2-package-versions.txt"
+
+"$assets/tools/ffmpeg.exe" -v error -nostdin -f lavfi -i 'testsrc2=size=160x90:rate=10:duration=1' -f lavfi -i 'anullsrc=r=48000:cl=stereo' -t 1 -c:v libx264 -c:a aac -f mp4 -y "$root/build/media/native-smoke.mp4"
+"$assets/tools/ffmpeg.exe" -v error -xerror -nostdin -i "$root/build/media/native-smoke.mp4" -f null -
