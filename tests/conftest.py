@@ -33,3 +33,8 @@ def make_video(tmp_path,trained):
         subprocess.run(args,input=raw,check=True,capture_output=True)
         return path
     return create
+
+
+@pytest.fixture(autouse=True)
+def isolated_user_data(tmp_path,monkeypatch):
+    monkeypatch.setenv('BSAE_DATA_DIR',str(tmp_path/'user-data'))

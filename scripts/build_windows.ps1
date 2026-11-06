@@ -23,7 +23,7 @@ if (-not $DependenciesInstalled) {
 New-Item -ItemType Directory -Force build-evidence | Out-Null
 & $Python packaging/validate_assets.py $Assets $Kind
 if ($LASTEXITCODE -ne 0) { throw 'Assets or release model failed validation' }
-@{kind=$Kind;automatic_analysis=($Kind -ne 'development');engine='broadcast-rules-v1';version='1.0.0.rules1'} | ConvertTo-Json | Set-Content (Join-Path $Assets 'build-policy.json') -Encoding utf8
+@{kind=$Kind;automatic_analysis=($Kind -ne 'development');engine='broadcast-rules-v1';version='1.0.0.integration-preview1'} | ConvertTo-Json | Set-Content (Join-Path $Assets 'build-policy.json') -Encoding utf8
 $env:PATH = "$Assets\tools;$env:PATH"
 & $Python -m pytest -q --junitxml=build-evidence/windows-tests.xml
 if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }

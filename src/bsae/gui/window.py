@@ -13,6 +13,8 @@ from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from bsae.core.models import GameSession,PlayerIdentity,PitchEvent,DetectionEvidence
 from bsae.core.review import review
+from .library_ui import LibraryUI
+from .profile_ui import ProfileUI
 from bsae.ingest.media import add_sources
 
 
@@ -29,7 +31,7 @@ class Job(QThread):
         except Exception as exc:self.error.emit(str(exc))
 
 
-class Window(QMainWindow):
+class Window(LibraryUI,ProfileUI,QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Baseball Scouting AI Editor — 자동 탐색 검증판 / 검수 필수')
@@ -37,6 +39,7 @@ class Window(QMainWindow):
         self.session=None;self.project_path=None;self.job=None;self.dirty=False
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
         policy=root/'build-policy.json'
+        if policy.is_file():self.setWindowTitle(self.windowTitle()+' · '+json.loads(policy.read_text(encoding='utf-8-sig')).get('version',''))
         self.development_package=policy.is_file() and json.loads(policy.read_text(encoding='utf-8-sig')).get('kind')=='development'
 
         self.preview_segments=[];self.preview_index=0
@@ -58,8 +61,19 @@ class Window(QMainWindow):
         self.name=QLineEdit();self.name.setPlaceholderText('선수 이름');row.addWidget(self.name)
         self.team=QLineEdit();self.team.setPlaceholderText('팀');row.addWidget(self.team)
         self.jersey=QLineEdit();self.jersey.setPlaceholderText('등번호');row.addWidget(self.jersey)
-        self.alias=QLineEdit();self.alias.setPlaceholderText('별칭 (쉼표 구분)');self.alias.hide()
+        self.alias=QLineEdit();self.alias.setPlaceholderText('다른 언어 이름·별칭 (쉼표 구분)')
         self.date=QLineEdit();self.date.setPlaceholderText('YYYY-MM-DD');row.addWidget(self.date)
+        library_row=QHBoxLayout();layout.addLayout(library_row)
+        from bsae.core.library import LEAGUES
+        self.league=QComboBox();self.league.addItems(LEAGUES);library_row.addWidget(QLabel('리그'));library_row.addWidget(self.league)
+        library_row.addWidget(self.alias);self.favorite=QCheckBox('즐겨찾기');library_row.addWidget(self.favorite)
+        self.library_id=None
+        self.auto_profile=False
+        self.button(library_row,'선수 불러오기',self.choose_player);self.button(library_row,'선수 정보 저장/수정',self.save_library)
+        library_menu=project_menu.addMenu('선수 라이브러리')
+        library_menu.addAction('동명이인·별도 선수로 새 등록',lambda:self.save_library(True))
+        library_menu.addAction('선택 선수의 최근 프로젝트 열기',self.open_recent_player_project)
+        library_menu.addAction('선수 정보 백업',self.backup_players);library_menu.addAction('선수 정보 복원',self.restore_players)
         self.model=QLineEdit();self.profile=QLineEdit()
         self.model_settings=QWidget();settings_layout=QVBoxLayout(self.model_settings)
         for text,edit in [('모델 manifest',self.model),('중계 OCR 설정',self.profile)]:
@@ -119,6 +133,9 @@ class Window(QMainWindow):
         self.pickoff_option=project_menu.addAction('승인한 견제도 출력');self.pickoff_option.setCheckable(True)
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
         broadcast_menu=project_menu.addMenu('자동 탐색 중계 유형')
+        broadcast_menu.addAction('새 영상 중계 유형 자동 탐색 시도',self.enable_profile_detection)
+        broadcast_menu.addAction('대표 프레임에서 분석 영역 지정·저장',self.edit_broadcast_regions)
+        broadcast_menu.addAction('사용자 방송·카메라 프로필 불러오기',self.open_broadcast_profile)
         self.broadcast_group=QActionGroup(self);self.broadcast_group.setExclusive(True)
         for label,filename in [('다중 중계 학습 시험 · 선수 확인 필수','multi-broadcast-scene-v1.json'),('LMB 기존 실험 설정','lmb-telemetry-v1.json'),('KBO MBC 구도 시험 · 선수 확인 필수','kbo-mbc-centerfield-v1.json')]:
             action=broadcast_menu.addAction(label);action.setCheckable(True);self.broadcast_group.addAction(action)
@@ -131,6 +148,7 @@ class Window(QMainWindow):
             self.profile.setText(str(root/'models'/'broadcast.json'))
         if getattr(sys,'frozen',False):
             self.model.setReadOnly(True)
+        self.restore_profile_preferences()
         self.check_model()
 
 
@@ -144,10 +162,14 @@ class Window(QMainWindow):
         path,_=QFileDialog.getOpenFileName(self,'JSON 선택','','JSON (*.json)')
         if path:edit.setText(path)
 
+    def enable_profile_detection(self):
+        if self.job and self.job.isRunning():return
+        self.auto_profile=True;self.save_profile_preferences();self.stage.setText('다음 분석에서 중계·문자 영역 자동 탐색을 시도합니다. 미확정 시 사용자 보정이 필요합니다.')
+
     def select_broadcast(self,path):
         if self.job and self.job.isRunning():
             self.error('분석이 끝난 뒤 중계 유형을 변경하세요.');return
-        self.profile.setText(str(path));self.check_model()
+        self.auto_profile=False;self.profile.setText(str(path));self.check_model();self.save_profile_preferences()
 
     def check_model(self):
         # Legacy model fields remain developer-only. A generic action model is
@@ -160,7 +182,7 @@ class Window(QMainWindow):
             from bsae.ingest.media import tool
             profile=load_profile(self.profile.text() or None)
             for name in ('ffmpeg','ffprobe','tesseract'):tool(name)
-            self.availability.setText('다중 중계 학습 탐색 시험 — 선수 자동 식별 미지원 · 투구/리플레이/종료 검수 필수' if profile['camera'].get('mode')=='learned_scene' else 'KBO MBC 구도 시험 — 선수 이름 자동 식별 미지원 · 모든 후보의 신원과 경계 검수 필수' if profile['camera'].get('mode')=='field_geometry' else '구도·움직임·OCR 자동 탐색 — 중계 레이아웃과 모든 후보를 검수하세요.')
+            self.availability.setText('사용자 고정/이동 촬영 시험 · 실영상 미검증 · 선수 추적 미지원' if profile['camera'].get('mode')=='manual_geometry' else '다중 중계 학습 탐색 시험 — 선수 자동 식별 미지원 · 투구/리플레이/종료 검수 필수' if profile['camera'].get('mode')=='learned_scene' else 'KBO MBC 구도 시험 — 선수 이름 자동 식별 미지원 · 모든 후보의 신원과 경계 검수 필수' if profile['camera'].get('mode')=='field_geometry' else '구도·움직임·OCR 자동 탐색 — 중계 레이아웃과 모든 후보를 검수하세요.')
             self.analyze_button.setEnabled(not(self.job and self.job.isRunning()))
         except Exception as exc:
             self.availability.setText('자동 탐색 준비 안 됨: '+str(exc));self.analyze_button.setEnabled(False)
@@ -203,7 +225,7 @@ class Window(QMainWindow):
         if self.session:self.error('새 경기 버튼으로 새 프로젝트를 시작하세요.');return
         if not self.name.text().strip() or not self.files.count():self.error('선수 이름과 영상 파일을 입력하세요.');return
         paths=[self.files.item(i).text() for i in range(self.files.count())]
-        identity=PlayerIdentity(self.name.text().strip(),'pitcher' if self.role.currentIndex()==0 else 'batter',self.team.text(),self.jersey.text())
+        identity=self.current_identity()
         game_date=self.date.text()
         self.launch(lambda job:GameSession(identity.name,identity,add_sources(paths),game_date=game_date),self.registered)
 
@@ -225,18 +247,26 @@ class Window(QMainWindow):
         if Path(path).exists() and (not self.project_path or Path(path)!=Path(self.project_path)):
             self.error('새 프로젝트 파일명을 선택하세요.');return
         paths=[self.files.item(i).text() for i in range(self.files.count())]
-        identity=PlayerIdentity(self.name.text().strip(),'pitcher' if self.role.currentIndex()==0 else 'batter',self.team.text(),self.jersey.text(),[s.strip() for s in self.alias.text().split(',') if s.strip()])
+        identity=self.current_identity()
         existing=deepcopy(self.session) if self.session else None
-        manifest=self.model.text();game_date=self.date.text()
+        manifest=self.model.text();game_date=self.date.text();auto_profile=self.auto_profile
         def operation(job):
             from bsae.vision.rules import analyze_plays
             job.progress.emit('영상 불러오기 · 원본 식별 정보 확인',0)
             session=existing or GameSession(identity.name,identity,add_sources(paths),game_date=game_date)
-            if existing and any(getattr(identity,k)!=getattr(existing.player,k) for k in ('name','role','team','jersey','aliases')):
+            if existing and any(getattr(identity,k)!=getattr(existing.player,k) for k in ('name','role','team','jersey','aliases','league')):
                 raise ValueError('다른 선수 분석은 프로젝트를 새로 열어 진행하세요.')
             session.save(path)
             try:
-                analyze_plays(session,profile,str(Path(path).with_suffix('.sqlite')),job.stop,job.progress.emit)
+                selected_profile=profile;assessment=None
+                if auto_profile:
+                    from bsae.vision.profile_detection import select_profile
+                    job.progress.emit('중계 구도·문자 영역 자동 탐색 시도',0)
+                    selected_profile,assessment=select_profile(session.sources[0],job.stop)
+                analyze_plays(session,selected_profile,str(Path(path).with_suffix('.sqlite')),job.stop,job.progress.emit)
+                if assessment:
+                    session.analysis['layout_detection']=assessment
+                    if assessment['status']=='UNRECOGNIZED_LAYOUT':session.analysis['status']='UNRECOGNIZED_LAYOUT_REVIEW_REQUIRED'
             except Exception as exc:
                 from bsae.vision.pipeline import Cancelled
                 if isinstance(exc,Cancelled):raise RuntimeError('분석을 중단했습니다. 프로젝트와 캐시가 보존됐으며 같은 작업을 재개할 수 있습니다.') from exc
@@ -248,8 +278,11 @@ class Window(QMainWindow):
 
     def analysis_done(self,session):
         self.session=session;self.dirty=False;self.refresh()
+        self.remember_project(session,self.project_path)
         counts=session.analysis.get('counts',{})
-        self.stage.setText(f"후보 {len(session.events)}개 / 타석 {len(session.appearances)}개 / 신원 미확정 {counts.get('uncertain',0)}개 / 누락 의심 {len(session.analysis.get('coverage_gaps',[]))}구간 — 검수 필요")
+        layout=session.analysis.get('layout_detection',{})
+        prefix=('미검증 촬영 유형 · 선수 추적 미지원 / ' if session.analysis.get('support_status')=='UNVERIFIED_CAMERA_TYPE' else '투구 후보 없음 · 미인식/누락 검수 필요 / ' if not session.events else '화면 구성 인식 실패 · 영역 보정 필요 / ' if layout.get('status')=='UNRECOGNIZED_LAYOUT' else '중계 유형·신원 검수 필요 / ' if layout.get('confidence')=='UNCERTAIN' else '')
+        self.stage.setText(prefix+f"후보 {len(session.events)}개 / 타석 {len(session.appearances)}개 / 신원 미확정 {counts.get('uncertain',0)}개 / 누락 의심 {len(session.analysis.get('coverage_gaps',[]))}구간 — 검수 필요")
 
     def cancel(self):
         if self.job:self.job.stop.set();self.stage.setText('중단 요청: 현재 처리 단위 종료 후 캐시 보존')
@@ -396,7 +429,7 @@ class Window(QMainWindow):
         if not self.session:return
         path,_=QFileDialog.getSaveFileName(self,'프로젝트 저장',self.project_path or '','JSON (*.json)')
         if path:
-            try:self.session.save(path);self.project_path=path;self.dirty=False
+            try:self.session.save(path);self.project_path=path;self.dirty=False;self.remember_project(self.session,path)
             except Exception as exc:self.error(exc)
 
     def open_project(self):
@@ -408,8 +441,8 @@ class Window(QMainWindow):
             self.session=GameSession.load(path);self.project_path=path;self.files.clear()
             for s in self.session.sources:self.files.addItem(s.path)
             p=self.session.player
-            self.name.setText(p.name);self.team.setText(p.team);self.jersey.setText(p.jersey);self.alias.setText(', '.join(p.aliases));self.date.setText(self.session.game_date)
-            self.role.setCurrentIndex(0 if p.role=='pitcher' else 1);self.dirty=False;self.refresh()
+            self.fill_identity(p);self.date.setText(self.session.game_date)
+            self.role.setCurrentIndex(0 if p.role=='pitcher' else 1);self.dirty=False;self.refresh();self.remember_project(self.session,path)
         except Exception as exc:self.error(exc)
 
     def start_export(self):

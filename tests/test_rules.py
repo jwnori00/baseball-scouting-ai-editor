@@ -241,3 +241,19 @@ def test_panel_free_camera_rejects_large_uniform_closeup():
     assert camera_cues(image,p)['pitch_view']
     image[50:170,100:200]=230
     assert not camera_cues(image,p)['pitch_view']
+
+
+def test_batter_group_alias_foul_and_substitution():
+    s=project(role='batter');events=[]
+    for i,(name,player,count) in enumerate([('Bae Young-seop','same','0-2'),('배영섭','same','0-2'),('다른 타자','other','0-0')]):
+        a=i*5
+        events.append(PitchEvent(s.id,s.split(a,a+3),a,a+3,batter_id=player,evidence=[DetectionEvidence('ocr:batter_name',name,a),DetectionEvidence('ocr:count',count,a)]))
+    groups=group_plates(events)
+    assert [len(p.event_ids) for p in groups]==[2,1]
+    assert all(not p.confirmed for p in groups)
+
+
+@pytest.mark.parametrize('text,result',[('9초','9초'),('9回裏','9말'),('9 TOP','9초'),('9','9'),('0',None),('19:45',None)])
+def test_inning_reading_never_invents_half(text,result):
+    from bsae.vision.rules import parse_inning
+    assert parse_inning(text)==result

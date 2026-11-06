@@ -62,10 +62,13 @@ def camera_cues(rgb,profile):
         _,_,components,_=cv2.connectedComponentsWithStats(region(uniform,[.25,.25,.78,.96]))
         largest=max(components[1:,cv2.CC_STAT_AREA],default=0)/float(rgb.shape[0]*rgb.shape[1])
         pitch_view=bool(upper<=camera['upper_field_max'] and min(lower_left,lower_right)>=camera['side_field_min'] and largest<=camera.get('largest_uniform_max',1))
+    if camera.get('mode')=='manual_geometry':
+        # Explicit user camera layout, not automatic player identification.
+        pitch_view=bool(float(region(rgb,camera['content']).std())>8)
     extra={}
     if camera.get('mode')=='learned_scene':
         from .scene import margin
-        score=margin(rgb,profile['scene_weights']);threshold=profile['scene_weights']['threshold']
+        score=margin(region(rgb,camera['content']),profile['scene_weights']);threshold=profile['scene_weights']['threshold']
         pitch_view=bool(score>=threshold)
         extra=dict(scene_margin=score,scene_threshold=threshold)
     return dict(pitch_view=pitch_view,**extra,
@@ -80,6 +83,13 @@ def local_motion(previous,rgb,box):
     # Remove median camera displacement rather than counting a pan as delivery.
     flow-=np.median(flow.reshape(-1,2),axis=0)
     return float(np.percentile(np.linalg.norm(flow,axis=2),90))
+
+
+def parse_inning(value):
+    match=re.fullmatch(r'\s*([1-9][0-9]?)\s*(?:회|回)?\s*(초|말|表|裏|TOP|BOT|BOTTOM|T|B|▲|△|▼|▽)?\s*',value.upper())
+    if not match:return None
+    number,half=match.groups()
+    return number+('초' if half in ('초','表','TOP','T','▲','△') else '말' if half else '')
 
 
 def parse_count(value):
@@ -136,13 +146,13 @@ class Identity:
         match=name_matches(observed,self.player)
         proof=[]
         if match:proof.append(('name',observed))
-        if self.player.team and canonical_team(values.get(prefix+'team',''),self.profile)==canonical_team(self.player.team,self.profile):proof.append(('team',values[prefix+'team']))
+        if normalize(self.player.team) and normalize(values.get(prefix+'team','')) and canonical_team(values.get(prefix+'team',''),self.profile)==canonical_team(self.player.team,self.profile):proof.append(('team',values[prefix+'team']))
         if self.player.jersey and values.get(prefix+'jersey','')==self.player.jersey:proof.append(('jersey',self.player.jersey))
         if match and len(proof)>=2:self.confirmation=(t,proof)
         if self.confirmation and t-self.confirmation[0]<=20:return dict(state='target',proof=self.confirmation[1])
         # Nonmatching text can be OCR noise. Preserve it, never assert a substitute
         # from one fuzzy name. Another player's candidate requires fresh name+team.
-        if observed and not match and len(normalize(observed))>=8 and values.get(prefix+'team'):
+        if observed and not match and len(normalize(observed))>=(2 if any(ord(c)>127 for c in observed) else 8) and values.get(prefix+'team'):
             return dict(state='other_or_ocr_error',proof=[('observed_name',observed),('observed_team',values[prefix+'team'])])
         return dict(state='unconfirmed',proof=proof)
 
@@ -297,6 +307,7 @@ class Assembly:
             identity=item['identity'];readings=item['readings']
             warnings=['컷 경계·반환 송구·후속 플레이 종료는 검수 필요',
                 '방송 레이아웃 규칙 기반 후보; 일반 중계 전체 성능 미평가']
+            if self.profile['camera'].get('mode')=='manual_geometry':warnings.append('사용자 지정 고정/이동 촬영 영역: 실영상 미검증·선수 추적 미지원. 모든 후보 검수 필요')
             if self.profile['camera'].get('mode')=='learned_scene':warnings.append('학습된 구도 판별일 뿐 투구·선수·리플레이·플레이 종료 자동 검증이 아닙니다')
             if identity['state']!='target':warnings.append('대상 선수 신원 미확정; 이름·팀·등번호 원본 대조 필요')
             if item['extended']:warnings.append('수비·주루 보존을 위해 다음 필드 장면까지 확장; 불필요한 여유 검수 필요')
@@ -317,7 +328,7 @@ class Assembly:
             event=PitchEvent(self.session.id,self.session.split(a,b),a,b,
                 pitcher_id=self.session.player.id if identity['state']=='target' and self.session.player.role=='pitcher' else None,
                 batter_id=self.session.player.id if identity['state']=='target' and self.session.player.role=='batter' else None,
-                inning=(re.sub(r'[^0-9]','',readings.get('inning','')) or None),event_type=event_type,evidence=proof,warnings=warnings,
+                inning=parse_inning(readings.get('inning','')),event_type=event_type,evidence=proof,warnings=warnings,
                 status='EXCLUDED' if item['replay'] else 'REVIEW_REQUIRED')
             self.events.append(event)
         self.pending=remaining
@@ -360,13 +371,15 @@ def group_plates(events):
         if not batter and not (previous or {}).get('batter'):
             new=True;event.warnings.append('타자 근거가 없어 타석 연결 미확정')
         if previous:
-            if batter and previous['batter'] and not compatible_name(batter,previous['batter']):new=True
+            if batter and previous['batter'] and not compatible_name(batter,previous['batter']) and not (event.batter_id and event.batter_id==previous['batter_id']):new=True
+            if event.timeline_start-previous['end']>90:
+                new=True;event.warnings.append('장시간 간격: 타석 연속성 미확정')
             if inning and previous['inning'] and inning!=previous['inning']:new=True
             if count==(0,0) and previous['count'] not in (None,(0,0)):new=True
         if new:result.append(PlateAppearance([],event.batter_id,inning))
         result[-1].event_ids.append(event.id);event.plate_id=result[-1].id
         event.warnings.append('타석 그룹 제안: 타자 변경·타석 종료 검수 필요')
-        previous=dict(batter=batter or (previous or {}).get('batter',''),inning=inning or (previous or {}).get('inning'),count=count or (previous or {}).get('count'))
+        previous=dict(batter_id=event.batter_id,end=event.timeline_end,batter=batter or (previous or {}).get('batter',''),inning=inning or (previous or {}).get('inning'),count=count or (previous or {}).get('count'))
     return result
 
 
@@ -406,6 +419,12 @@ def analyze_plays(session,profile=None,cache_path=None,stop=None,progress=lambda
             limitations=['other layouts/innings/pickoffs/replays NOT_EVALUATED','endpoints are conservative, not semantic play-end proof'],
             counts=dict(all=len(session.events),target=sum(e.pitcher_id==session.player.id or e.batter_id==session.player.id for e in session.events),
                 uncertain=sum(any(p.kind=='identity_state' and p.value!='target' for p in e.evidence) for e in session.events)))
+        session.analysis['input_type']=profile.get('input_type','broadcast')
+        session.analysis['support_status']='UNVERIFIED_CAMERA_TYPE' if profile.get('input_type') in ('fixed_camera','moving_camera') else 'EXPERIMENTAL_BROADCAST'
+        if session.analysis['support_status']=='UNVERIFIED_CAMERA_TYPE':session.analysis['status']='UNVERIFIED_INPUT_REVIEW_REQUIRED'
+        if not session.events:
+            session.analysis['recognition_status']='NO_CANDIDATES_REVIEW_REQUIRED'
+            session.analysis['status']='NO_CANDIDATES_REVIEW_REQUIRED'
         session.validate();progress('후보 생성 완료 — 검수 필요',1)
         return session
     except BaseException as exc:

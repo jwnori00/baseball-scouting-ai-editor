@@ -27,3 +27,14 @@ def test_ocr_language_path_traversal_is_rejected(tmp_path,monkeypatch):
     workspace=tmp_path/'runtime';workspace.mkdir()
     monkeypatch.setattr(ocr_runtime,'_workspace',workspace)
     with pytest.raises(ValueError):ocr_runtime.prepare(tmp_path/'tesseract.exe',['stdin','stdout','-l','../secret'])
+
+
+def test_list_langs_preserves_all_bundled_language_models(tmp_path,monkeypatch):
+    from bsae.ingest import ocr_runtime
+    install=tmp_path/'한글';data=install/'tessdata';data.mkdir(parents=True)
+    executable=install/'tesseract.exe';executable.write_bytes(b'fake-test-tool')
+    for language in ('eng','kor','jpn'):(data/(language+'.traineddata')).write_bytes(language.encode())
+    workspace=tmp_path/'ascii';workspace.mkdir();monkeypatch.setattr(ocr_runtime,'_workspace',workspace)
+    monkeypatch.setattr(ocr_runtime,'_verified',{});monkeypatch.setattr(ocr_runtime,'_tools_verified',{})
+    ocr_runtime.prepare(executable,['--list-langs'])
+    assert {p.stem for p in (workspace/'tessdata').glob('*.traineddata')}=={'eng','kor','jpn'}

@@ -151,6 +151,11 @@ jobs:
         with:
           path: vendor/portable
           key: ${{ steps.native-assets.outputs.cache-primary-key }}
+      - name: Add verified Korean and Japanese OCR data
+        shell: pwsh
+        run: |
+          python packaging/prepare_multilingual_ocr.py vendor/portable
+          if ($LASTEXITCODE -ne 0) { throw 'Multilingual OCR asset preparation failed' }
       - name: Test, build onedir, run actual EXE, ZIP and SHA-256
         shell: pwsh
         run: |

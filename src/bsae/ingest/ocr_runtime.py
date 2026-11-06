@@ -50,7 +50,7 @@ def prepare(executable,arguments):
         configured=os.environ.get('TESSDATA_PREFIX')
         original=Path(configured) if configured else original
     if not original.is_dir():return str(executable),list(arguments),dict(os.environ),str(workspace)
-    languages='eng'
+    languages='+'.join(sorted(p.stem for p in original.glob('*.traineddata'))) if '--list-langs' in arguments else 'eng'
     if '-l' in arguments:languages=arguments[arguments.index('-l')+1]
     names=set(languages.split('+'))
     if any(not n or any(c not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-' for c in n) for n in names):

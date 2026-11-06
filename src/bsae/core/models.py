@@ -42,6 +42,7 @@ class PlayerIdentity:
     jersey: str = ''
     aliases: list[str] = field(default_factory=list)
     id: str = field(default_factory=uid)
+    league: str = ''
 
 
 @dataclass
