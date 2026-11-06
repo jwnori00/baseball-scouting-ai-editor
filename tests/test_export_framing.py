@@ -22,7 +22,7 @@ def test_real_export_expands_padded_video_and_can_disable(tmp_path):
     from bsae.core.review import review
     from bsae.export.render import export
     path=tmp_path/'padded.mp4'
-    run('ffmpeg',['-v','error','-f','lavfi','-i','color=c=red:s=160x90:r=30:d=1',
+    run('ffmpeg',['-v','error','-f','lavfi','-i','testsrc2=s=160x90:r=30:d=1',
         '-vf','pad=640:360:240:134','-c:v','libx264','-pix_fmt','yuv420p',path])
     s=GameSession('Synthetic border test',PlayerIdentity('Test','pitcher','T','1'),add_sources([path]))
     event=PitchEvent(s.id,s.split(0,1),0,1,number=1);s.events=[event]
@@ -33,7 +33,7 @@ def test_real_export_expands_padded_video_and_can_disable(tmp_path):
         video=next(v for v in probe(target/'all_0001.mp4')['streams'] if v['codec_type']=='video')
         assert (video['width'],video['height'],video['avg_frame_rate'])==(1280,720,'30/1')
         _,image=next(frames(target/'all_0001.mp4',fps=1,width=640,height=360))
-        coverage=np.mean(image[:,:,0]>100)
+        coverage=np.mean(np.max(image,axis=2)>20)
         assert coverage>.75 if enabled else coverage<.10
         data=json.loads((target/'framing.json').read_text())
         assert bool(data['segments'][0]['crop'])==enabled
