@@ -1,0 +1,9 @@
+{
+  "executable": "PASS",
+  "gui_construction": "PASS",
+  "synthetic_render": "PASS",
+  "model_integrity": "NOT_INCLUDED_DEVELOPMENT",
+  "automatic_analysis": "DISABLED",
+  "baseball_accuracy": "NOT_EVALUATED",
+  "windows_user_pc": "NOT_TESTED"
+}
