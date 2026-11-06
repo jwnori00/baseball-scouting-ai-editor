@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="20" time="6.474" timestamp="2026-11-06T07:17:05.741291+00:00" hostname="runnervmhao91"><testcase classname="tests.test_workflow" name="test_stream_pts_and_multifile" time="0.298" /><testcase classname="tests.test_workflow" name="test_real_inference_to_review_and_render" time="3.194" /><testcase classname="tests.test_workflow" name="test_missing_or_tampered_model_fails" time="0.097" /><testcase classname="tests.test_workflow" name="test_cache_cancel_resume" time="0.331" /><testcase classname="tests.test_workflow" name="test_identity_accent_and_multiple_evidence" time="0.001" /><testcase classname="tests.test_workflow" name="test_camera_changes_do_not_finish_active_play" time="0.129" /><testcase classname="tests.test_workflow" name="test_batter_groups_and_substitution" time="0.124" /><testcase classname="tests.test_workflow" name="test_cross_file_event_render" time="0.252"><failure message="RuntimeError: [aist#1:0/pcm_u8 @ 0000018772ced600] Decoding requested, but no decoder found for: pcm_u8&#13;&#10;Error opening output file C:\Users\runneradmin\AppData\Local\Temp\pytest-of-runneradmin\pytest-0\test_cross_file_event_render0\.bsae-uky4z5i7\piece_000000_000.mp4.&#13;&#10;Error opening output files: Invalid argument">make_video = &lt;function make_video.&lt;locals&gt;.create at 0x00000243FB92B560&gt;
+tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_cross_file_event_render0')
+
+    def test_cross_file_event_render(make_video,tmp_path):
+        p1=make_video(['other']*2,'one.mkv');p2=make_video(['other']*2,'two.mkv')
+        s=session([p1,p2]);e=PitchEvent(s.id,s.split(1,3),1,3,number=1)
+        s.events=[e];review(s,e.id,'APPROVED',confirm_identity=True)
+&gt;       export(s,tmp_path/'out')
+
+tests\test_workflow.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\bsae\export\render.py:94: in export
+    run('ffmpeg', args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'ffmpeg', args = ['-v', 'error', '-nostdin', '-n', '-ss', '1.0', ...]
+kwargs = {'creationflags': 134217728}
+executable = 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE'
+result = CompletedProcess(args=['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmp...t_cross_file_event_render0\\.bsae-uky4z5i7\\piece_000000_000.mp4.\r\nError opening output files: Invalid argument\r\n')
+
+    def run(name, args, **kwargs):
+        if sys.platform == 'win32':
+            kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
+        executable = tool(name)
+        if name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
+            import os
+            kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
+        result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stderr.decode('utf-8', errors='replace')[-4000:])
+E           RuntimeError: [aist#1:0/pcm_u8 @ 0000018772ced600] Decoding requested, but no decoder found for: pcm_u8
+E           Error opening output file C:\Users\runneradmin\AppData\Local\Temp\pytest-of-runneradmin\pytest-0\test_cross_file_event_render0\.bsae-uky4z5i7\piece_000000_000.mp4.
+E           Error opening output files: Invalid argument
+
+src\bsae\ingest\media.py:38: RuntimeError</failure></testcase><testcase classname="tests.test_workflow" name="test_metrics_no_claim_without_truth" time="0.001" /><testcase classname="tests.test_workflow" name="test_source_protection_and_changed_media" time="0.143" /><testcase classname="tests.test_workflow" name="test_gui_model_gate" time="0.309" /><testcase classname="tests.test_workflow" name="test_replay_model_state_does_not_create_pitch" time="0.352" /><testcase classname="tests.test_workflow" name="test_exact_overlap_requires_motion" time="0.001" /><testcase classname="tests.test_workflow" name="test_local_ocr_reads_rendered_text" time="0.268" /><testcase classname="tests.test_workflow" name="test_vfr_nonzero_pts_are_normalized" time="0.028"><failure message="RuntimeError: [vist#0:0/wrapped_avframe @ 0000023e86c9e9c0] Decoding requested, but no decoder found for: wrapped_avframe&#13;&#10;Error opening output file C:\Users\runneradmin\AppData\Local\Temp\pytest-of-runneradmin\pytest-0\test_vfr_nonzero_pts_are_norma0\vfr.mkv.&#13;&#10;Error opening output files: Invalid argument">tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_vfr_nonzero_pts_are_norma0')
+
+    def test_vfr_nonzero_pts_are_normalized(tmp_path):
+        from bsae.ingest.media import run
+        path=tmp_path/'vfr.mkv'
+&gt;       run('ffmpeg',['-v','error','-nostdin','-n','-f','lavfi','-i','testsrc2=size=160x90:rate=10:duration=2',
+            '-vf',"select='not(mod(n,3))',setpts=PTS+5/TB",'-fps_mode','vfr','-c:v','ffv1',path])
+
+tests\test_workflow.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'ffmpeg', args = ['-v', 'error', '-nostdin', '-n', '-f', 'lavfi', ...]
+kwargs = {'creationflags': 134217728}
+executable = 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE'
+result = CompletedProcess(args=['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmp...-runneradmin\\pytest-0\\test_vfr_nonzero_pts_are_norma0\\vfr.mkv.\r\nError opening output files: Invalid argument\r\n')
+
+    def run(name, args, **kwargs):
+        if sys.platform == 'win32':
+            kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
+        executable = tool(name)
+        if name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
+            import os
+            kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
+        result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stderr.decode('utf-8', errors='replace')[-4000:])
+E           RuntimeError: [vist#0:0/wrapped_avframe @ 0000023e86c9e9c0] Decoding requested, but no decoder found for: wrapped_avframe
+E           Error opening output file C:\Users\runneradmin\AppData\Local\Temp\pytest-of-runneradmin\pytest-0\test_vfr_nonzero_pts_are_norma0\vfr.mkv.
+E           Error opening output files: Invalid argument
+
+src\bsae\ingest\media.py:38: RuntimeError</failure></testcase><testcase classname="tests.test_workflow" name="test_portable_bundled_model_is_selected" time="0.029" /><testcase classname="tests.test_workflow" name="test_acceptance_does_not_autoapprove_predictions" time="0.481"><failure message="RuntimeError: [aist#1:0/pcm_u8 @ 000001d80169a540] Decoding requested, but no decoder found for: pcm_u8&#13;&#10;Error opening output file C:\Users\runneradmin\AppData\Local\Temp\pytest-of-runneradmin\pytest-0\test_acceptance_does_not_autoa0\.bsae-d7kohfhn\piece_000000_000.mp4.&#13;&#10;Error opening output files: Invalid argument">make_video = &lt;function make_video.&lt;locals&gt;.create at 0x00000243FBB27420&gt;
+trained = (WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/model0/model.json'), {'dead': arr....,
+        [182,  72, 209],
+        [ 61, 187, 229],
+        [157,  24,  35]]], shape=(90, 160, 3), dtype=uint8), ...})
+tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_acceptance_does_not_autoa0')
+
+    def test_acceptance_does_not_autoapprove_predictions(make_video,trained,tmp_path):
+        from bsae.acceptance import run_acceptance
+        s=session([make_video(['setup','delivery','receive','dead'])])
+        analyze(s,trained[0],{},tmp_path/'before.sqlite')
+        for e in s.events:review(s,e.id,'APPROVED',confirm_identity=True)
+        reference=tmp_path/'reference.json';s.save(reference);before=reference.read_bytes()
+        plan=dict(reference_project=str(reference),ground_truth_complete=True,followup_reviewed=True,
+            model=str(trained[0]),profile={},cache=str(tmp_path/'fresh.sqlite'),
+            candidate_project=str(tmp_path/'candidate.json'),output=str(tmp_path/'acceptance-output'))
+        path=tmp_path/'plan.json';path.write_text(json.dumps(plan))
+&gt;       report=run_acceptance(path,tmp_path/'report.json')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\bsae\acceptance.py:35: in run_acceptance
+    output=export(reference,plan['output'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\bsae\export\render.py:94: in export
+    run('ffmpeg', args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'ffmpeg', args = ['-v', 'error', '-nostdin', '-n', '-ss', '0.0', ...]
+kwargs = {'creationflags': 134217728}
+executable = 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmpeg.EXE'
+result = CompletedProcess(args=['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\vendor\\portable\\tools\\ffmp...acceptance_does_not_autoa0\\.bsae-d7kohfhn\\piece_000000_000.mp4.\r\nError opening output files: Invalid argument\r\n')
+
+    def run(name, args, **kwargs):
+        if sys.platform == 'win32':
+            kwargs.setdefault('creationflags', subprocess.CREATE_NO_WINDOW)
+        executable = tool(name)
+        if name == 'tesseract' and (Path(executable).parent/'tessdata').is_dir():
+            import os
+            kwargs['env'] = dict(os.environ, TESSDATA_PREFIX=str(Path(executable).parent/'tessdata'))
+        result = subprocess.run([executable, *map(str, args)], capture_output=True, **kwargs)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stderr.decode('utf-8', errors='replace')[-4000:])
+E           RuntimeError: [aist#1:0/pcm_u8 @ 000001d80169a540] Decoding requested, but no decoder found for: pcm_u8
+E           Error opening output file C:\Users\runneradmin\AppData\Local\Temp\pytest-of-runneradmin\pytest-0\test_acceptance_does_not_autoa0\.bsae-d7kohfhn\piece_000000_000.mp4.
+E           Error opening output files: Invalid argument
+
+src\bsae\ingest\media.py:38: RuntimeError</failure></testcase><testcase classname="tests.test_workflow" name="test_development_package_disables_even_supplied_model" time="0.012" /><testcase classname="tests.test_workflow" name="test_development_media_registration_without_ai" time="0.097" /><testcase classname="tests.test_workflow" name="test_asset_gate_separates_development_and_release" time="0.036" /></testsuite></testsuites>
