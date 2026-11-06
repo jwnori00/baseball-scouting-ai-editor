@@ -1,0 +1,35 @@
+Portable assets verified; release requires independent baseball validation.
+............................F.......................                     [100%]
+================================== FAILURES ===================================
+____________________ test_bundled_scene_and_corrupt_model _____________________
+
+    def test_bundled_scene_and_corrupt_model():
+>       p=load_profile(Path(__file__).resolve().parents[1]/'profiles'/'multi-broadcast-scene-v1.json')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_scene_model.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/profiles/multi-broadcast-scene-v1.json')
+
+    def load_profile(path=None):
+        import sys
+        root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
+        path=Path(path) if path else root/'profiles'/'lmb-telemetry-v1.json'
+        profile=json.loads(path.read_text(encoding='utf-8-sig'))
+        for key in ('panel','content','pitcher','catcher'):
+            box=profile['camera'][key]
+            if len(box)!=4 or not 0<=box[0]<box[2]<=1 or not 0<=box[1]<box[3]<=1:raise ValueError('\uc798\ubabb\ub41c \uc911\uacc4 \uc601\uc5ed: '+key)
+        if not 4<=profile.get('sampling_fps',10)<=30 or not .25<=profile.get('ocr_interval',2)<=10:raise ValueError('\uc798\ubabb\ub41c \uc0d8\ud50c\ub9c1 \uc124\uc815')
+        if profile['camera'].get('mode')=='learned_scene':
+            model_path=path.parent/profile['scene_model']
+            if model_path.resolve().parent!=path.parent.resolve():raise ValueError('\uad6c\ub3c4 \ubaa8\ub378\uc740 \uc124\uc815 \ud3f4\ub354 \uc548\uc5d0 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4')
+>           if hashlib.sha256(model_path.read_bytes()).hexdigest()!=profile['scene_sha256']:raise ValueError('\uad6c\ub3c4 \ubaa8\ub378 \uccb4\ud06c\uc12c \ubd88\uc77c\uce58')
+                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: \uad6c\ub3c4 \ubaa8\ub378 \uccb4\ud06c\uc12c \ubd88\uc77c\uce58
+
+src\bsae\vision\rules.py:37: ValueError
+- generated xml file: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build-evidence\windows-tests.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_scene_model.py::test_bundled_scene_and_corrupt_model - ValueError: \uad6c\ub3c4 \ubaa8\ub378 \uccb4\ud06c\uc12c \ubd88\uc77c\uce58
+1 failed, 51 passed in 26.56s
