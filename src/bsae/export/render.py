@@ -86,7 +86,8 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
                         from .framing import detect_crop
                         crop = detect_crop(source.path, seg.start, seg.end, source_video, stop)
                     framing.append(dict(event_id=e.id, source_id=seg.source_id, start=seg.start, end=seg.end, crop=crop))
-                    prefix = ('crop='+':'.join(map(str,crop))+',') if crop else ''
+                    from .framing import crop_filter
+                    prefix = crop_filter(crop, source_video)
                     audio = any(s['codec_type']=='audio' for s in meta['streams'])
                     path = temp/f'piece_{i:06d}_{j:03d}.mp4'
                     args = ['-v','error','-nostdin','-n','-ss',str(seg.start),'-i',source.path]

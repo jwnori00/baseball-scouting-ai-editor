@@ -36,3 +36,21 @@ def detect_crop(path, start, end, video, stop=None):
     if (r-x)*(b-y) > width*height*.90 or r-x < width*.10 or b-y < height*.10:
         return None
     return (r-x, b-y, x, y)
+
+
+def crop_filter(crop, video):
+    """Map sampled fractions onto FFmpeg's decoded (autorotated) geometry.
+
+    ffprobe width/height describe coded storage, not necessarily filter input.
+    Relative coordinates also remain valid when the decoder changes resolution.
+    """
+    if crop is None:
+        return ''
+    w,h,x,y=crop
+    width,height=int(video['width']),int(video['height'])
+    if min(w,h)<=0 or min(x,y)<0 or x+w>width or y+h>height:
+        raise ValueError('자동 여백 영역이 분석 화면 범위를 벗어났습니다')
+    return (f"crop=w='max(2,trunc(iw*{w}/{width}/2)*2)'"
+            f":h='max(2,trunc(ih*{h}/{height}/2)*2)'"
+            f":x='min(iw-ow,trunc(iw*{x}/{width}/2)*2)'"
+            f":y='min(ih-oh,trunc(ih*{y}/{height}/2)*2)',")
