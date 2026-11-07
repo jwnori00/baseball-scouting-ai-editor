@@ -6,6 +6,7 @@ import math
 import os
 import tempfile
 import uuid
+from .output_settings import default_output_settings,legacy_output_settings,validate_output_settings
 
 
 def uid():
@@ -42,6 +43,7 @@ class PlayerIdentity:
     jersey: str = ''
     aliases: list[str] = field(default_factory=list)
     id: str = field(default_factory=uid)
+    league: str = ''
 
 
 @dataclass
@@ -116,8 +118,13 @@ class GameSession:
     id: str = field(default_factory=uid)
     schema: int = 1
     analysis: dict = field(default_factory=dict)
+    output_settings: dict = field(default_factory=default_output_settings)
+    analysis_runs: list[dict] = field(default_factory=list)
+    active_round_id: str | None = None
 
     def validate(self):
+        validate_output_settings(self.output_settings)
+        if not isinstance(self.analysis_runs,list) or any(not isinstance(r,dict) or not r.get("id") for r in self.analysis_runs):raise ValueError("분석 회차 형식 오류")
         if self.schema != 1 or self.player.role not in ('pitcher', 'batter'):
             raise ValueError('지원하지 않는 프로젝트/선수 역할')
         ids = [s.id for s in self.sources]
@@ -168,7 +175,13 @@ class GameSession:
 
     @classmethod
     def load(cls, path):
-        d = json.loads(Path(path).read_text(encoding='utf-8'))
+        return cls.from_dict(json.loads(Path(path).read_text(encoding='utf-8-sig')))
+
+    @classmethod
+    def from_dict(cls,data):
+        from copy import deepcopy
+        d=deepcopy(data)
+        if 'output_settings' not in d:d['output_settings']=legacy_output_settings()
         d['player'] = PlayerIdentity(**d['player'])
         d['sources'] = [VideoSource(**s) for s in d['sources']]
         for e in d['events']:

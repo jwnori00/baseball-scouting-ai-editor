@@ -1,0 +1,2 @@
+# Model checksums must remain identical after a Windows Git checkout.
+profiles/*.json text eol=lf

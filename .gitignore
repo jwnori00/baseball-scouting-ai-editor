@@ -236,3 +236,6 @@ private/
 local-data/
 vendor/
 build-evidence/
+
+# PyInstaller's reviewed build configuration must be version controlled.
+!/packaging/editor.spec

@@ -136,13 +136,14 @@ def test_source_protection_and_changed_media(make_video,tmp_path,trained):
     with pytest.raises(ValueError,match='변경'):analyze(s,trained[0],{},tmp_path/'cache.sqlite')
 
 
-def test_gui_model_gate():
+def test_gui_rules_runtime_gate():
     from PySide6.QtWidgets import QApplication
     from bsae.gui.window import Window
     app=QApplication.instance() or QApplication([])
     w=Window()
-    assert not w.analyze_button.isEnabled()
-    assert 'BLOCKED' in w.availability.text()
+    import shutil
+    assert w.analyze_button.isEnabled()==bool(shutil.which('tesseract'))
+    assert '탐색' in w.availability.text()
     w.close();app.processEvents()
 
 
@@ -182,7 +183,10 @@ def test_vfr_nonzero_pts_are_normalized(tmp_path):
     assert probe(path)['streams'][0]['start_time']=='5.000000'
     source=add_sources([path])[0]
     assert source.pts_origin==5
-    assert source.duration==pytest.approx(2.1,abs=.01)
+    # FFmpeg versions encode the last selected frame with 0.1s or 0.3s duration.
+    # The playable span must exclude the 5s PTS origin in either case.
+    assert 1.8 <= source.duration <= 2.2
+    assert timestamps[-1] <= source.duration + .25
 
 
 def test_portable_bundled_model_is_selected(trained,tmp_path,monkeypatch):
@@ -196,7 +200,9 @@ def test_portable_bundled_model_is_selected(trained,tmp_path,monkeypatch):
     monkeypatch.setattr(sys,'frozen',True,raising=False)
     app=QApplication.instance() or QApplication([]);w=Window()
     assert w.model.text()==str(bundled/'model.json')
-    assert w.model.isReadOnly() and w.analyze_button.isEnabled()
+    assert w.model.isReadOnly()
+    # A random model cannot replace missing bundled profile/tools.
+    assert not w.analyze_button.isEnabled()
     w.close();app.processEvents()
 
 
@@ -216,3 +222,45 @@ def test_acceptance_does_not_autoapprove_predictions(make_video,trained,tmp_path
     assert report['metrics']['identity_accuracy']==0
     assert all(e.status=='REVIEW_REQUIRED' for e in GameSession.load(plan['candidate_project']).events)
     assert reference.read_bytes()==before
+
+
+def test_development_package_disables_even_supplied_model(trained,tmp_path,monkeypatch):
+    import sys,shutil
+    from PySide6.QtWidgets import QApplication
+    from bsae.gui.window import Window
+    (tmp_path/'build-policy.json').write_text(json.dumps({'kind':'development'}))
+    bundled=tmp_path/'models';bundled.mkdir()
+    shutil.copy2(trained[0],bundled/'model.json');shutil.copy2(trained[0].parent/'temporal.npz',bundled/'temporal.npz')
+    monkeypatch.setattr(sys,'_MEIPASS',str(tmp_path),raising=False)
+    app=QApplication.instance() or QApplication([]);w=Window()
+    assert not w.analyze_button.isEnabled() and '개발판' in w.availability.text()
+    w.close();app.processEvents()
+
+
+def test_development_media_registration_without_ai(make_video):
+    from PySide6.QtWidgets import QApplication
+    from bsae.gui.window import Window
+    app=QApplication.instance() or QApplication([]);w=Window()
+    game=session([make_video(['other']*3)])
+    w.registered(game)
+    w.start.setValue(.2);w.end.setValue(1.5);w.manual()
+    w.table.selectRow(0);w.confirm.setChecked(True);w.apply('APPROVED')
+    assert w.session.events[0].status=='APPROVED'
+    assert w.session.events[0].event_type=='manual_candidate'
+    w.dirty=False;w.close();app.processEvents()
+
+
+def test_asset_gate_separates_development_and_release(tmp_path):
+    import hashlib,importlib.util
+    spec=importlib.util.spec_from_file_location('asset_gate',Path(__file__).resolve().parents[1]/'packaging'/'validate_assets.py')
+    gate=importlib.util.module_from_spec(spec);spec.loader.exec_module(gate)
+    names=['tools/ffmpeg.exe','tools/ffprobe.exe','tools/tesseract.exe','tools/tessdata/eng.traineddata','licenses/test.txt','corresponding-source/test.txt']
+    entries=[]
+    for name in names:
+        p=tmp_path/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b'unit-test-fixture-only')
+        entries.append(dict(path=name,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+    (tmp_path/'assets.json').write_text(json.dumps(dict(files=entries)))
+    gate.validate(tmp_path,'development')
+    with pytest.raises(ValueError,match='models'):gate.validate(tmp_path,'release')
+    (tmp_path/'tools'/'ffmpeg.exe').write_bytes(b'changed')
+    with pytest.raises(ValueError,match='체크섬'):gate.validate(tmp_path,'development')

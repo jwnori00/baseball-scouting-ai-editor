@@ -19,6 +19,8 @@ def parser():
     new.add_argument('--alias', action='append', default=[]); new.add_argument('--date', default='')
     scan=sub.add_parser('analyze'); scan.add_argument('project'); scan.add_argument('--model', required=True)
     scan.add_argument('--profile', required=True); scan.add_argument('--cache', required=True)
+    rules=sub.add_parser('scan-plays',help='규칙 기반 투구·타석 자동 탐색; 검수 필수')
+    rules.add_argument('project');rules.add_argument('--profile');rules.add_argument('--cache',required=True);rules.add_argument('--diagnostics')
     rev=sub.add_parser('review'); rev.add_argument('project'); rev.add_argument('event_id')
     rev.add_argument('--status', choices=['APPROVED','EXCLUDED','REVIEW_REQUIRED'], required=True)
     rev.add_argument('--start', type=float); rev.add_argument('--end', type=float)
@@ -29,6 +31,8 @@ def parser():
     train=sub.add_parser('train', help='사용권이 있는 로컬 라벨 영상으로 실험용 모델 학습')
     train.add_argument('labels'); train.add_argument('destination'); train.add_argument('--license', required=True)
     train.add_argument('--provenance', required=True)
+    compare=sub.add_parser('compare-reviewed',help='독립 검수 프로젝트와 자동 결과 비교')
+    compare.add_argument('project');compare.add_argument('reference');compare.add_argument('destination');compare.add_argument('--complete-reference',action='store_true')
     ev=sub.add_parser('evaluate'); ev.add_argument('project'); ev.add_argument('truth'); ev.add_argument('destination')
     ev.add_argument('--manual-seconds', type=float); ev.add_argument('--assisted-seconds', type=float)
     return p
@@ -71,7 +75,16 @@ def main(argv=None):
                 if len(samples)>100_000: raise ValueError('학습 예제 100000개 한도: 데이터셋을 분할하세요')
         print(train(samples,labels,args.destination,license_name=args.license,provenance=args.provenance));return
     session=GameSession.load(args.project)
-    if args.command=='analyze':
+    if args.command=='compare-reviewed':
+        from bsae.validation import compare_projects
+        print(json.dumps(compare_projects(args.project,args.reference,args.destination,reference_complete=args.complete_reference),ensure_ascii=False,indent=2))
+    elif args.command=='scan-plays':
+        from bsae.vision.rules import analyze_plays,load_profile,export_diagnostics
+        try:
+            analyze_plays(session,load_profile(args.profile),args.cache,progress=lambda stage,v:print(f'{v:.0%} {stage}',flush=True))
+        finally:session.save(args.project)
+        if args.diagnostics:export_diagnostics(session,args.diagnostics)
+    elif args.command=='analyze':
         from bsae.vision.pipeline import analyze
         profile=json.loads(Path(args.profile).read_text(encoding='utf-8'))
         try:

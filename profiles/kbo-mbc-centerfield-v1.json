@@ -1,0 +1,46 @@
+{
+  "id": "kbo-mbc-centerfield-experimental-v1",
+  "scope": "Experimental MBC center-field geometry; identity unconfirmed without independent evidence. Not general KBO validation.",
+  "language": "eng",
+  "regions": {},
+  "camera": {
+    "mode": "field_geometry",
+    "panel": [
+      0.75,
+      0.6,
+      0.85,
+      0.8
+    ],
+    "content": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "pitcher": [
+      0.31,
+      0.32,
+      0.48,
+      0.94
+    ],
+    "catcher": [
+      0.53,
+      0.2,
+      0.68,
+      0.72
+    ],
+    "panel_dark_min": 0.68,
+    "grass_min": 0.2,
+    "field_extension_min": 0.7,
+    "upper_field_max": 0.35,
+    "side_field_min": 0.45,
+    "largest_uniform_max": 0.055
+  },
+  "sampling_fps": 10,
+  "ocr_interval": 2.0,
+  "minimum_motion": 0.12,
+  "minimum_motion_separation": 2.5,
+  "max_episode_seconds": 60,
+  "coverage_gap_seconds": 15,
+  "preparation_padding_seconds": 3.0
+}

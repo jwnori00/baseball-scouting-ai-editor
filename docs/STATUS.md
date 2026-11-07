@@ -80,3 +80,58 @@ Onedir ZIP에 포함하며 frozen 모드에서는 외부 PATH 도구로 대체�
 실제 원본은 사용자의 Windows PC에 유지합니다. 업로드를 요청하지 않습니다.
 실행 명령은 README와 docs/LOCAL_VALIDATION.md, 제작/깨끗한 PC 검사는 docs/PACKAGING.md에 있습니다.
 현재 GitHub API 읽기는 `Forbidden`으로 거부되어 PR 자동 생성은 불가능했습니다.
+
+## Windows 포터블 수정 작업
+
+- `editor.spec` 누락 원인: 기존 `.gitignore`의 `*.spec` 규칙 때문에 로컬 파일이 커밋에서 제외됨.
+  `/packaging/editor.spec` 예외를 추가해 추적함.
+- 개발판에도 모델을 필수로 요구하던 자산 게이트를 development/release로 분리.
+  development는 모델을 동봉하지 않고 AI를 비활성화함.
+- 정식 release는 실제 야구 독립 평가 보고서, 모델 해시 결합, 목표 성능과 상업 이용 검토를 요구함.
+- FFmpeg 버전마다 달라지는 선택된 마지막 VFR 프레임의 0.1/0.3초 길이를 구분하고
+  테스트는 5초의 PTS 원점을 제외한 실제 재생 범위를 검사함.
+- Linux Qt 의존성 `libegl1` 등 시스템 패키지 추가.
+- Windows 전용 워크플로: 네이티브 FFmpeg 소스 빌드, 네이티브 OCR DLL/자료,
+  Qt 대응 소스/라이선스/체크섬 수집, 테스트, 실제 frozen EXE 자체검사, ZIP/SHA-256 Artifact.
+- 최근 main 실행 42173406878의 Windows/Linux 실패 상태와 작업 ID를 확인함.
+  상세 로그는 GitHub 웹의 로그인 제한과 API Forbidden 때문에 직접 열람하지 못함.
+  공개 페이지의 실패 상태, 사용자 제공 오류, 로컬 재현을 구분하여 진단함.
+- 사용자 다운로드 절차: docs/WINDOWS_DOWNLOAD.md.
+
+## 실무형 범위 조정
+
+- 사용자 화면을 영상 선택·선수 지정·AI 탐색·검수·MP4 저장으로 축소.
+  모델 경로/OCR 설정과 상세 근거는 기본 화면에서 숨김.
+- 학습·평가·분석 대시보드의 추가 개발 중단. 기존 코드는 삭제하지 않고 보존.
+- 로컬 회귀 테스트: 20 passed. GitHub 실행 42174601699에서 Windows/Linux 테스트 성공 확인.
+- 실제 AI는 합성 학습/추론 연결만 검증. 실제 야구 전수 탐색·선수 식별·후속 플레이 보존은 미검증이며
+  검증된 모델이 없는 포터블 개발판에서는 분석을 비활성화.
+- Windows 실행 42174601841은 실제 네이티브 미디어 빌드를 진행 중인 상태에서 확인함.
+  최종 성공/ZIP 여부는 이후 실행 결과로 판단해야 함.
+- 실제 납품 작업 및 ChatGPT 보조 프롬프트는 docs/SCOUTING_WORKFLOW.md에 정리.
+  원본 접근 없이 AI가 영상을 분석한 것으로 보고하지 않으며, 수동 전 경기 검색으로 자동 탐색을 대체하지 않음.
+
+### 실제 Windows 빌드 실패 진단 — 실행 42175931071
+
+공식 evidence 브랜치에서 실제 로그와 Windows XML을 읽었습니다.
+네이티브 FFmpeg/OCR 빌드와 자산 체크섬 검사는 성공했으나 테스트가 18 passed / 2 failed여서
+EXE/ZIP 게시 단계는 실행하지 않았습니다.
+
+- 합성 MKV 생성이 기본 AC3 인코더에 의존함: 프로덕션과 동일한 AAC를 테스트 입력에도 명시.
+- 포터블 OCR에 configs/tsv가 없어 TSV 대신 평문이 반환됨: `-c tessedit_create_tsv=1`로 수정.
+  Windows와 같은 공식 eng 가중치로 실제 TSV 및 MARTINEZ 인식을 확인함. 기본 신뢰도 기준은 유지.
+- 준비된 네이티브 자산을 앱 테스트 전에 캐시에 보존하도록 변경.
+- 빌드는 일반 중계 코덱(H.264/HEVC/VP8/VP9/MPEG-2/MPEG-4 등)과 MP4/MOV/MKV/TS/AVI,
+  출력·합성 테스트에 필요한 코덱으로 제한하고 실행기 CPU 수에 맞춰 최대 4개 작업 사용.
+  모든 특수 영상 코덱을 지원한다는 주장은 하지 않음.
+
+### Windows native decoder correction — 42178472482
+
+Actual retained log: 17 passed / 3 failed. `anullsrc` requires decoder `pcm_u8`,
+and lavfi video sources require decoder `wrapped_avframe`; the encoder of the
+same name does not provide the decoder. Both are now explicitly selected.
+Native encode/decode smoke is run before application tests. Existing tests remain.
+Prepared assets reuse the prior cache for unchanged Qt/OCR source downloads;
+source/object caches are isolated by exact media revisions and compiler identity.
+AI research is preserved separately on feat/real-video-discovery (e9ef417),
+not merged into the portable branch as a verified detection feature.

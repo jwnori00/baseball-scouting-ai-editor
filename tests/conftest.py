@@ -28,7 +28,13 @@ def make_video(tmp_path,trained):
         raw=b''.join(templates[label].tobytes()*4 for label in sequence)
         args=[tool('ffmpeg'),'-v','error','-nostdin','-n','-f','rawvideo','-pix_fmt','rgb24','-s','160x90','-r','4','-i','pipe:0']
         if audio:args+=['-f','lavfi','-i','sine=frequency=440:sample_rate=48000','-t',str(len(sequence))]
+        if audio:args+=['-c:a','aac']
         args+=['-c:v','ffv1',str(path)]
         subprocess.run(args,input=raw,check=True,capture_output=True)
         return path
     return create
+
+
+@pytest.fixture(autouse=True)
+def isolated_user_data(tmp_path,monkeypatch):
+    monkeypatch.setenv('BSAE_DATA_DIR',str(tmp_path/'user-data'))

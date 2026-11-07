@@ -1,0 +1,34 @@
+{
+  "id": "lmb-letterboxed-telemetry-v1",
+  "scope": "Experimental LMB letterboxed center-field broadcast. Other layouts NOT_EVALUATED.",
+  "language": "eng",
+  "minimum_word_confidence": 50,
+  "regions": {
+    "pitcher_name": [0.7578125, 0.8027778, 0.8671875, 0.8388889],
+    "batter_name": [0.759, 0.582, 0.868, 0.617],
+    "pitcher_team": [0.313, 0.132, 0.341, 0.169],
+    "batter_team": [0.22, 0.132, 0.247, 0.169],
+    "count": [0.402, 0.168, 0.432, 0.198],
+    "pitch_count": [0.357, 0.170, 0.379, 0.197],
+    "replay": [0.75, 0.09, 0.90, 0.16]
+  },
+  "team_aliases": {
+    "tij": ["TIJ", "TlJ", "T1J", "Tijuana", "Toros de Tijuana"],
+    "jal": ["JAL", "Jalisco", "Charros de Jalisco"]
+  },
+  "camera": {
+    "panel": [0.762, 0.62, 0.863, 0.80],
+    "content": [0.09, 0.09, 0.91, 0.91],
+    "pitcher": [0.28, 0.40, 0.47, 0.86],
+    "catcher": [0.54, 0.30, 0.67, 0.66],
+    "panel_dark_min": 0.68,
+    "grass_min": 0.20,
+    "field_extension_min": 0.55
+  },
+  "sampling_fps": 10,
+  "ocr_interval": 2.0,
+  "minimum_motion": 0.12,
+  "minimum_motion_separation": 2.5,
+  "max_episode_seconds": 60,
+  "coverage_gap_seconds": 15
+}
