@@ -98,4 +98,6 @@ def test_actual_review_preview_decodes_and_pauses(make_video,tmp_path):
     w.start.setValue(0);w.end.setValue(2.5)
     result=preview_probe(w)
     assert result['decoded_frame']==[160,90] and result['paused']
+    assert w.player.source().isEmpty()
+    renamed=video.with_name('released.mp4');video.rename(renamed);renamed.rename(video)
     w.dirty=False;w.close();app.processEvents()

@@ -1,6 +1,6 @@
 """Compare proposed analysis with saved review; activation is explicit."""
 from copy import deepcopy
-from PySide6.QtWidgets import QDialog,QVBoxLayout,QLabel,QComboBox,QTableWidget,QTableWidgetItem,QPushButton
+from PySide6.QtWidgets import QDialog,QVBoxLayout,QLabel,QComboBox,QTableWidget,QTableWidgetItem,QPushButton,QMessageBox
 from bsae.core.rounds import comparison,apply_round,identity_key
 from bsae.core.models import GameSession
 
@@ -18,6 +18,13 @@ class RoundsUI:
             except Exception as exc:self.error('탐색 결과는 보존됐으나 선수 목록 저장 실패: '+str(exc))
             self.stage.setText('새 탐색 회차 보관 · 기존 검수 유지 · 결과 비교 후 반영하세요')
             self.pending_round_id=result.round_id
+
+    def offer_analysis_round(self,round_id):
+        record=next(r for r in self.session.analysis_runs if r['id']==round_id)
+        player=record['payload']['player']['name'];count=len(record['payload']['events'])
+        if QMessageBox.question(self,'새 탐색 결과',f'{player}: 후보 {count}개를 찾았습니다.\n기존 검수를 보관하고 새 결과로 전환할까요?\n아니오를 선택해도 결과는 고급 메뉴의 탐색 회차에 보존됩니다.',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)!=QMessageBox.Yes:return
+        apply_round(self.session,round_id,'replace');self.changing_target=False;self.fill_identity(self.session.player);self.refresh();self.load_output_preferences();self.dirty=True
+        if self.project_path:self.session.save(self.project_path);self.dirty=False
 
     def show_analysis_rounds(self,round_id=None):
         if not self.session or not self.session.analysis_runs:self.error('저장된 탐색 회차가 없습니다.');return

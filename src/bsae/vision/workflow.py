@@ -11,8 +11,9 @@ def analyze_for_review(session,profile,cache,stop=None,progress=lambda *a:None,*
         progress('중계 구도·문자 영역 자동 탐색 시도',0)
         selected,assessment=select_profile(session.sources[0],stop,session.player)
         session.analysis['preflight']=assessment.get('preflight',{})
-        if session.player.role=='batter' and not assessment.get('preflight',{}).get('identity_evidence_frames') and preflight:
-            preflight(assessment)
+        if session.player.role=='batter' and not assessment.get('preflight',{}).get('identity_evidence_frames'):
+            progress('선수 이름 근거 부족 · 후보 탐색 계속 · 결과 검수 필요',0)
+            if preflight:preflight(assessment)
     # Import through the module so tests/diagnostics observe the same engine.
     from . import rules
     rules.analyze_plays(session,selected,cache,stop,progress)

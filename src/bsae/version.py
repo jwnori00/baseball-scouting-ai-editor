@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import sys
 
-APP_VERSION='1.0.0rc1'
+APP_VERSION='1.0.0rc2'
 BUILD_LABEL='배포 후보판(RC) · 검수 필수'
 
 

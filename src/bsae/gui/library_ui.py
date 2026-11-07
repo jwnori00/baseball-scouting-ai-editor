@@ -31,6 +31,7 @@ class LibraryUI:
 
     def choose_player(self):
         if self.job and self.job.isRunning():return
+        if self.session:self.begin_target_change()
         dialog=QDialog(self);dialog.setWindowTitle('선수 목록 · 이름/별칭/팀/리그 검색');dialog.resize(800,450)
         layout=QVBoxLayout(dialog);query=QLineEdit();query.setPlaceholderText('이름, 다른 언어 표기, 팀, 리그, 등번호');layout.addWidget(query)
         table=QTableWidget(0,6);table.setHorizontalHeaderLabels(['선수','리그','팀','등번호','구분','즐겨찾기'])
@@ -70,7 +71,7 @@ class LibraryUI:
             if not path or not Path(path).is_file():raise ValueError('최근 프로젝트가 없거나 파일이 이동됐습니다.')
             if self.job and self.job.isRunning():return
             if not self.discard():return
-            self.session=GameSession.load(path);self.project_path=path;self.files.clear()
+            self.session=GameSession.load(path);self.changing_target=False;self.project_path=path;self.files.clear()
             for source in self.session.sources:self.files.addItem(source.path)
             self.fill_identity(self.session.player);self.date.setText(self.session.game_date);self.dirty=False;self.refresh();self.load_output_preferences()
         except Exception as exc:self.error(exc)

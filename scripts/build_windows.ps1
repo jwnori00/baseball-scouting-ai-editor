@@ -20,7 +20,17 @@ if (-not $DependenciesInstalled) {
     & $Python -m pip install --no-deps --no-build-isolation -e .
     if ($LASTEXITCODE -ne 0) { throw 'Project install failed' }
 } else { $Python = (Get-Command python).Source }
+$BuildTag = ((& git rev-parse --short HEAD).Trim() + '-' + [guid]::NewGuid().ToString('N'))
+$OutputFolder = Join-Path $PWD ('build-output\' + $BuildTag)
+New-Item -ItemType Directory $OutputFolder | Out-Null
 New-Item -ItemType Directory -Force build-evidence | Out-Null
+$PriorEvidence = Join-Path $OutputFolder 'prior-evidence'
+foreach ($Pattern in @('portable-smoke*.json','layout-*.json','layout-*.png','unpacked-exe.*','archive-check.json','windows-tests.xml','build-info.json','CLIENT_MANUAL.txt','windows-version.txt','portable-package.json','platform-status.json')) {
+    foreach ($Existing in Get-ChildItem build-evidence -Filter $Pattern -File) {
+        New-Item -ItemType Directory -Force $PriorEvidence | Out-Null
+        Move-Item $Existing.FullName (Join-Path $PriorEvidence $Existing.Name)
+    }
+}
 & $Python packaging/validate_assets.py $Assets $Kind
 if ($LASTEXITCODE -ne 0) { throw 'Assets or release model failed validation' }
 & $Python packaging/write_build_policy.py $Assets $Kind
@@ -65,8 +75,7 @@ try {
     $env:PATH = $PreviousPath
     if ($UnicodeInstall -and (Test-Path $UnicodeInstall)) { Remove-Item $UnicodeInstall -Recurse -Force }
 }
-$Zip = Join-Path $PWD "BaseballScoutingAIEditor-Windows-x64-$Kind.zip"
-if (Test-Path $Zip) { throw 'ZIP exists; preserve it before rebuilding' }
+$Zip = Join-Path $OutputFolder "BaseballScoutingAIEditor-Windows-x64-$Kind.zip"
 Copy-Item build-evidence dist/BaseballScoutingAIEditor/build-evidence -Recurse
 # Complete corresponding source is distributed beside the application artifact.
 Compress-Archive -Path dist/BaseballScoutingAIEditor -DestinationPath $Zip
@@ -92,3 +101,9 @@ try {
     $env:PATH = $ArchivePreviousPath
     if (Test-Path $UnzipRoot) { Remove-Item $UnzipRoot -Recurse -Force }
 }
+
+if ($env:GITHUB_OUTPUT) {
+    "zip=$Zip" >> $env:GITHUB_OUTPUT
+    "checksum=$Zip.sha256" >> $env:GITHUB_OUTPUT
+}
+Write-Host "Verified portable archive: $Zip"

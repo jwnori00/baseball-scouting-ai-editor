@@ -54,8 +54,9 @@ def test_gui_multiple_rows_approve_and_edit_inning(monkeypatch):
     monkeypatch.setattr(QMessageBox,'question',lambda *a,**k:QMessageBox.Yes)
     errors=[];monkeypatch.setattr(window,'error',errors.append)
     from bsae.core.review import confirm_manual_identities
-    window.approve_selected();assert errors and all(e.status=='REVIEW_REQUIRED' for e in window.session.events)
-    errors.clear();confirm_manual_identities(window.session,window.selected_event_ids())
+    monkeypatch.setattr(window,'ask_approval',lambda *a:False)
+    window.approve_selected();assert not errors and all(e.status=='REVIEW_REQUIRED' for e in window.session.events)
+    errors.clear();monkeypatch.setattr(window,'ask_approval',lambda *a:True)
     window.approve_selected();select()
     monkeypatch.setattr(QInputDialog,'getText',lambda *a,**k:('9초',True))
     window.edit_inning()

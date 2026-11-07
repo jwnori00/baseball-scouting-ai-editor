@@ -34,12 +34,12 @@ def review(session, event_id, action, *, start=None, end=None, note='', confirm_
 def classify_event(session,event_id,kind,note='검수자가 이벤트 유형 분류'):
     if kind not in ('pitch_candidate','pickoff','replay'):raise ValueError('잘못된 이벤트 유형')
     event=next(e for e in session.events if e.id==event_id)
-    before=dict(event_type=event.event_type,status=event.status)
+    before=dict(event_type=event.event_type,status=event.status,broadcast_status=event.broadcast_status)
     event.broadcast_status='REPLAY_SUSPECTED' if kind=='replay' else 'UNVERIFIED'
     event.event_type=kind;event.status='EXCLUDED' if kind=='replay' else 'REVIEW_REQUIRED'
     for pa in session.appearances:
         if event.id in pa.event_ids:pa.confirmed=False
-    event.history.append(ReviewRecord('CLASSIFY',before,dict(event_type=kind,status=event.status),note,datetime.now(timezone.utc).isoformat()))
+    event.history.append(ReviewRecord('CLASSIFY',before,dict(event_type=kind,status=event.status,broadcast_status=event.broadcast_status),note,datetime.now(timezone.utc).isoformat()))
     session.validate()
 
 

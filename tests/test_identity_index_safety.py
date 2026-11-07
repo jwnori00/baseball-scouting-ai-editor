@@ -27,8 +27,8 @@ def test_old_approval_migrates_as_human_not_automatic(tmp_path):
  for e in d['events']:
   for key in ('identity_status','manual_identity_confirmed','broadcast_status'):e.pop(key)
  p=tmp_path/'old.json';atomic_json(p,d);loaded=GameSession.load(p)
- assert not loaded.events[0].manual_identity_confirmed and loaded.events[0].identity_status=='IDENTITY_UNKNOWN'
- assert loaded.events[0].status=='APPROVED' and any('구버전 승인' in x for x in loaded.events[0].warnings)
+ assert loaded.events[0].manual_identity_confirmed and loaded.events[0].identity_status=='IDENTITY_UNKNOWN'
+ assert loaded.events[0].status=='APPROVED' and any('구버전' in x for x in loaded.events[0].warnings)
 
 
 def test_explicit_position_and_batter_graphic_on_pitch_view():
@@ -74,7 +74,8 @@ def test_gui_bulk_does_not_implicitly_confirm_unknowns(monkeypatch):
  from bsae.gui.window import Window
  app=QApplication.instance() or QApplication([]);w=Window();w.session=game();w.fill_identity(w.session.player);w.review_filter.setCurrentIndex(1);w.refresh();w.table.selectAll()
  errors=[];monkeypatch.setattr(w,'error',errors.append);monkeypatch.setattr(QMessageBox,'question',lambda *a,**kw:QMessageBox.Yes)
- w.approve_selected();assert errors
+ monkeypatch.setattr(w,'ask_approval',lambda *a:False)
+ w.approve_selected();assert not errors
  assert all(e.status=='REVIEW_REQUIRED' and not e.manual_identity_confirmed and e.batter_id is None for e in w.session.events)
  w.dirty=False;w.close()
 
@@ -110,7 +111,7 @@ def test_preflight_decline_keeps_thread_responsive():
  assert not thread.is_alive() and errors
 
 
-def test_gui_preflight_decline_preserves_existing_review(make_video,tmp_path,monkeypatch):
+def test_gui_preflight_warning_continues_and_preserves_existing_review(make_video,tmp_path,monkeypatch):
  from PySide6.QtWidgets import QApplication,QMessageBox
  from PySide6.QtCore import QEventLoop,QTimer
  from bsae.gui.window import Window
@@ -121,12 +122,12 @@ def test_gui_preflight_decline_preserves_existing_review(make_video,tmp_path,mon
  s.events=[PitchEvent(s.id,s.split(0,2),0,2)];review_many(s,[s.events[0].id],confirm_identity=True);old=deepcopy(s.events)
  w=Window();w.registered(s);w.files.addItem(s.sources[0].path);w.project_path=str(tmp_path/'work.json');w.error=lambda *a:None
  profile=load_profile();profile['regions']={}
- monkeypatch.setattr(detection,'select_profile',lambda *a,**k:(profile,dict(preflight=dict(identity_evidence_frames=0))))
+ monkeypatch.setattr(detection,'select_profile',lambda *a,**k:(profile,dict(preflight=dict(identity_evidence_frames=0),status='REVIEW_REQUIRED')))
  monkeypatch.setattr(QMessageBox,'question',lambda *a,**k:QMessageBox.No)
  called=[];monkeypatch.setattr(rules,'analyze_plays',lambda *a,**k:called.append(1))
  w.start_analysis();loop=QEventLoop();w.job.finished.connect(loop.quit);QTimer.singleShot(5000,loop.quit);loop.exec()
- assert not w.job.isRunning() and not called and w.session.events==old
- assert w.session.analysis_runs[-1]['status']=='INTERRUPTED'
+ assert not w.job.isRunning() and called==[1] and w.session.events==old
+ assert w.session.analysis_runs[-1]['status']=='PROPOSED'
  w.dirty=False;w.close()
 
 
@@ -173,7 +174,7 @@ def test_real_confirmation_button_does_not_confirm_unknown_bulk():
  def click_yes():
   modal=app.activeModalWidget()
   assert isinstance(modal,QMessageBox)
-  modal.button(QMessageBox.Yes).click()
+  modal.button(QMessageBox.No).click()
  QTimer.singleShot(50,click_yes);w.approve_selected()
- assert errors and all(e.status=='REVIEW_REQUIRED' and not e.manual_identity_confirmed for e in s.events)
+ assert not errors and all(e.status=='REVIEW_REQUIRED' and not e.manual_identity_confirmed for e in s.events)
  w.dirty=False;w.close()

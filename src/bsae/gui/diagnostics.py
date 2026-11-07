@@ -34,7 +34,7 @@ def layout_probe(report):
 
 def preview_probe(window,timeout_ms=10000):
     """Wait for a decoded frame through the actual review player, then pause."""
-    from PySide6.QtCore import QEventLoop,QTimer
+    from PySide6.QtCore import QEventLoop,QTimer,QUrl
     from PySide6.QtMultimedia import QMediaPlayer
     loop=QEventLoop();received=[];sink=window.video.videoSink()
     def playback_ready(*args):
@@ -52,4 +52,4 @@ def preview_probe(window,timeout_ms=10000):
         if window.player.playbackState()!=QMediaPlayer.PausedState:raise RuntimeError('미리보기 일시정지 실패')
         return dict(decoded_frame=received[0],paused=True)
     finally:
-        timer.stop();sink.videoFrameChanged.disconnect(frame_ready);window.player.playbackStateChanged.disconnect(playback_ready);window.player.stop();window.preview_segments=[]
+        timer.stop();sink.videoFrameChanged.disconnect(frame_ready);window.player.playbackStateChanged.disconnect(playback_ready);window.preview_segments=[];window.player.stop();window.player.setSource(QUrl());QApplication.processEvents()

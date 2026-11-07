@@ -159,18 +159,28 @@ jobs:
           python packaging/prepare_multilingual_ocr.py vendor/portable
           if ($LASTEXITCODE -ne 0) { throw 'Multilingual OCR asset preparation failed' }
       - name: Test, build onedir, run actual EXE, ZIP and SHA-256
+        id: portable-build
         shell: pwsh
         run: |
+          $PriorZip = Join-Path $PWD "BaseballScoutingAIEditor-Windows-x64-$env:BUILD_KIND.zip"
+          if (-not (Test-Path $PriorZip)) {
+            $Marker = Join-Path $env:RUNNER_TEMP 'prior-build-fixture.txt'
+            'Existing artifact preservation fixture, not an application package' | Set-Content $Marker
+            Compress-Archive $Marker $PriorZip
+          }
+          $PriorHash = (Get-FileHash $PriorZip -Algorithm SHA256).Hash
           ./scripts/build_windows.ps1 -Assets vendor/portable -Kind $env:BUILD_KIND -DependenciesInstalled 2>&1 | Tee-Object build-evidence/portable-build.log
           if ($LASTEXITCODE -ne 0) { throw 'Portable build failed' }
+          if ((Get-FileHash $PriorZip -Algorithm SHA256).Hash -ne $PriorHash) { throw 'Existing archive was changed' }
+          @{existing_zip_preserved='PASS'} | ConvertTo-Json | Set-Content build-evidence/rebuild-check.json -Encoding utf8
       - name: Application ZIP and SHA-256
         id: application
         uses: actions/upload-artifact@v4
         with:
           name: BaseballScoutingAIEditor-Windows-x64-${{ env.BUILD_KIND }}
           path: |
-            BaseballScoutingAIEditor-Windows-x64-${{ env.BUILD_KIND }}.zip
-            BaseballScoutingAIEditor-Windows-x64-${{ env.BUILD_KIND }}.zip.sha256
+            ${{ steps.portable-build.outputs.zip }}
+            ${{ steps.portable-build.outputs.checksum }}
           compression-level: 0
           if-no-files-found: error
       - name: Corresponding source distributed beside application
@@ -212,7 +222,7 @@ jobs:
         run: python scripts/publish_portable_evidence.py
 
   review:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/fix/batter-identity-evidence' && needs.build.result == 'success'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/simple-review-1.0' && needs.build.result == 'success'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -234,14 +244,14 @@ jobs:
               let pr = existing.data[0];
               if (!pr) {
                 const body = [
-                  'Unknown-player pitch candidates previously appeared alongside requested-batter results and could gain a target ID during bulk approval.',
-                  'Separate automatic identity, explicit human identity confirmation, review, and replay/archive status. Preserve legacy review data and add source/config keyed game evidence indexing plus bounded preflight diagnostics.',
+                  'Users could not approve unconfirmed clips in one review action and the review screen duplicated identity, batch, and save controls.',
+                  'Unify explicit human approval, preserve original automatic identity and audit history, simplify the basic UI, and combine export controls. Preserve source/hash/time/output checks and release gates.',
                   'This remains an experimental patch. Full-game KBO identity accuracy, uniform-number recognition, player tracking, and semantic play-end detection are not completed.',
-                  'Validation and real-video failures are documented in docs/BATTER_IDENTITY_REPAIR.md and docs/UNIFIED_IDENTITY_INDEX.md.',
+                  'Validation, blocker audit and known limitations: docs/SIMPLE_REVIEW_1_0.md. Main is not merged automatically.',
                   'Windows build: ' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId,
                   'Portable artifact: ' + process.env.ZIP_ARTIFACT
                 ].join('\n\n');
-                const result = await github.rest.pulls.create({...context.repo, head: context.ref.replace('refs/heads/', ''), base: 'main', draft: true, title: 'Separate player identity from review and index shared game evidence', body});
+                const result = await github.rest.pulls.create({...context.repo, head: context.ref.replace('refs/heads/', ''), base: 'main', draft: true, title: 'Unify clip approval and simplify the Windows review workflow', body});
                 pr = result.data;
               }
               core.setOutput('url', pr.html_url);

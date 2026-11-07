@@ -269,12 +269,12 @@ def test_gui_rerun_same_document_preserves_approved_play(motion_video,tmp_path,m
     app=QApplication.instance() or QApplication([]);w=Window();w.select_broadcast(Path(__file__).resolve().parents[1]/'profiles'/'lmb-telemetry-v1.json')
     w.name.setText('Unknown');w.files.addItem(str(motion_video));path=tmp_path/'rounds.json';dialogs=[]
     monkeypatch.setattr(QFileDialog,'getSaveFileName',lambda *a,**k:(dialogs.append(1) or str(path),'JSON'))
-    errors=[];monkeypatch.setattr(w,'error',errors.append);proposals=[];monkeypatch.setattr(w,'show_analysis_rounds',proposals.append)
+    errors=[];monkeypatch.setattr(w,'error',errors.append);proposals=[];monkeypatch.setattr(w,'offer_analysis_round',proposals.append)
     def scan():
         w.analyze_button.click();assert not w.name.isEnabled() and not w.table.isEnabled();loop=QEventLoop();w.job.finished.connect(loop.quit);QTimer.singleShot(15000,loop.quit);loop.exec();app.processEvents();assert not w.job.isRunning()
     scan();assert w.session.events
     assert w.session.analysis['execution_path']=='bsae.vision.workflow.analyze_for_review'
-    w.table.selectRow(0);w.confirm.setChecked(True);w.apply('APPROVED')
+    w.table.selectRow(0);w.ask_approval=lambda *args:True;w.apply('APPROVED')
     event_id=w.session.events[0].id;before=deepcopy(w.session.events[0]);scan()
     assert not errors and len(dialogs)==1 and proposals
     assert next(e for e in w.session.events if e.id==event_id)==before

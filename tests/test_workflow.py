@@ -244,7 +244,7 @@ def test_development_media_registration_without_ai(make_video):
     game=session([make_video(['other']*3)])
     w.registered(game)
     w.start.setValue(.2);w.end.setValue(1.5);w.manual()
-    w.table.selectRow(0);w.confirm.setChecked(True);w.apply('APPROVED')
+    w.table.selectRow(0);w.ask_approval=lambda *args:True;w.apply('APPROVED')
     assert w.session.events[0].status=='APPROVED'
     assert w.session.events[0].event_type=='manual_candidate'
     w.dirty=False;w.close();app.processEvents()

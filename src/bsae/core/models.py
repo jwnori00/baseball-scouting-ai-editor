@@ -197,8 +197,10 @@ class GameSession:
                 known=e.get(role_field)==d['player'].id
                 e['identity_status']='TARGET_CONFIRMED' if known and ('target' in states or 'name' in proof and bool(proof.intersection({'team','jersey'}))) else 'OTHER_PLAYER' if 'other_evidence' in states else 'IDENTITY_UNKNOWN'
             if 'manual_identity_confirmed' not in e:
-                e['manual_identity_confirmed']=False
-                if e['status']=='APPROVED' and e['identity_status']=='IDENTITY_UNKNOWN':e['warnings'].append('구버전 승인 보존: 신원 근거 미확정이므로 선택 후보 선수 확인을 다시 진행하세요')
+                e['manual_identity_confirmed']=bool(e['status']=='APPROVED' and e.get(role_field)==d['player'].id and any(h.get('action')=='APPROVED' for h in e.get('history',[])))
+                if e['manual_identity_confirmed']:e['warnings'].append('구버전 사용자 승인 이력을 직접 확인 기록으로 보존; 자동 신원 판정은 유지')
+            if e['status']=='APPROVED' and e['identity_status']=='IDENTITY_UNKNOWN' and e.get(role_field)==d['player'].id and any(h.get('action')=='APPROVED' for h in e.get('history',[])):
+                e['manual_identity_confirmed']=True
             e.setdefault('broadcast_status','REPLAY_SUSPECTED' if e['event_type']=='replay' else 'UNVERIFIED')
             e['segments'] = [PlaySegment(**s) for s in e['segments']]
             e['evidence'] = [DetectionEvidence(**v) for v in e['evidence']]

@@ -1,0 +1,273 @@
+﻿file,line,function,condition,category,disposition
+.github/workflows/windows-portable.yml,148,build,if ($LASTEXITCODE -ne 0) { throw 'Asset preparation failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,160,build,if ($LASTEXITCODE -ne 0) { throw 'Multilingual OCR asset preparation failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,173,build,if ($LASTEXITCODE -ne 0) { throw 'Portable build failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,174,build,if ((Get-FileHash $PriorZip -Algorithm SHA256).Hash -ne $PriorHash) { throw 'Existing archive was changed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,185,build,if-no-files-found: error,A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,193,build,if-no-files-found: error,A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,200,build,if-no-files-found: warn,A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,32,build,- name: Release model gate,A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,37,build,throw 'Release BLOCKED: verified baseball model and independent validation report are required. Use development for a GUI/media test ZIP.',A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,50,build,if ($LASTEXITCODE -ne 0) { throw 'Dependency install failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,52,build,if ($LASTEXITCODE -ne 0) { throw 'Project install failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,54,build,if ($LASTEXITCODE -ne 0) { throw 'Dependency check failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,72,build,if (run.data.head_sha !== 'f11274d0bd623ffc57efbe4ff73f0c56d8cf79b1' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');,A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+.github/workflows/windows-portable.yml,98,build,if ($LASTEXITCODE -ne 0) { throw 'Baseline reuse failed; rebuild will be used' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+packaging/collect_notices.py,22,<module>,raise RuntimeError('Qt source version does not match wheel'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/collect_notices.py,25,<module>,raise RuntimeError('Qt/PySide corresponding-source licenses missing'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/collect_notices.py,29,<module>,raise RuntimeError('License texts missing: '+name),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/collect_notices.py,33,<module>,raise FileNotFoundError(python_license),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,13,<module>,raise SystemExit(1),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,17,<module>,raise SystemExit(0 if result['status']=='PASS' else 1),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,194,<module>,"raise RuntimeError('Library restart failed: '+child_report.get('error','unknown'))",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,226,<module>,raise SystemExit(1),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,229,<module>,raise SystemExit(main()),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,28,<module>,raise SystemExit(3),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,33,<module>,raise ValueError('개발판은 자동 탐색 인수 시험이 비활성화됩니다. rules-preview RC 또는 검증된 release가 필요합니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,35,<module>,raise SystemExit(0 if outcome['status']=='PASS' else 2),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,38,<module>,raise SystemExit(1),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/entry.py,92,fail_test,raise RuntimeError('GUI self-test: '+str(message)),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/prepare_assets.py,36,prepare,raise ValueError('Official Qt source checksum mismatch'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/prepare_assets.py,47,prepare,raise ValueError('Unexpectedly large source license text'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/prepare_assets.py,53,prepare,raise ValueError('Qt/PySide source license texts missing'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/prepare_assets.py,63,prepare,raise ValueError('Unknown Qt FFmpeg version: '+version),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/prepare_multilingual_ocr.py,21,prepare,raise ValueError('OCR language checksum failure: '+name),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/reuse_assets.py,28,reuse,raise RuntimeError('CI artifact reuse only'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/reuse_assets.py,29,reuse,raise ValueError('Media sources or pinned dependency versions changed; rebuild required'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/reuse_assets.py,34,reuse,raise ValueError('Baseline ZIP checksum mismatch'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/reuse_assets.py,40,reuse,raise ValueError('Unsafe archive path'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/reuse_assets.py,50,reuse,raise ValueError('Corresponding-source checksum mismatch'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,10,validate,raise ValueError('Unknown build kind'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,16,validate,raise ValueError('외부 자산 경로'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,18,validate,raise ValueError('자산 체크섬 불일치: '+e['path']),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,23,validate,raise ValueError('필수 자산 폴더 없음: '+folder),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,24,validate,raise ValueError('체크섬 미등록 자산: '+folder),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,26,validate,raise ValueError('필수 도구 없음: '+name),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,29,validate,raise ValueError('필수 OCR 언어 없음: '+language),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,33,validate,raise ValueError('검증된 중계 OCR 프로필 누락'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,39,validate,raise ValueError('선수 식별용 중계 프로필 부족: '+role),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,42,validate,raise ValueError('검증 보고서 체크섬 누락'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,45,validate,raise ValueError('실제 야구 독립 평가·상업 이용 검토 증거 필요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,51,validate,raise ValueError('실제 GUI 규칙 엔진의 독립 평가 증거가 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,54,validate,raise ValueError('GUI 엔진 평가와 현재 소스가 다릅니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,58,validate,raise ValueError('GUI 분석 소스 평가 근거 누락/변경: '+name),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,61,validate,raise ValueError('정식 배포 성능 미충족: '+key),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,64,validate,raise ValueError('정식 배포 경계 오차 미충족: '+key),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+packaging/validate_assets.py,69,validate,raise ValueError('개발판은 모델을 동봉하거나 자동 분석을 활성화하지 않습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+scripts/build_windows.ps1,16,build,if ($LASTEXITCODE -ne 0) { throw 'venv failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,19,build,if ($LASTEXITCODE -ne 0) { throw 'Locked dependency install failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,21,build,if ($LASTEXITCODE -ne 0) { throw 'Project install failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,35,build,if ($LASTEXITCODE -ne 0) { throw 'Assets or release model failed validation' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,37,build,if ($LASTEXITCODE -ne 0) { throw 'Build provenance failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,41,build,if ($LASTEXITCODE -ne 0) { throw 'Tests failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,43,build,if ($LASTEXITCODE -ne 0) { throw 'PyInstaller failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,45,build,if ($LASTEXITCODE -ne 0) { throw 'License collection failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,64,build,if (-not $LayoutProcess.WaitForExit(30000)) { $LayoutProcess.Kill(); throw 'DPI probe timeout' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,65,build,if ($LayoutProcess.ExitCode -ne 0) { throw ('DPI layout probe failed: ' + $Scale) },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,70,build,if (-not $Process.WaitForExit(180000)) { $Process.Kill(); throw 'Frozen EXE test timed out' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,71,build,if ($Process.ExitCode -ne 0 -or -not (Test-Path $Report)) { throw 'Frozen EXE smoke failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,73,build,if ($Result.synthetic_render -ne 'PASS' -or $Result.gui_construction -ne 'PASS') { throw 'Frozen workflow failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,8,build,if (-not [Environment]::Is64BitProcess -or $env:OS -ne 'Windows_NT') { throw 'Windows x64 required' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,92,build,if ((Get-FileHash $Zip -Algorithm SHA256).Hash.ToLower() -ne $Hash) { throw 'ZIP checksum mismatch' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,97,build,if (-not $Probe.WaitForExit(30000)) { $Probe.Kill(); throw 'Unpacked EXE timeout' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,98,build,if ($Probe.ExitCode -ne 0) { throw 'Unpacked EXE failed' },A,유지: 실제 테스트·EXE·ZIP·필수 자산 실패 시 게시 중단
+scripts/build_windows.ps1,removed,build,기존 이름 ZIP 존재 시 throw,B,빌드별 고유 build-output 경로. 기존 ZIP 보존
+src/bsae/acceptance.py,19,run_acceptance,raise ValueError('인수 시험 경로가 원본/정답과 충돌합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/acceptance.py,21,run_acceptance,raise ValueError('후보·캐시·출력·보고서 경로를 각각 지정하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/acceptance.py,22,run_acceptance,raise ValueError('인수 시험 보고서가 원본/정답과 충돌합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/acceptance.py,24,run_acceptance,raise FileExistsError('기존 후보/보고서를 덮어쓰지 않습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/acceptance.py,27,run_acceptance,raise ValueError('실제 사람이 검수하고 승인 이력을 저장한 정답 프로젝트가 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/acceptance.py,29,run_acceptance,raise ValueError('정답의 전수 확인 및 후속 플레이 보존 검수 선언이 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/acceptance.py,39,run_acceptance,raise ValueError('알 수 없는 인수 시험 엔진: '+str(engine)),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/app.py,13,<module>,raise SystemExit(main()),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/cli.py,119,<module>,raise SystemExit(main()),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/cli.py,55,main,raise FileExistsError(args.project),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/cli.py,66,main,raise ValueError('잘못된 학습 라벨'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/cli.py,73,main,raise ValueError('학습 라벨 구간 중복'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/cli.py,75,main,raise ValueError('학습 예제 100000개 한도: 데이터셋을 분할하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/bulk.py,20,approve_clips,raise ValueError('사용자의 검수 승인 없이 자동 승인할 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/bulk.py,22,approve_clips,"raise ValueError('재분류가 필요한 후보: '+', '.join(str(r['number']) for r in warnings))",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/bulk.py,27,approve_clips,raise ValueError('시작·종료 범위'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/bulk.py,29,approve_clips,raise ValueError(f'{event.number}번 클립의 시간 구간을 확인하세요: {a}–{b}') from exc,A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,37,validate,raise ValueError('선수 기록 ID 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,39,validate,raise ValueError('선수 이름·역할·리그 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,40,validate,raise ValueError('선수 정보 형식 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,41,validate,raise ValueError('선수 부가 정보 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,57,get,raise ValueError('선수 기록을 찾을 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,69,save,raise ValueError('동명이인·중복 기록이 있습니다. 라이브러리에서 사용할 선수를 선택하세요.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,82,backup,raise FileExistsError('기존 백업을 보존하려면 새 파일명을 사용하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,87,restore,raise ValueError('백업 크기 제한 초과'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,89,restore,raise ValueError('지원하지 않는 선수 백업'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/library.py,91,restore,raise ValueError('백업에 중복 ID가 있습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,131,validate,"raise ValueError(""분석 회차 형식 오류"")",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,133,validate,raise ValueError('지원하지 않는 프로젝트/선수 역할'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,136,validate,raise ValueError('중복 ID'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,140,validate,raise ValueError('잘못된 원본 시간'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,142,validate,raise ValueError('선수 신원/방송 상태 형식 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,144,validate,raise ValueError('잘못된 이벤트/검수 상태'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,146,validate,raise ValueError('잘못된 이벤트 시간'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,148,validate,raise ValueError('잘못된 신뢰도'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,153,validate,raise ValueError('원본 범위 밖 구간'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,156,validate,raise ValueError('통합 타임라인 불연속'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,159,validate,raise ValueError('통합 타임라인 종료 불일치'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,161,validate,raise ValueError('중복 타석 ID'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,166,validate,raise ValueError('없는 투구를 참조하는 타석'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,168,validate,raise ValueError('투구가 여러 타석에 중복 포함되었습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,170,validate,raise ValueError('타석 연결 불일치'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,173,validate,raise ValueError('이벤트의 타석 그룹이 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,178,save,raise ValueError('원본에 프로젝트를 저장할 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/models.py,221,split,raise ValueError('원본에 없는 타임라인 구간'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/output_settings.py,15,validate_output_settings,raise ValueError('출력 화면비율 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/output_settings.py,16,validate_output_settings,raise ValueError('출력 해상도/배치 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/output_settings.py,19,validate_output_settings,raise ValueError('사용자 화면비율은 양의 유한한 값이어야 합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,10,review,raise ValueError('리플레이·자료화면·다른 선수 분류를 먼저 확인하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,112,set_innings,"raise ValueError('이닝은 1~99, 9초, 9회말처럼 입력하세요. 비우면 미확정입니다.')",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,134,assign_plate,raise ValueError('실제 투구 후보만 타석으로 묶을 수 있습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,137,assign_plate,raise ValueError('한 타석은 연속된 투구를 선택하세요. 중간 투구를 빠뜨릴 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,139,assign_plate,raise ValueError('서로 다른 이닝의 투구를 한 타석으로 묶을 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,152,assign_plate,raise ValueError('다른 타자로 확인된 투구가 섞여 있습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,16,review,raise ValueError('잘못된 검수 범위'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,166,name_plate,raise ValueError('먼저 선택 투구를 한 타석으로 묶으세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,177,set_pitch_numbers,raise ValueError('수정할 투구 번호가 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,179,set_pitch_numbers,raise ValueError('투구 번호는 1~99999의 정수로 입력하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,195,confirm_manual_identities,raise ValueError('먼저 리플레이·자료화면·다른 선수 분류를 확인하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,20,review,raise ValueError('대상 선수임을 명시적으로 확인해야 합니다'),D,"저수준 API 보호 유지, GUI 단일 승인에서 직접 확인 이력을 함께 기록해 중복 절차 제거"
+src/bsae/core/review.py,35,classify_event,raise ValueError('잘못된 이벤트 유형'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,49,split_plate,raise ValueError('타석 미배정 후보입니다. 선택 투구를 한 타석으로 기능으로 먼저 구성하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,68,merge_previous_plate,raise ValueError('이전 타석이 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,8,review,raise ValueError('잘못된 검수 동작'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,83,_selection,raise ValueError('실제 후보를 하나 이상 선택하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,92,review_many,raise ValueError('리플레이·다른 선수 후보는 분류를 확인한 뒤 승인하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/review.py,94,review_many,raise ValueError('선택하지 않은 후보의 시각은 변경할 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/rounds.py,39,run_round,raise ValueError('자동 탐색은 플레이를 검수 완료로 승인할 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/rounds.py,53,_record,raise ValueError('적용할 수 없는 탐색 회차입니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/rounds.py,55,_record,raise ValueError('다른 원본/경기의 결과를 적용할 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/rounds.py,76,apply_round,raise ValueError('회차 적용 방식 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/core/rounds.py,77,apply_round,raise ValueError('다른 선수/역할 결과는 추가할 수 없습니다. 회차 전환을 사용하세요.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/evaluation.py,23,valid,raise ValueError('잘못된 평가 구간'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/evaluation.py,26,evaluate,raise ValueError('IoU 범위 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/framing.py,20,detect_crop,raise RuntimeError('출력 취소'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/framing.py,52,crop_filter,raise ValueError('자동 여백 영역이 분석 화면 범위를 벗어났습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/geometry.py,12,display_aspect,raise ValueError('원본 픽셀 종횡비 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/geometry.py,14,display_aspect,raise ValueError('90도 단위가 아닌 회전 영상은 원본 표시 비율 검증이 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/geometry.py,26,output_dimensions,raise ValueError('화면비율이 지나치게 좁습니다. 출력 짧은 변은 최소 64픽셀입니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/geometry.py,9,display_aspect,raise ValueError('원본 화면 크기 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,119,export,raise ValueError('출력 중 원본 변경 감지'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,122,export,raise,A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,16,verify,raise ValueError('출력 코덱/스트림 검증 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,19,verify,raise ValueError('출력 해상도/프레임레이트 검증 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,22,verify,raise ValueError('출력 길이 검증 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,40,export,raise ValueError('자동 여백 제거 설정 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,43,export,raise ValueError('출력 모드 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,47,export,raise ValueError('리플레이·다른 선수 후보는 원본 확인 후 투구로 재분류해야 출력할 수 있습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,49,export,raise ValueError('검수 승인된 투구가 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,52,export,raise ValueError('대상 선수 미확정 이벤트'),D,"저수준 API 보호 유지, GUI 단일 승인에서 직접 확인 이력을 함께 기록해 중복 절차 제거"
+src/bsae/export/render.py,55,export,raise ValueError('승인 이벤트 구간이 겹칩니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,59,export,raise ValueError('원본이 변경되었습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,62,export,raise FileExistsError(destination),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,64,export,raise ValueError('원본과 출력 경로 충돌'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,71,export,raise ValueError('모든 승인 투구의 타석 그룹을 먼저 확정하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,89,export,raise RuntimeError('출력 취소'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/export/render.py,moved,export,실제 출력 선택 전 승인 후보 전체의 방송/분류 상태 검사,B,출력 대상 필터 적용 후 검사. 비출력 견제/제외 후보로 정상 출력 차단하지 않음
+src/bsae/gui/diagnostics.py,12,layout_probe,raise FileExistsError(report),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/diagnostics.py,51,preview_probe,raise RuntimeError('미리보기 프레임 수신 실패: '+window.player.errorString()),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/diagnostics.py,52,preview_probe,raise RuntimeError('미리보기 일시정지 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/library_ui.py,71,open_recent_player_project,raise ValueError('최근 프로젝트가 없거나 파일이 이동됐습니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,102,save,raise ValueError('타석 미지정 클립이 있습니다. 고급 편집에서 타석을 구성하세요.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,104,save,raise ValueError('타석 구성을 확인하거나 고급 편집에서 수정하세요.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,27,update_preview,box.setEnabled(self.aspect.currentIndex()==5),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,93,save,raise ValueError('저장 위치와 새 폴더 이름을 확인하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,95,save,raise FileExistsError('같은 이름의 폴더가 있습니다. 새 이름을 사용하세요.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,96,save,raise ValueError('저장 위치 폴더가 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/output_ui.py,integrated,choose_export,출력 설정/폴더 선택/폴더명 별도 순차 창,D,출력 방식·폴더·새 이름 한 창. 상세 설정만 접힌 고급 영역
+src/bsae/gui/profile_ui.py,45,edit_broadcast_regions,raise ValueError('대표 프레임을 읽을 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/profile_ui.py,72,save,raise ValueError('설정 이름을 입력하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/rounds_ui.py,25,offer_analysis_round,"QMessageBox.question(self,'새 탐색 결과',f'{player}: 후보 {count}개를 찾았습니다.\n기존 검수를 보관하고 새 결과로 전환할까요?\n아니오를 선택해도 결과는 고급 메뉴의 탐색 회차에 보존됩니다.',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/rounds_ui.py,45,refresh,replace.setEnabled(not failed),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/rounds_ui.py,46,refresh,add.setEnabled(not failed and record['kind']=='analysis' and identity_key(self.session.player)==identity_key(GameSession.from_dict(record['payload']).player)),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,127,__init__,self.analyze_button.setEnabled(False),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,210,__init__,self.model.setReadOnly(True),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,248,check_model,self.analyze_button.setEnabled(False),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,260,check_model,self.analyze_button.setEnabled(not(self.job and self.job.isRunning())),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,262,check_model,self.analyze_button.setEnabled(False),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,265,discard,"QMessageBox.question(self,'저장하지 않은 변경','저장하지 않은 변경을 버릴까요?')",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,295,launch,widget.setEnabled(False),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,296,launch,self.project_menu.setEnabled(False),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,301,launch,self.analyze_button.setEnabled(False),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,304,job_finished,widget.setEnabled(enabled),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,305,job_finished,self.project_menu.setEnabled(True),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,323,show_analysis_preflight,"QMessageBox.question(self,'전체 분석 전 신원 근거 진단',text,QMessageBox.Yes|QMessageBox.No,QMessageBox.No)",C,기본 GUI 호출 제거: 경고 상태로 안내하고 후보 탐색 계속. 옵션 API는 보존
+src/bsae/gui/window.py,390,sync_identity_lock,widget.setReadOnly(locked),D,프로젝트 선수 고정. 입력 비교로 출력 차단하지 않고 다른 선수 찾기로 명시 변경
+src/bsae/gui/window.py,392,sync_identity_lock,self.role.setEnabled(not locked),D,프로젝트 선수 고정. 입력 비교로 출력 차단하지 않고 다른 선수 찾기로 명시 변경
+src/bsae/gui/window.py,392,sync_identity_lock,self.league.setEnabled(not locked),D,프로젝트 선수 고정. 입력 비교로 출력 차단하지 않고 다른 선수 찾기로 명시 변경
+src/bsae/gui/window.py,412,require_active_identity,raise ValueError('먼저 영상을 분석하거나 프로젝트를 여세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,461,selected_event,raise ValueError('누락 의심 구간은 투구로 확정되지 않았습니다. 원본 확인 후 보조 후보를 추가하세요.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,462,selected_event,raise ValueError('후보를 선택하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,476,selected_event_ids,raise ValueError('검수할 후보 행을 선택하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,478,selected_event_ids,raise ValueError('누락 의심 구간은 투구 후보가 아니므로 일괄 검수할 수 없습니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,50,ask_preflight,raise Cancelled('사전 진단 중 사용자가 중단했습니다'),C,기본 GUI 호출 제거: 경고 상태로 안내하고 후보 탐색 계속. 옵션 API는 보존
+src/bsae/gui/window.py,51,ask_preflight,raise Cancelled('신원 미확정 후보 탐색을 시작하지 않았습니다'),C,기본 GUI 호출 제거: 경고 상태로 안내하고 후보 탐색 계속. 옵션 API는 보존
+src/bsae/gui/window.py,527,edit_pitch_number,"QMessageBox.question(self,'투구 번호 중복',f'{value}번이 다른 후보에도 있습니다. 다른 번호는 자동 수정하지 않습니다. 그대로 저장할까요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,557,edit_plate,"QMessageBox.question(self,'타석 병합 검수','원본에서 같은 타석임을 확인했나요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,567,cleanup_automatic_plates,"QMessageBox.question(self,'자동 타석 정리','타자 근거·검수 기록이 없는 자동 타석만 미배정으로 되돌립니다. 기존 검수는 보관하며 확인·수정한 그룹은 유지합니다. 진행할까요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,630,edit_plate_batter,raise ValueError('먼저 선택 투구를 한 타석으로 묶으세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,640,manual,raise ValueError('시작·종료를 입력하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,648,confirm_plate,raise ValueError('선택 투구를 한 타석으로 버튼으로 먼저 구성하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,650,confirm_plate,"QMessageBox.question(self,'타석 그룹 검수',f'이 그룹의 {len(pa.event_ids)}개 투구가 한 타석인지 확인했나요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,integrated,approve_selection,선수 확인 버튼/체크박스 후 다시 검수 승인,D,통합: 한 번의 승인으로 직접 확인·승인 이력 원자적 저장
+src/bsae/gui/window.py,integrated,save_project,이미 정한 프로젝트 저장 위치를 매번 재선택,B,"기존 경로 저장, 다른 이름 저장은 별도 메뉴 유지"
+src/bsae/gui/window.py,removed,require_active_identity,입력 선수와 현재 프로젝트 선수 불일치 시 검수·출력 거절,B,제거: 현재 프로젝트 대상을 고정하고 별도 다른 선수 찾기 제공
+src/bsae/gui/window.py,removed,start_analysis,OCR 신원 근거 부족 시 확인을 거절하면 분석 중단,C,기본 경로 팝업 제거. 미확정 상태 유지하며 후보 탐색 계속
+src/bsae/ingest/media.py,107,add_sources,raise ValueError('동일 파일 중복 입력'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,159,frames,raise RuntimeError('잘린 디코딩 프레임'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,16,tool,raise ValueError(name),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,162,frames,raise RuntimeError('FFmpeg PTS를 읽을 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,165,frames,"raise media_error('ffmpeg',b''.join(errors))",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,22,tool,raise FileNotFoundError(f'배포본에 {name}가 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,25,tool,raise FileNotFoundError(f'{name} 설치가 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,51,run,"raise media_error(name,result.stderr)",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,92,presentation_span,raise RuntimeError('영상 패킷 시간 검사 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/media.py,98,presentation_span,raise ValueError('영상 PTS 범위를 확인할 수 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/ocr_runtime.py,39,ascii_workspace,raise RuntimeError('OCR 임시 경로의 문자 변환에 실패했습니다. Windows 임시 폴더의 영문 짧은 경로를 사용할 수 없습니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/ocr_runtime.py,57,prepare,raise ValueError('지원하지 않는 OCR 언어 파일 이름'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/ocr_runtime.py,68,prepare,raise RuntimeError('OCR 언어 자료 복사 무결성 검사 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/ingest/ocr_runtime.py,85,prepare,raise RuntimeError('OCR 실행 파일 복사 무결성 검사 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/validation.py,12,compare_projects,raise ValueError('선수/역할이 다른 정답 프로젝트'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/validation.py,13,compare_projects,raise ValueError('원본·파일 순서가 다른 정답 프로젝트'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/validation.py,16,compare_projects,raise ValueError('독립적으로 검수·승인한 정답 기록이 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,33,__init__,raise ValueError('지원하지 않는 모델 형식'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,35,__init__,raise ValueError('모델 라이선스/학습자료 출처 누락'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,38,__init__,raise ValueError('모델 파일은 manifest 폴더 안에 있어야 합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,41,__init__,raise ValueError('모델 체크섬 불일치'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,45,__init__,raise ValueError('모델 차원 불일치'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,47,__init__,raise ValueError('유효하지 않은 모델 수치'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,56,train,"raise ValueError('모든 상태의 학습 예제가 필요합니다: ' + ', '.join(LABELS))",A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,58,train,raise ValueError('상태별 예제/라이선스/출처를 확인하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,61,train,raise ValueError('잘못된 학습 특징'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/model.py,71,train,raise FileExistsError('기존 모델을 덮어쓰지 않습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/pipeline.py,163,analyze,raise ValueError('원본 영상이 없습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/pipeline.py,165,analyze,raise ValueError('검수 기록이 있는 프로젝트는 새 프로젝트로 재분석하세요. 캐시는 보존됩니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/pipeline.py,177,analyze,raise ValueError('원본 파일이 변경되었습니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/pipeline.py,193,analyze,raise ValueError('검수 기록이 있는 프로젝트는 새 프로젝트로 재분석하세요. 캐시는 보존됩니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/pipeline.py,30,scan,raise Cancelled(),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/pipeline.py,41,scan,raise Cancelled(),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/profile_detection.py,22,select_profile,raise Cancelled(),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,221,scan,raise Cancelled(),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,231,scan,raise Cancelled(),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,243,scan,raise RuntimeError('OCR 프레임 디코딩 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,32,load_profile,raise ValueError('잘못된 중계 영역: '+key),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,33,load_profile,raise ValueError('잘못된 샘플링 설정'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,36,load_profile,raise ValueError('구도 모델은 설정 폴더 안에 있어야 합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,37,load_profile,raise ValueError('구도 모델 체크섬 불일치'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,491,analyze_plays,raise ValueError('분석 캐시 경로를 지정하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,492,analyze_plays,raise ValueError('원본 영상 없음'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,493,analyze_plays,raise ValueError('검수 기록을 보존하려면 새 분석 프로젝트를 만드세요. 기존 캐시는 재사용됩니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,501,analyze_plays,raise ValueError('원본 파일 변경 감지'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/rules.py,543,analyze_plays,raise,A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scene.py,23,validate,raise ValueError('지원하지 않는 중계 구도 모델'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scene.py,26,validate,raise ValueError('중계 구도 모델 수치 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scene.py,27,validate,raise ValueError('중계 구도 모델 범위 오류'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scene.py,39,train,raise ValueError('두 종류의 실제 구도 학습 자료가 필요합니다'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scoreboard.py,34,__init__,raise ValueError('잘못된 OCR ROI: ' + key),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scoreboard.py,46,read,raise RuntimeError('OCR 이미지 인코딩 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/vision/scoreboard.py,58,text_regions,raise RuntimeError('문자 영역 프레임 인코딩 실패'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호

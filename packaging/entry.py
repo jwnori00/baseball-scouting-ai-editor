@@ -112,11 +112,12 @@ if __name__=='__main__':
                 original=fingerprint(video)
                 game=GameSession('Synthetic smoke',PlayerIdentity('Synthetic'),add_sources([video]))
                 if policy['kind']=='rules-preview':
-                    from bsae.vision.rules import analyze_plays,load_profile,VERSION
+                    from bsae.vision.rules import load_profile,VERSION
+                    from bsae.vision.workflow import analyze_for_review
                     window.select_broadcast(root/'profiles'/'multi-broadcast-scene-v1.json')
                     assert window.analyze_button.isEnabled()
                     checkpoint('automatic_scan')
-                    analyze_plays(game,load_profile(window.profile.text() or None),d/'auto.sqlite')
+                    analyze_for_review(game,load_profile(window.profile.text() or None),d/'auto.sqlite',automatic_profile=False)
                     assert game.analysis['engine']==VERSION
                     assert game.analysis['game_index']['game_key']
                     assert all(e.status!='APPROVED' for e in game.events)
@@ -129,7 +130,10 @@ if __name__=='__main__':
                 preview_probe(window)
                 window.start.setValue(.2);window.end.setValue(.8);window.manual()
                 window.start.setValue(1.0);window.end.setValue(1.5);window.manual()
-                window.table.selectRow(0);window.confirm.setChecked(True);window.apply('APPROVED')
+                from PySide6.QtCore import QTimer
+                from PySide6.QtWidgets import QMessageBox
+                def answer_yes():app.activeModalWidget().button(QMessageBox.Yes).click()
+                window.table.selectRow(0);QTimer.singleShot(50,answer_yes);window.apply('APPROVED')
                 game=window.session
                 checkpoint('unknown_bulk_guard')
                 from PySide6.QtCore import QTimer
@@ -137,12 +141,13 @@ if __name__=='__main__':
                 errors=[];window.error=errors.append;window.table.selectAll()
                 def answer_guard():
                     modal=app.activeModalWidget()
-                    if isinstance(modal,QMessageBox):modal.button(QMessageBox.Yes).click()
+                    if isinstance(modal,QMessageBox):modal.button(QMessageBox.No).click()
                 QTimer.singleShot(50,answer_guard);window.approve_selected()
-                assert errors and game.events[1].status=='REVIEW_REQUIRED' and not game.events[1].manual_identity_confirmed, str(dict(errors=[str(e) for e in errors],events=[(e.status,e.manual_identity_confirmed) for e in game.events]))
+                assert not errors and game.events[1].status=='REVIEW_REQUIRED' and not game.events[1].manual_identity_confirmed, str(dict(errors=[str(e) for e in errors],events=[(e.status,e.manual_identity_confirmed) for e in game.events]))
                 assert all(e.identity_status=='IDENTITY_UNKNOWN' for e in game.events)
                 window.error=fail_test
-                review_many(game,[e.id for e in game.events],confirm_identity=True)
+                QTimer.singleShot(50,answer_yes);window.approve_selected()
+                assert all(e.status=='APPROVED' and e.manual_identity_confirmed and e.identity_status=='IDENTITY_UNKNOWN' for e in game.events)
                 set_innings(game,[e.id for e in game.events],'9초')
                 assert len(game.events)==2 and all(e.status=='APPROVED' and e.inning=='9초' for e in game.events)
                 game.save(d/'project.json');game=GameSession.load(d/'project.json')
@@ -164,7 +169,18 @@ if __name__=='__main__':
                 game.save(d/'numbered.json');game=GameSession.load(d/'numbered.json')
                 assert game.events[0].number==35
                 checkpoint('render')
-                export(game,d/'output')
+                from PySide6.QtWidgets import QLineEdit,QPushButton
+                def choose_output():
+                    dialog=app.activeModalWidget()
+                    try:
+                        dialog.findChild(QLineEdit,'export-folder').setText(str(d))
+                        dialog.findChild(QLineEdit,'export-name').setText('output')
+                        dialog.findChild(QPushButton,'export-save').click()
+                    finally:
+                        if dialog.isVisible():dialog.reject()
+                QTimer.singleShot(50,choose_output);choice=window.choose_export()
+                assert choice and choice['destination']==d/'output'
+                export(game,choice['destination'],choice['mode'],output_settings=choice['settings'])
                 v=next(v for v in probe(d/'output'/'all_0001.mp4')['streams'] if v['codec_type']=='video')
                 assert (v['width'],v['height'],v['avg_frame_rate'])==(1280,720,'30/1')
                 from bsae.core.library import Library
@@ -200,9 +216,9 @@ if __name__=='__main__':
                 assert original==fingerprint(video)
             checkpoint('cleanup')
             window.dirty=False;window.close()
-            # Explicitly does not assert baseball model accuracy or native playback.
+            # Playback is checked above; baseball identification accuracy is not measured.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                preview_decoded_frame='PASS',preview_pause='PASS',client_manual='PASS',build_metadata='PASS',unknown_bulk_guard='PASS',common_game_index='PASS_SYNTHETIC_ONLY' if policy['kind']=='rules-preview' else 'NOT_RUN',batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                preview_decoded_frame='PASS',preview_pause='PASS',client_manual='PASS',build_metadata='PASS',single_export_dialog='PASS',unified_clip_approval='PASS',unknown_bulk_guard='PASS',common_game_index='PASS_SYNTHETIC_ONLY' if policy['kind']=='rules-preview' else 'NOT_RUN',batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_NO_VALIDATED_ACTION_MODEL',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:
