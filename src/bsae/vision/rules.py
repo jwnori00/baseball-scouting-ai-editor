@@ -126,25 +126,30 @@ def name_matches(value,player):
 
 class Identity:
     def __init__(self,player,profile):
-        self.player=player;self.profile=profile;self.fields={};self.confirmation=None;self.last_count=None;self.last_inning=None;self.other_observation=None
+        self.player=player;self.profile=profile;self.fields={};self.confirmation=None;self.last_count=None;self.last_inning=None;self.other_observation=None;self.scorebug_observation=None
 
     def update(self,t,readings):
         prefix=self.player.role+'_';name=clean_name(readings.get(prefix+'name',''))
         if self.player.role=='batter':
             inning=parse_inning(readings.get('inning',''));count=parse_count(readings.get('count',''))
             if inning and self.last_inning and inning!=self.last_inning or count==(0,0) and self.last_count not in (None,(0,0)) or readings.get('replay') or readings.get('archive'):
-                self.fields={};self.confirmation=None;self.other_observation=None
+                self.fields={};self.confirmation=None;self.other_observation=None;self.scorebug_observation=None
             if inning:self.last_inning=inning
             if count is not None:self.last_count=count
         if readings.get(prefix+'identity_conflict'):
-            self.fields={};self.confirmation=None
+            self.fields={};self.confirmation=None;self.scorebug_observation=None
             return dict(state='conflict',proof=[('conflict',readings[prefix+'identity_conflict'])])
-        if self.player.role=='batter' and self.profile.get('auto_batter_text') and name_matches(name,self.player) and self.player.jersey and readings.get('batter_jersey') and readings['batter_jersey']!=self.player.jersey:
-            self.fields={};self.confirmation=None
+        if self.player.role=='batter' and name_matches(name,self.player) and self.player.jersey and readings.get('batter_jersey') and readings['batter_jersey']!=self.player.jersey:
+            self.fields={};self.confirmation=None;self.scorebug_observation=None
             return dict(state='conflict',proof=[('caption_number_mismatch',readings['batter_jersey'])])
+        if self.player.role=='batter' and 'batter_name' in readings and not readings['batter_name'].strip():
+            self.fields={};self.confirmation=None;self.scorebug_observation=None
+        if self.player.role=='batter' and name_matches(name,self.player) and self.player.team and readings.get('batter_team') and canonical_team(readings['batter_team'],self.profile)!=canonical_team(self.player.team,self.profile):
+            self.fields={};self.confirmation=None;self.scorebug_observation=None
+            return dict(state='conflict',proof=[('observed_team_mismatch',readings['batter_team'])])
         old=self.fields.get(prefix+'name')
         if name and old and not compatible_name(name,old[1]):
-            self.fields={};self.confirmation=None
+            self.fields={};self.confirmation=None;self.scorebug_observation=None
         for key,value in readings.items():
             if key.startswith(prefix) and value.strip():
                 if key.endswith('_name'):
@@ -158,7 +163,20 @@ class Identity:
         match=name_matches(observed,self.player)
         proof=[]
         if match:proof.append(('name',observed))
-        if match and self.player.role=='batter' and self.profile.get('auto_batter_text') and readings.get('batter_current_role'):proof.append(('current_batter_graphic',readings['batter_current_role']))
+        if match and self.player.role=='batter' and self.profile.get('auto_batter_text') and readings.get('batter_current_role'):
+            enough=True
+            if readings.get('batter_role_source')=='scorebug_count_pitcher_neighbor':
+                old=self.scorebug_observation;observed_key=normalize(observed)
+                count=old[2]+1 if old and old[0]==observed_key and 0<t-old[1]<=6 else 1
+                self.scorebug_observation=(observed_key,t,count);enough=count>=2
+                if enough:proof.append(('repeated_scorebug_role',str(count)))
+            if enough:proof.append(('current_batter_graphic',readings['batter_current_role']))
+        elif match and self.player.role=='batter' and self.profile.get('regions',{}).get('batter_name') and readings.get('batter_name'):
+            old=self.scorebug_observation;key=normalize(observed)
+            count=old[2]+1 if old and old[0]==key and 0<t-old[1]<=6 else 1
+            self.scorebug_observation=(key,t,count)
+            if count>=2:proof.append(('repeated_current_batter_region',str(count)))
+        elif self.player.role=='batter' and readings.get('batter_name'):self.scorebug_observation=None
         if normalize(self.player.team) and normalize(values.get(prefix+'team','')) and canonical_team(values.get(prefix+'team',''),self.profile)==canonical_team(self.player.team,self.profile):proof.append(('team',values[prefix+'team']))
         if self.player.jersey and values.get(prefix+'jersey','')==self.player.jersey:proof.append(('jersey',self.player.jersey))
         if match and len(proof)>=2:self.confirmation=(t,proof);self.other_observation=None
@@ -279,7 +297,7 @@ class Assembly:
     def feed(self,t,row):
         self.last_t=t
         if self.session.player.role=='batter' and self.profile.get('auto_batter_text') and row.get('cut'):
-            self.identity.fields={};self.identity.confirmation=None;self.identity.other_observation=None;self.caption_context=None
+            self.identity.fields={};self.identity.confirmation=None;self.identity.other_observation=None;self.identity.scorebug_observation=None;self.caption_context=None
             self.ocr={k:v for k,v in self.ocr.items() if not k.startswith('batter_')}
         if 'text_blocks' in row:
             self.caption_samples+=1
@@ -289,7 +307,7 @@ class Assembly:
                 if self.caption_context and automatic.get('batter_name') and normalize(automatic['batter_name'])!=self.caption_context['name']:self.caption_context=None
                 if automatic.get('replay') or automatic.get('archive') or not row['pitch_view']:self.caption_context=None
                 elif automatic.get('batter_current_role') and automatic.get('batter_role_region'):
-                    self.caption_context=dict(name=normalize(automatic['batter_name']),region=json.loads(automatic['batter_role_region']),origin=t,role=automatic['batter_current_role'])
+                    self.caption_context=dict(name=normalize(automatic['batter_name']),region=json.loads(automatic['batter_role_region']),origin=t,role=automatic['batter_current_role'],role_source=automatic.get('batter_role_source','explicit_role_line'))
                 elif self.caption_context and automatic.get('batter_name_hint') and normalize(automatic['batter_name_hint'])==self.caption_context['name']:
                     a,b,c,d=json.loads(automatic['batter_name_hint_region']);x,y,z,w=self.caption_context['region']
                     overlap=max(0,min(c,z)-max(a,x))*max(0,min(d,w)-max(b,y))
@@ -297,10 +315,11 @@ class Assembly:
                         automatic['batter_name']=automatic['batter_name_hint']
                         automatic['batter_current_role']='Same observed name slot; original role: '+self.caption_context['role']
                         automatic['batter_context_origin']=str(self.caption_context['origin'])
+                        automatic['batter_role_source']=self.caption_context['role_source']
                         automatic['batter_context_kind']='caption_slot_only; NOT person_tracking'
             if self.session.player.role=='batter' and self.profile.get('auto_batter_text') and not (automatic.get('batter_name') or readings.get('batter_name')):
                 self.caption_context=None
-                self.identity.fields={};self.identity.confirmation=None
+                self.identity.fields={};self.identity.confirmation=None;self.identity.scorebug_observation=None
                 self.ocr={k:v for k,v in self.ocr.items() if not k.startswith('batter_')}
             for key,value in automatic.items():
                 if key not in readings or not readings[key]:readings[key]=value
@@ -495,7 +514,7 @@ def analyze_plays(session,profile=None,cache_path=None,stop=None,progress=lambda
             counts=dict(all=len(session.events),target=sum(e.pitcher_id==session.player.id or e.batter_id==session.player.id for e in session.events),
                 uncertain=sum(any(p.kind=='identity_state' and p.value!='target' for p in e.evidence) for e in session.events)))
         session.analysis['profile_snapshot']={k:v for k,v in profile.items() if k!='scene_weights'}
-        session.analysis['identity_diagnostics']=dict(patch_version='unified-identity-v3-caption-slot',full_frame_ocr_samples=assembler.caption_samples,name_hint_samples=assembler.caption_hits,caption_anchors_truncated=assembler.caption_hits>len(assembler.caption_anchors),ocr_evidence_events=sum(any(p.kind.startswith('ocr:') for p in e.evidence) for e in session.events),name_hint_events=sum(any(p.kind=='ocr:batter_name_hint' for p in e.evidence) for e in session.events),uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',auto_batter_text=bool(profile.get('auto_batter_text')))
+        session.analysis['identity_diagnostics']=dict(patch_version='batter-scorebug-v4',full_frame_ocr_samples=assembler.caption_samples,name_hint_samples=assembler.caption_hits,caption_anchors_truncated=assembler.caption_hits>len(assembler.caption_anchors),ocr_evidence_events=sum(any(p.kind.startswith('ocr:') for p in e.evidence) for e in session.events),name_hint_events=sum(any(p.kind=='ocr:batter_name_hint' for p in e.evidence) for e in session.events),uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',auto_batter_text=bool(profile.get('auto_batter_text')))
         session.analysis['caption_anchors']=assembler.caption_anchors
         if session.player.role=='batter' and not any(e.batter_id==session.player.id for e in session.events):
             session.analysis['recognition_status']='TARGET_BATTER_NOT_IDENTIFIED'

@@ -105,3 +105,63 @@ def test_future_target_caption_does_not_relabel_another_batters_pitch():
         a.feed(t,dict(pitch_view=True,motion=3 if 20<=i<30 else .02,catcher_motion=1,field=.2,signature=str(i),ocr=dict(batter_name=name,batter_team='두산') if i%10==0 else {}))
     a.feed(8,dict(pitch_view=False,motion=0,catcher_motion=0,field=.2,signature='end'))
     events=a.finish(9);assert events and events[0].batter_id is None
+
+
+def test_lower_name_requires_observed_pitcher_and_count_in_same_panel():
+    from bsae.vision.batter_text import scorebug_name
+    panel=[.1,.1,.4,.4]
+    def row(text,y):return dict(text=text,region=[.11,y,.35,y+.02],panel_region=panel)
+    lower=row('1. 정 수 빈 2 타수 0 안타',.34)
+    pitcher=row('P 임찬규 34',.30);count=row('1-1',.23)
+    assert scorebug_name(lower,[lower,count]) is None
+    assert scorebug_name(lower,[lower,pitcher]) is None
+    assert scorebug_name(lower,[lower,pitcher,count])=='정 수 빈'
+    wrong=dict(pitcher,panel_region=[.5,.1,.8,.4])
+    assert scorebug_name(lower,[lower,wrong,count]) is None
+    s=interpret([lower,pitcher,count],player(),pitch_view=True)
+    assert s['batter_role_source']=='scorebug_count_pitcher_neighbor' and s['count']=='1-1'
+    identity=Identity(player(),configure(dict(load_profile(),regions={}),player()))
+    assert identity.update(0,s)['state']=='unconfirmed'
+    assert identity.update(2,s)['state']=='target'
+    assert 'batter_jersey' not in s
+
+
+def test_repeated_scorebug_name_does_not_survive_another_batter():
+    p=player();i=Identity(p,configure(dict(load_profile(),regions={}),p))
+    r=dict(batter_name=p.name,batter_current_role='scorebug',batter_role_source='scorebug_count_pitcher_neighbor')
+    assert i.update(0,r)['state']=='unconfirmed'
+    assert i.update(1,dict(batter_name='강민호'))['state']!='target'
+    assert i.update(2,r)['state']=='unconfirmed'
+    assert i.update(4,r)['state']=='target'
+
+
+def test_explicit_position_wins_over_partial_same_caption_not_lineup():
+    a=block('9 CF 정 수 빈 .254');b=block('9 수 빈 .254')
+    assert interpret([a,b],player(),pitch_view=True)['batter_name']=='정 수 빈'
+    c=block('8 LF 강 민 호 .301',(.1,.8,.4,.9))
+    assert 'batter_name' not in interpret([a,c],player(),pitch_view=True)
+
+
+def test_scorebug_accumulates_fresh_reads_not_intervening_motion_frames():
+    p=player();i=Identity(p,configure(dict(load_profile(),regions={}),p))
+    r=dict(batter_name=p.name,batter_current_role='live lower row',batter_role_source='scorebug_count_pitcher_neighbor')
+    assert i.update(0,r)['state']=='unconfirmed'
+    for t in (.1,.2,1,1.9):assert i.update(t,{})['state']=='unconfirmed'
+    assert i.update(2,r)['state']=='target'
+
+
+def test_user_selected_current_batter_region_works_without_fake_team_number():
+    p=player();profile=configure(dict(load_profile(),regions={'batter_name':[.1,.1,.3,.2]},language='eng'),p)
+    assert profile['language']=='kor+eng'
+    i=Identity(p,profile)
+    assert i.update(0,{'batter_name':'정수빈'})['state']=='unconfirmed'
+    assert i.update(2,{'batter_name':'정 수 빈'})['state']=='target'
+    assert i.update(3,{'batter_name':''})['state']=='unconfirmed'
+    assert i.update(4,{'batter_name':'정수빈'})['state']=='unconfirmed'
+    assert i.update(5,{'batter_name':'강민호'})['state']!='target'
+
+
+def test_observed_opposing_team_overrules_matching_batter_caption():
+    p=player();i=Identity(p,configure(dict(load_profile(),regions={}),p))
+    result=i.update(0,dict(batter_name='정수빈',batter_team='삼성',batter_current_role='B. 정수빈'))
+    assert result['state']=='conflict'

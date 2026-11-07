@@ -1,5 +1,6 @@
 > 현재 통합 시험판: 자동 신원·수동 확인·검수를 분리하고 자막 근거와 경기 인덱스를 기록합니다.
 > 유니폼 번호 인식·선수 추적·새 전체 경기의 타자 식별은 미완료입니다.
+> preview8 타자 자막 보완과 실제 실패: [타자 식별 검사](docs/BATTER_SCOREBUG_V4.md).
 > 실제 시험과 실패 범위: [통합 인덱스·신원 검증](docs/UNIFIED_IDENTITY_INDEX.md).
 
 # Baseball Scouting AI Editor — 자동 플레이 탐색 검증판

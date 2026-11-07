@@ -23,7 +23,7 @@ if (-not $DependenciesInstalled) {
 New-Item -ItemType Directory -Force build-evidence | Out-Null
 & $Python packaging/validate_assets.py $Assets $Kind
 if ($LASTEXITCODE -ne 0) { throw 'Assets or release model failed validation' }
-@{kind=$Kind;automatic_analysis=($Kind -ne 'development');engine='broadcast-rules-v1';version='1.0.0.integration-preview7'} | ConvertTo-Json | Set-Content (Join-Path $Assets 'build-policy.json') -Encoding utf8
+@{kind=$Kind;automatic_analysis=($Kind -ne 'development');engine='broadcast-rules-v1';version='1.0.0.integration-preview8'} | ConvertTo-Json | Set-Content (Join-Path $Assets 'build-policy.json') -Encoding utf8
 $env:PATH = "$Assets\tools;$env:PATH"
 & $Python -m pytest -q --junitxml=build-evidence/windows-tests.xml
 if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
@@ -55,5 +55,5 @@ Copy-Item build-evidence dist/BaseballScoutingAIEditor/build-evidence -Recurse
 Compress-Archive -Path dist/BaseballScoutingAIEditor -DestinationPath $Zip
 $Hash = (Get-FileHash $Zip -Algorithm SHA256).Hash.ToLower()
 "$Hash  $([IO.Path]::GetFileName($Zip))" | Set-Content "$Zip.sha256" -Encoding ascii
-@{file=[IO.Path]::GetFileName($Zip);sha256=$Hash;version='1.0.0.integration-preview7';kind=$Kind} | ConvertTo-Json | Set-Content build-evidence/portable-package.json -Encoding utf8
+@{file=[IO.Path]::GetFileName($Zip);sha256=$Hash;version='1.0.0.integration-preview8';kind=$Kind} | ConvertTo-Json | Set-Content build-evidence/portable-package.json -Encoding utf8
 Write-Host "$Kind portable ZIP and SHA-256 created."

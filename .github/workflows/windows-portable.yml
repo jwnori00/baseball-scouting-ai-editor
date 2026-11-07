@@ -1,7 +1,7 @@
 name: Windows portable EXE
 on:
   push:
-    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update, fix/batter-identity-evidence]
+    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update, fix/batter-identity-evidence, feat/batter-scorebug-identity]
   pull_request:
     branches: [main]
   workflow_dispatch:

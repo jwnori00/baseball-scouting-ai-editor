@@ -75,7 +75,7 @@ def broadcast_text_regions(rgb,language='eng+kor'):
         mask=cv2.morphologyEx(mask,cv2.MORPH_CLOSE,cv2.getStructuringElement(cv2.MORPH_RECT,(7,3)))
         count,_,stats,_=cv2.connectedComponentsWithStats(mask)
         for x,y,bw,bh,area in stats[1:]:
-            if not (max(8,h*.012)<=bh<=h*.25 and w*.04<=bw<=w*.7 and 1.2<=bw/bh<=18 and bw*bh<=w*h*.08 and area/(bw*bh)>.7):continue
+            if not (max(8,h*.012)<=bh<=h*.25 and w*.04<=bw<=w*.7 and 1.2<=bw/bh<=18 and bw*bh<=w*h*.08 and area/(bw*bh)>.45):continue
             x0=int(x);y0=int(y);x1=int(x+bw);y1=int(y+bh)
             contrast=float(gray[y0:y1,x0:x1].std())
             if contrast<18:continue
@@ -87,7 +87,14 @@ def broadcast_text_regions(rgb,language='eng+kor'):
         if len(selected)>=6:break
     for x0,y0,x1,y1 in selected:
         crop=cv2.resize(rgb[y0:y1,x0:x1],None,fx=4,fy=4,interpolation=cv2.INTER_LINEAR)
-        for block in text_regions(crop,language=language,psm=6):
-            a,b,c,d=block['region'];block=dict(block,region=[(x0+a*(x1-x0))/w,(y0+b*(y1-y0))/h,(x0+c*(x1-x0))/w,(y0+d*(y1-y0))/h],detector='contrast_panel')
-            result.append(block)
+        variants=[(crop,language,'linear')]
+        # Hangul-only recognition avoids Latin decoding of small syllables.
+        # Keep observations separate: never substitute the requested name.
+        if 'kor' in language and y1-y0>h*.05:
+            variants.append((cv2.resize(rgb[y0:y1,x0:x1],None,fx=4,fy=4,interpolation=cv2.INTER_CUBIC),'kor','cubic_kor'))
+            variants.append((crop,'eng','role_latin'))
+        for variant,lang,method in variants:
+            for block in text_regions(variant,language=lang,psm=6,minimum_confidence=10 if method=='role_latin' else 45):
+                a,b,c,d=block['region'];block=dict(block,panel_region=[x0/w,y0/h,x1/w,y1/h],ocr_variant=method,region=[(x0+a*(x1-x0))/w,(y0+b*(y1-y0))/h,(x0+c*(x1-x0))/w,(y0+d*(y1-y0))/h],detector='contrast_panel')
+                result.append(block)
     return result
