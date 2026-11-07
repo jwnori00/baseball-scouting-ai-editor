@@ -27,11 +27,11 @@ class LibraryUI:
                 if any(old.get(k,'')!=getattr(session.player,k) for k in ('name','role','team','jersey','league')):record_id=None
             row=Library().save(session.player,record_id=record_id,favorite=self.favorite.isChecked() if record_id or self.favorite.isChecked() else None,latest_project=path or '')
             self.library_id=row['id']
-        except Exception as exc:self.error('프로젝트는 보존됐지만 선수 라이브러리 저장 실패: '+str(exc))
+        except Exception as exc:self.error('프로젝트는 보존됐지만 선수 목록 저장 실패: '+str(exc))
 
     def choose_player(self):
         if self.job and self.job.isRunning():return
-        dialog=QDialog(self);dialog.setWindowTitle('선수 라이브러리 · 이름/별칭/팀/리그 검색');dialog.resize(800,450)
+        dialog=QDialog(self);dialog.setWindowTitle('선수 목록 · 이름/별칭/팀/리그 검색');dialog.resize(800,450)
         layout=QVBoxLayout(dialog);query=QLineEdit();query.setPlaceholderText('이름, 다른 언어 표기, 팀, 리그, 등번호');layout.addWidget(query)
         table=QTableWidget(0,6);table.setHorizontalHeaderLabels(['선수','리그','팀','등번호','구분','즐겨찾기'])
         table.setSelectionBehavior(QTableWidget.SelectRows);table.setSelectionMode(QTableWidget.SingleSelection);table.setEditTriggers(QTableWidget.NoEditTriggers);layout.addWidget(table)
@@ -46,20 +46,17 @@ class LibraryUI:
         def choose():
             i=table.currentRow()
             if 0<=i<len(records):
-                if self.session:
-                    self.new_session()
-                    if self.session:return
-                r=records[i];self.library_id=r['id'];self.fill_identity(PlayerIdentity(**r['player']));self.favorite.setChecked(r['favorite']);dialog.accept()
+                r=records[i];self.library_id=r['id'];self.fill_identity(PlayerIdentity(**r['player']));self.favorite.setChecked(r['favorite']);self.update_active_context();dialog.accept()
         query.textChanged.connect(refresh);button=QPushButton('선택한 선수 불러오기');button.clicked.connect(choose);layout.addWidget(button);table.cellDoubleClicked.connect(lambda *args:choose());refresh();dialog.exec()
 
     def backup_players(self):
-        path,_=QFileDialog.getSaveFileName(self,'선수 라이브러리 백업','','JSON (*.json)')
+        path,_=QFileDialog.getSaveFileName(self,'선수 목록 백업','','JSON (*.json)')
         if path:
             try:Library().backup(path);self.stage.setText('선수 백업 저장: '+path)
             except Exception as exc:self.error(exc)
 
     def restore_players(self):
-        path,_=QFileDialog.getOpenFileName(self,'선수 라이브러리 복원','','JSON (*.json)')
+        path,_=QFileDialog.getOpenFileName(self,'선수 목록 복원','','JSON (*.json)')
         if path:
             try:self.stage.setText(f'선수 {Library().restore(path)}개 복원 · 기존 수정 기록 보존')
             except Exception as exc:self.error(exc)
@@ -75,5 +72,5 @@ class LibraryUI:
             if not self.discard():return
             self.session=GameSession.load(path);self.project_path=path;self.files.clear()
             for source in self.session.sources:self.files.addItem(source.path)
-            self.fill_identity(self.session.player);self.date.setText(self.session.game_date);self.dirty=False;self.refresh()
+            self.fill_identity(self.session.player);self.date.setText(self.session.game_date);self.dirty=False;self.refresh();self.load_output_preferences()
         except Exception as exc:self.error(exc)

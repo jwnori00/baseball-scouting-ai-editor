@@ -46,7 +46,7 @@ def test_gui_multiple_rows_approve_and_edit_inning(monkeypatch):
     from PySide6.QtCore import QItemSelectionModel
     from bsae.gui.window import Window
     app=QApplication.instance() or QApplication([]);window=Window()
-    window.session=project();window.refresh()
+    window.session=project();window.fill_identity(window.session.player);window.refresh()
     def select():
         model=window.table.selectionModel()
         for row in (0,1):model.select(window.table.model().index(row,0),QItemSelectionModel.Select|QItemSelectionModel.Rows)

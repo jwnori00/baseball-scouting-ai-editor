@@ -117,12 +117,32 @@ if __name__=='__main__':
                 child_report=json.loads((d/'library-restart.json').read_text(encoding='utf-8'))
                 if child.returncode:raise RuntimeError('Library restart failed: '+child_report.get('error','unknown'))
                 assert child_report['id']==saved['id']
+                if policy['kind']=='rules-preview':
+                    checkpoint('analysis_round_preservation')
+                    from bsae.core.rounds import run_round,apply_round
+                    from copy import deepcopy
+                    old_events=deepcopy(game.events)
+                    round_result=run_round(game,deepcopy(game.player),load_profile(window.profile.text()),d/'repeat.sqlite')
+                    assert round_result.status=='PROPOSED' and round_result.session.events==old_events
+                    checkpoint_id=next(r['id'] for r in round_result.session.analysis_runs if r['kind']=='checkpoint')
+                    apply_round(round_result.session,checkpoint_id,'restore')
+                    assert round_result.session.events==old_events
+                    round_result.session.save(d/'rounds.json')
+                    assert GameSession.load(d/'rounds.json').events==old_events
+                checkpoint('portrait_output')
+                portrait=d/'portrait.mp4'
+                run('ffmpeg',['-v','error','-f','lavfi','-i','testsrc2=s=72x128:r=10:d=0.6','-c:v','libx264',portrait])
+                portrait_game=GameSession('Portrait codec test',PlayerIdentity('Synthetic'),add_sources([portrait]))
+                event=PitchEvent(portrait_game.id,portrait_game.split(0,.6),0,.6);portrait_game.events=[event]
+                review(portrait_game,event.id,'APPROVED',confirm_identity=True);export(portrait_game,d/'portrait-output')
+                portrait_meta=next(v for v in probe(d/'portrait-output'/'all_0001.mp4')['streams'] if v['codec_type']=='video')
+                assert (portrait_meta['width'],portrait_meta['height'])==(720,1280)
                 assert original==fingerprint(video)
             checkpoint('cleanup')
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:

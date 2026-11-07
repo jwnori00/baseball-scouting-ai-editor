@@ -38,7 +38,8 @@ def test_real_export_expands_padded_video_and_can_disable(tmp_path,rotation,port
     review(s,event.id,'APPROVED',confirm_identity=True)
     for enabled in (True,False):
         target=tmp_path/str(enabled)
-        export(s,target,auto_frame=enabled)
+        from bsae.core.output_settings import legacy_output_settings
+        export(s,target,auto_frame=enabled,output_settings=legacy_output_settings())
         video=next(v for v in probe(target/'all_0001.mp4')['streams'] if v['codec_type']=='video')
         assert (video['width'],video['height'],video['avg_frame_rate'])==(1280,720,'30/1')
         _,image=next(frames(target/'all_0001.mp4',fps=1,width=640,height=360))

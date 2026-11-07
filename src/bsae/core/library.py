@@ -63,7 +63,9 @@ class Library:
         if not force_new and record_id is None:
             # Automatic exact matching needs team+jersey; name alone is not identity.
             key=lambda v:tuple(normalize(v.get(k,'')) for k in ('name','league','team','jersey','role'))
-            matches=[r for r in self.records() if key(r['player'])==key(p)] if p['team'] and p['jersey'] else []
+            records=self.records()
+            matches=[r for r in records if r['player'].get('id')==p['id']]
+            if not matches and p['team'] and p['jersey']:matches=[r for r in records if key(r['player'])==key(p)]
             if len(matches)>1:raise ValueError('동명이인·중복 기록이 있습니다. 라이브러리에서 사용할 선수를 선택하세요.')
             if matches:record_id=matches[0]['id']
         previous=self.get(record_id) if record_id and not force_new else None

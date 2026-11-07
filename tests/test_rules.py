@@ -180,7 +180,7 @@ def test_gui_button_calls_rules_engine_and_saves_results(motion_video,tmp_path,m
     monkeypatch.setattr(media,'tool',lambda name:sys.executable if name=='tesseract' else original_tool(name))
     monkeypatch.setattr(rules,'load_profile',lambda path=None:profile)
     app=QApplication.instance() or QApplication([])
-    w=Window();w.name.setText('Unknown');w.files.addItem(str(motion_video))
+    w=Window();w.select_broadcast(Path(__file__).resolve().parents[1]/'profiles'/'lmb-telemetry-v1.json');w.name.setText('Unknown');w.files.addItem(str(motion_video))
     output=tmp_path/'gui-scan.json'
     monkeypatch.setattr(QFileDialog,'getSaveFileName',lambda *a,**k:(str(output),'JSON'))
     assert w.analyze_button.isEnabled()
@@ -257,3 +257,27 @@ def test_batter_group_alias_foul_and_substitution():
 def test_inning_reading_never_invents_half(text,result):
     from bsae.vision.rules import parse_inning
     assert parse_inning(text)==result
+
+
+def test_gui_rerun_same_document_preserves_approved_play(motion_video,tmp_path,monkeypatch):
+    from PySide6.QtWidgets import QApplication,QFileDialog
+    from PySide6.QtCore import QEventLoop,QTimer
+    from bsae.gui.window import Window
+    import bsae.vision.rules as rules
+    profile=load_profile();profile['regions']={}
+    monkeypatch.setattr(rules,'load_profile',lambda path=None:profile)
+    app=QApplication.instance() or QApplication([]);w=Window();w.select_broadcast(Path(__file__).resolve().parents[1]/'profiles'/'lmb-telemetry-v1.json')
+    w.name.setText('Unknown');w.files.addItem(str(motion_video));path=tmp_path/'rounds.json';dialogs=[]
+    monkeypatch.setattr(QFileDialog,'getSaveFileName',lambda *a,**k:(dialogs.append(1) or str(path),'JSON'))
+    errors=[];monkeypatch.setattr(w,'error',errors.append);proposals=[];monkeypatch.setattr(w,'show_analysis_rounds',proposals.append)
+    def scan():
+        w.analyze_button.click();assert not w.name.isEnabled() and not w.table.isEnabled();loop=QEventLoop();w.job.finished.connect(loop.quit);QTimer.singleShot(15000,loop.quit);loop.exec();app.processEvents();assert not w.job.isRunning()
+    scan();assert w.session.events
+    w.table.selectRow(0);w.confirm.setChecked(True);w.apply('APPROVED')
+    event_id=w.session.events[0].id;before=deepcopy(w.session.events[0]);scan()
+    assert not errors and len(dialogs)==1 and proposals
+    assert next(e for e in w.session.events if e.id==event_id)==before
+    restored=GameSession.load(path);assert next(e for e in restored.events if e.id==event_id).status=='APPROVED'
+    assert restored.analysis_runs[-1]['status']=='PROPOSED'
+    assert restored.analysis_runs[-1]['payload']['analysis']['cache_usage'][0]['complete_before']
+    w.dirty=False;w.close()
