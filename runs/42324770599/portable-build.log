@@ -1,0 +1,105 @@
+Portable assets verified; release requires independent baseball validation.
+........................................................................ [ 77%]
+.....................                                                    [100%]
+- generated xml file: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build-evidence\windows-tests.xml -
+93 passed in 40.69s
+2553 INFO: PyInstaller: 6.16.0, contrib hooks: 2026.9
+2555 INFO: Python: 3.12.10
+2579 INFO: Platform: Windows-2025Server-10.0.26100-SP0
+2579 INFO: Python environment: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2600 INFO: Removing temporary files and cleaning cache in C:\Users\runneradmin\AppData\Local\pyinstaller
+2605 INFO: Module search paths (PYTHONPATH):
+['D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python312.zip',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\DLLs',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages',
+ 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\src',
+ 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\packaging',
+ 'D:\\a\\baseball-scouting-ai-editor\\baseball-scouting-ai-editor\\src']
+2878 INFO: Appending 'binaries' from .spec
+2880 INFO: Appending 'datas' from .spec
+2935 INFO: checking Analysis
+2935 INFO: Building Analysis because Analysis-00.toc is non existent
+2935 INFO: Looking for Python shared library...
+2935 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.12.10\x64\python312.dll
+2935 INFO: Running Analysis Analysis-00.toc
+2935 INFO: Target bytecode optimization level: 0
+2935 INFO: Initializing module dependency graph...
+2937 INFO: Initializing module graph hook caches...
+2955 INFO: Analyzing modules for base_library.zip ...
+4328 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7952 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+8934 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+9607 INFO: Caching module dependency graph...
+9637 INFO: Analyzing D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\packaging\entry.py
+9679 INFO: Processing standard module hook 'hook-sqlite3.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+9923 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+9959 INFO: Processing standard module hook 'hook-cv2.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+10266 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+10654 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+11736 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+11933 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+12007 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+12169 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+12975 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+12976 INFO: SetuptoolsInfo: initializing cached setuptools info...
+14076 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+14205 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+14317 INFO: Processing standard module hook 'hook-PySide6.QtNetwork.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+15017 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+15808 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+16438 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+16912 INFO: Processing standard module hook 'hook-PySide6.QtMultimedia.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+17210 INFO: Processing standard module hook 'hook-PySide6.QtMultimediaWidgets.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+17422 INFO: Processing module hooks (post-graph stage)...
+17501 INFO: Performing binary vs. data reclassification (2003 entries)
+17635 INFO: Looking for ctypes DLLs
+17651 INFO: Analyzing run-time hooks ...
+17655 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+17657 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+17659 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+17659 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+17661 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+17663 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+17708 INFO: Creating base_library.zip...
+17741 INFO: Looking for dynamic libraries
+18096 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\shiboken6', 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\numpy.libs', 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
+18096 INFO: Extra DLL search directories (PATH): ['C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\cv2\\../../x64/vc17/bin', 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6']
+20222 WARNING: Library not found: could not resolve 'api-ms-win-core-path-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python312.dll'.
+20222 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-string-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+20223 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+20223 WARNING: Library not found: could not resolve 'api-ms-win-shcore-scaling-l1-1-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+20223 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-string-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qdirect2d.dll'.
+20223 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qdirect2d.dll'.
+20224 WARNING: Library not found: could not resolve 'api-ms-win-shcore-scaling-l1-1-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qdirect2d.dll'.
+20224 WARNING: Library not found: could not resolve 'api-ms-win-core-heap-l2-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\multimedia\\ffmpegmediaplugin.dll'.
+20224 WARNING: Library not found: could not resolve 'api-ms-win-core-libraryloader-l1-2-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\multimedia\\ffmpegmediaplugin.dll'.
+20224 WARNING: Library not found: could not resolve 'api-ms-win-core-libraryloader-l1-2-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\multimedia\\ffmpegmediaplugin.dll'.
+20268 INFO: Warnings written to D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\warn-editor.txt
+20300 INFO: Graph cross-reference written to D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\xref-editor.html
+20378 INFO: checking PYZ
+20378 INFO: Building PYZ because PYZ-00.toc is non existent
+20378 INFO: Building PYZ (ZlibArchive) D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\PYZ-00.pyz
+20790 INFO: Building PYZ (ZlibArchive) D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\PYZ-00.pyz completed successfully.
+20804 INFO: checking PKG
+20804 INFO: Building PKG because PKG-00.toc is non existent
+20804 INFO: Building PKG (CArchive) BaseballScoutingAIEditor.pkg
+20822 INFO: Building PKG (CArchive) BaseballScoutingAIEditor.pkg completed successfully.
+20822 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+20822 INFO: checking EXE
+20824 INFO: Building EXE because EXE-00.toc is non existent
+20824 INFO: Building EXE from EXE-00.toc
+20824 INFO: Copying bootloader EXE to D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\BaseballScoutingAIEditor.exe
+20825 INFO: Copying icon to EXE
+20827 INFO: Copying 0 resources to EXE
+20827 INFO: Embedding manifest in EXE
+20827 INFO: Appending PKG archive to EXE
+20831 INFO: Fixing EXE headers
+20883 INFO: Building EXE from EXE-00.toc completed successfully.
+20899 INFO: checking COLLECT
+20899 INFO: Building COLLECT because COLLECT-00.toc is non existent
+20899 INFO: Building COLLECT COLLECT-00.toc
+22539 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+22572 INFO: Build complete! The results are available in: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\dist
