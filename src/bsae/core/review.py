@@ -171,3 +171,18 @@ def name_plate(session,event_id,name):
         e=next(e for e in work.events if e.id==eid)
         e.history.append(ReviewRecord('PLATE_BATTER_NAME',dict(batter_name=before),dict(batter_name=pa.batter_name),'검수자 타자명 수정; 자동 신원 확인 아님',datetime.now(timezone.utc).isoformat()))
     work.validate();session.events,session.appearances=work.events,work.appearances
+
+
+def set_pitch_numbers(session,numbers):
+    """Edit labels only; never renumber unselected events or change review state."""
+    from copy import deepcopy
+    if not numbers:raise ValueError('수정할 투구 번호가 없습니다')
+    _selection(session,numbers)
+    if any(type(n) is not int or not 1<=n<=99999 for n in numbers.values()):raise ValueError('투구 번호는 1~99999의 정수로 입력하세요')
+    work=deepcopy(session);changed=0
+    for e in work.events:
+        if e.id not in numbers or e.number==numbers[e.id]:continue
+        old=e.number;e.number=numbers[e.id];changed+=1
+        e.history.append(ReviewRecord('PITCH_NUMBER_CHANGED',dict(number=old),dict(number=e.number),'검수자 투구 번호 직접 수정',datetime.now(timezone.utc).isoformat()))
+    work.validate();session.events=work.events
+    return changed

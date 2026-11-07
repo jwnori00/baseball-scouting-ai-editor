@@ -121,6 +121,14 @@ if __name__=='__main__':
                 assert len(game.appearances)==1 and game.player.role=='pitcher'
                 assert game.appearances[0].batter_name=='Reviewed opponent'
                 game.save(d/'plates.json');game=GameSession.load(d/'plates.json')
+                checkpoint('pitch_number_edit')
+                from bsae.core.review import set_pitch_numbers
+                unchanged=game.events[1].number
+                set_pitch_numbers(game,{game.events[0].id:35})
+                assert game.events[0].number==35 and game.events[1].number==unchanged
+                assert all(e.status=='APPROVED' for e in game.events)
+                game.save(d/'numbered.json');game=GameSession.load(d/'numbered.json')
+                assert game.events[0].number==35
                 checkpoint('render')
                 export(game,d/'output')
                 v=next(v for v in probe(d/'output'/'all_0001.mp4')['streams'] if v['codec_type']=='video')
@@ -160,7 +168,7 @@ if __name__=='__main__':
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:

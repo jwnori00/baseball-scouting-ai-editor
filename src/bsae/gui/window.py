@@ -111,19 +111,20 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
         self.visible_events=[]
         self.active_context=QLabel();layout.addWidget(self.active_context)
-        self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(['투구','타석','이닝','시작','종료','검수','타자'])
+        self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(['투구 번호','타석','이닝','시작','종료','검수','타자'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected)
         self.review_splitter=QSplitter(Qt.Vertical)
         self.review_splitter.setChildrenCollapsible(False);self.review_splitter.setHandleWidth(9)
         self.table.setMinimumHeight(100);self.review_splitter.addWidget(self.table)
         layout.addWidget(self.review_splitter,1)
-        self.table.cellDoubleClicked.connect(lambda row,column:self.edit_inning() if column==2 else self.edit_plate_batter() if column==6 else None)
+        self.table.cellDoubleClicked.connect(lambda row,column:self.edit_pitch_number() if column==0 else self.edit_inning() if column==2 else self.edit_plate_batter() if column==6 else None)
         bulk_row=QHBoxLayout();layout.addLayout(bulk_row)
         self.button(bulk_row,'표 전체 선택',self.table.selectAll)
         self.button(bulk_row,'선택 플레이 일괄 검수 완료',self.approve_selected)
         self.button(bulk_row,'선택 플레이 이닝 수정',self.edit_inning)
-        bulk_row.addWidget(QLabel('Ctrl / Shift로 여러 행 선택 · 이닝 칸 더블클릭으로 수정'))
+        self.button(bulk_row,'투구 번호 수정',self.edit_pitch_number)
+        bulk_row.addWidget(QLabel('Ctrl/Shift 다중 선택 · 번호/이닝 칸 더블클릭'))
         plate_row=QHBoxLayout();layout.addLayout(plate_row)
         self.button(plate_row,'선택 투구를 한 타석으로',self.assign_selected_plate)
         self.button(plate_row,'선택 플레이부터 새 타석',lambda:self.edit_plate(False))
@@ -412,6 +413,18 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 승인 완료 · 프로젝트를 저장하세요')
         except Exception as exc:self.error(exc)
 
+    def edit_pitch_number(self):
+        try:
+            from bsae.core.review import set_pitch_numbers
+            e=self.selected_event()
+            value,ok=QInputDialog.getInt(self,'투구 번호 직접 수정','현재 행의 투구 번호만 바꿉니다. 다른 행과 영상 순서는 유지합니다.',max(1,e.number),1,99999)
+            if not ok:return
+            duplicate=any(other.id!=e.id and other.number==value for other in self.session.events)
+            if duplicate and QMessageBox.question(self,'투구 번호 중복',f'{value}번이 다른 후보에도 있습니다. 다른 번호는 자동 수정하지 않습니다. 그대로 저장할까요?')!=QMessageBox.Yes:return
+            set_pitch_numbers(self.session,{e.id:value});self.dirty=True;self.refresh()
+            self.stage.setText(f'투구 번호 {value}로 수정 · 번호는 투구 개수와 다릅니다 · 프로젝트를 저장하세요')
+        except Exception as exc:self.error(exc)
+
     def edit_inning(self):
         try:
             from bsae.core.review import set_innings
@@ -486,7 +499,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             self.require_active_identity()
             a,b=self.start.value(),self.end.value()
             if b<=a:raise ValueError('시작·종료를 입력하세요')
-            e=PitchEvent(self.session.id,self.session.split(a,b),a,b,number=len(self.session.events)+1,event_type='manual_candidate',evidence=[DetectionEvidence('manual','사용자 보조 추가',a)])
+            e=PitchEvent(self.session.id,self.session.split(a,b),a,b,number=max((e.number for e in self.session.events),default=0)+1,event_type='manual_candidate',evidence=[DetectionEvidence('manual','사용자 보조 추가',a)])
             self.session.events.append(e);self.session.validate();self.dirty=True;self.refresh()
         except Exception as exc:self.error(exc)
 

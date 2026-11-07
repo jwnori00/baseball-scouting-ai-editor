@@ -112,7 +112,7 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
         atomic_json(destination/'framing.json', dict(automatic=auto_frame, output_settings=settings, segments=framing))
         atomic_json(destination/'events.json', [asdict(e) for e in events])
         from bsae.evaluation import write_csv
-        write_csv(destination/'events.csv', [dict(id=e.id, inning=e.inning, plate_id=e.plate_id,
+        write_csv(destination/'events.csv', [dict(id=e.id, pitch_number=e.number, inning=e.inning, plate_id=e.plate_id,
             start=e.timeline_start, end=e.timeline_end, type=e.event_type, status=e.status) for e in events])
         for s in sources.values():
             if fingerprint(s.path) != s.fingerprint:

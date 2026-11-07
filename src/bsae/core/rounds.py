@@ -86,6 +86,7 @@ def apply_round(session,round_id,mode='replace'):
             if e.id not in new_ids:continue
             if any(e.timeline_start<old.timeline_end and old.timeline_start<e.timeline_end for old in work.events):continue
             old_id=e.id;e=deepcopy(e);e.id=uid();mapping[old_id]=e.id;e.plate_id=None
+            e.number=max((old.number for old in work.events),default=0)+1
             for field in ('pitcher_id','batter_id'):
                 if getattr(e,field)==candidate.player.id:setattr(e,field,work.player.id)
             e.status='EXCLUDED' if e.event_type=='replay' else 'REVIEW_REQUIRED';work.events.append(e)
@@ -97,7 +98,6 @@ def apply_round(session,round_id,mode='replace'):
             for e in work.events:
                 if e.id in selected:e.plate_id=p.id;e.warnings.append('추가된 플레이의 타석 연결을 다시 검수하세요.')
         work.events.sort(key=lambda e:e.timeline_start)
-        for i,e in enumerate(work.events,1):e.number=i
         work.analysis['round_merge']=dict(round_id=round_id,added=len(mapping))
     applied=next(r for r in work.analysis_runs if r['id']==round_id)
     applied['last_application']=dict(mode=mode,at=datetime.now(timezone.utc).isoformat())
