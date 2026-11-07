@@ -1,0 +1,9 @@
+{
+  "commit": "8ee2b78aa44ee14da05a0d2ef6b0f24433cd3f58",
+  "engine": "broadcast-rules-v2",
+  "sha256": "487f95d00fc84f04f700e6bbf6a8d9511e89aea50498e78819fb17c79ec93f80",
+  "built_at": "2026-11-07T07:38:16.780976+00:00",
+  "file": "BaseballScoutingAIEditor-Windows-x64-rules-preview.zip",
+  "kind": "rules-preview",
+  "version": "1.0.0rc1"
+}
