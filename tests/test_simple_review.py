@@ -77,7 +77,10 @@ def test_gui_single_button_and_project_identity_are_stable(monkeypatch):
     assert w.name.isReadOnly()
     w.name.setText('다른 입력');w.table.setCurrentCell(0,0)
     w.table.selectionModel().select(w.table.model().index(1,0),QItemSelectionModel.Select|QItemSelectionModel.Rows)
-    monkeypatch.setattr(w,'ask_approval',lambda *a:True);w.apply('APPROVED')
+    w.start.setValue(.25);w.end.setValue(2.25)
+    details=[]
+    monkeypatch.setattr(w,'ask_approval',lambda text,summary:details.append(summary) or True);w.apply('APPROVED')
+    assert '0.250–2.250' in details[0]
     assert [e.status for e in s.events]==['APPROVED','APPROVED','REVIEW_REQUIRED']
     assert all(e.pitcher_id==original for e in s.events[:2]) and s.player.name=='선수'
     assert not hasattr(w,'confirm')
@@ -118,3 +121,18 @@ def test_revoke_and_reapprove_preserve_history_and_replay_correction():
     approve_clips(s,[event_id],user_approved=True)
     assert s.events[0].status=='APPROVED' and s.events[0].identity_status=='IDENTITY_UNKNOWN'
     assert sum(h.action=='APPROVED' for h in s.events[0].history)==3
+
+
+def test_legacy_other_candidate_stays_visible_after_explicit_correction(monkeypatch):
+    from PySide6.QtWidgets import QApplication
+    from bsae.core.models import DetectionEvidence
+    from bsae.gui.window import Window
+    app=QApplication.instance() or QApplication([]);w=Window();s=game();s.player.role='batter'
+    e=s.events[0];e.event_type='other_player_or_ocr_error';e.identity_status='OTHER_PLAYER'
+    e.evidence=[DetectionEvidence('identity_state','other_or_ocr_error',0)]
+    w.registered(s);w.simple_filter.setCurrentIndex(2);w.refresh()
+    assert e.id in {v.id for v in w.visible_events}
+    classify_event(s,e.id,'pitch_candidate');approve_clips(s,[e.id],user_approved=True)
+    w.simple_filter.setCurrentIndex(0);w.refresh()
+    assert e.id in {v.id for v in w.visible_events}
+    w.dirty=False;w.close();app.processEvents()

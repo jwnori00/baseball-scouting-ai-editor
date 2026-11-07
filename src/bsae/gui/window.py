@@ -429,13 +429,13 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
                 target=getattr(e,'batter_id' if self.session.player.role=='batter' else 'pitcher_id')==self.session.player.id and (e.identity_status=='TARGET_CONFIRMED' or e.manual_identity_confirmed)
                 hint=any(x.kind=='ocr:batter_name_hint' for x in e.evidence)
                 legacy_other=e.event_type=='other_player_or_ocr_error' or state=='other_or_ocr_error'
-                other=legacy_other or (state=='other_evidence' and not target);replay=e.event_type=='replay' or e.broadcast_status in ('REPLAY_SUSPECTED','ARCHIVE_SUSPECTED')
+                other=(legacy_other or state=='other_evidence') and not target;replay=e.event_type=='replay' or e.broadcast_status in ('REPLAY_SUSPECTED','ARCHIVE_SUSPECTED')
                 if mode==9 and (target or other or replay):continue
                 if mode==0 and self.session.player.role=='batter' and not target:continue
                 if mode==5 and (not target or replay or e.event_type=='pickoff'):continue
                 if mode==6 and (target or not hint):continue
                 if mode==7 and state!='conflict':continue
-                if mode==8 and (state!='other_evidence' or target):continue
+                if mode==8 and (not other or replay):continue
                 if mode==0 and (other or replay):continue
                 if mode==2 and not legacy_other:continue
                 if mode==3 and not replay:continue
@@ -487,7 +487,12 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         text=f'선택 {len(ids)}개 클립을 승인할까요?\n대상 선수: {self.session.player.name}\n선수와 시작·종료 구간을 직접 검수한 것으로 함께 기록합니다. 자동 식별 결과는 바꾸지 않습니다.'
         if groups:text+=f'\n승인이 끝나는 타석 {len(groups)}개는 전체 구성 확인도 함께 기록합니다. 구성이 다르면 취소 후 고급 편집에서 수정하세요.'
         events={e.id:e for e in self.session.events}
-        details='\n'.join(f"{events[i].number}번 / {events[i].timeline_start:.3f}–{events[i].timeline_end:.3f}초 / {'자동 근거' if events[i].identity_status=='TARGET_CONFIRMED' else '직접 확인' if events[i].manual_identity_confirmed else '신원 미확정'} / {events[i].status}" for i in ids)
+        lines=[]
+        for i in ids:
+            event=events[i];a,b=(ranges or {}).get(i,(event.timeline_start,event.timeline_end))
+            state='자동 근거' if event.identity_status=='TARGET_CONFIRMED' else '직접 확인' if event.manual_identity_confirmed else '신원 미확정'
+            lines.append(f'{event.number}번 / {a:.3f}–{b:.3f}초 / {state} / {event.status}')
+        details='\n'.join(lines)
         if groups:
             details+='\n\n함께 확인하는 타석 구성\n'+'\n'.join(', '.join(str(events[i].number) for i in p.event_ids)+'번 클립' for p in groups)
         if not self.ask_approval(text,details):return

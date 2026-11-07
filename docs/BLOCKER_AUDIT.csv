@@ -207,13 +207,13 @@ src/bsae/gui/window.py,476,selected_event_ids,raise ValueError('검수할 후보
 src/bsae/gui/window.py,478,selected_event_ids,raise ValueError('누락 의심 구간은 투구 후보가 아니므로 일괄 검수할 수 없습니다.'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
 src/bsae/gui/window.py,50,ask_preflight,raise Cancelled('사전 진단 중 사용자가 중단했습니다'),C,기본 GUI 호출 제거: 경고 상태로 안내하고 후보 탐색 계속. 옵션 API는 보존
 src/bsae/gui/window.py,51,ask_preflight,raise Cancelled('신원 미확정 후보 탐색을 시작하지 않았습니다'),C,기본 GUI 호출 제거: 경고 상태로 안내하고 후보 탐색 계속. 옵션 API는 보존
-src/bsae/gui/window.py,527,edit_pitch_number,"QMessageBox.question(self,'투구 번호 중복',f'{value}번이 다른 후보에도 있습니다. 다른 번호는 자동 수정하지 않습니다. 그대로 저장할까요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
-src/bsae/gui/window.py,557,edit_plate,"QMessageBox.question(self,'타석 병합 검수','원본에서 같은 타석임을 확인했나요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
-src/bsae/gui/window.py,567,cleanup_automatic_plates,"QMessageBox.question(self,'자동 타석 정리','타자 근거·검수 기록이 없는 자동 타석만 미배정으로 되돌립니다. 기존 검수는 보관하며 확인·수정한 그룹은 유지합니다. 진행할까요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
-src/bsae/gui/window.py,630,edit_plate_batter,raise ValueError('먼저 선택 투구를 한 타석으로 묶으세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
-src/bsae/gui/window.py,640,manual,raise ValueError('시작·종료를 입력하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
-src/bsae/gui/window.py,648,confirm_plate,raise ValueError('선택 투구를 한 타석으로 버튼으로 먼저 구성하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
-src/bsae/gui/window.py,650,confirm_plate,"QMessageBox.question(self,'타석 그룹 검수',f'이 그룹의 {len(pa.event_ids)}개 투구가 한 타석인지 확인했나요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,532,edit_pitch_number,"QMessageBox.question(self,'투구 번호 중복',f'{value}번이 다른 후보에도 있습니다. 다른 번호는 자동 수정하지 않습니다. 그대로 저장할까요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,562,edit_plate,"QMessageBox.question(self,'타석 병합 검수','원본에서 같은 타석임을 확인했나요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,572,cleanup_automatic_plates,"QMessageBox.question(self,'자동 타석 정리','타자 근거·검수 기록이 없는 자동 타석만 미배정으로 되돌립니다. 기존 검수는 보관하며 확인·수정한 그룹은 유지합니다. 진행할까요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
+src/bsae/gui/window.py,635,edit_plate_batter,raise ValueError('먼저 선택 투구를 한 타석으로 묶으세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,645,manual,raise ValueError('시작·종료를 입력하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,653,confirm_plate,raise ValueError('선택 투구를 한 타석으로 버튼으로 먼저 구성하세요'),A,유지: 유효성·자산·데이터 보호 또는 실행 중 편집 보호
+src/bsae/gui/window.py,655,confirm_plate,"QMessageBox.question(self,'타석 그룹 검수',f'이 그룹의 {len(pa.event_ids)}개 투구가 한 타석인지 확인했나요?')",D,검수/재분류/보존 전환 행위에 통합. 신원 확인용 별도 반복 팝업은 사용하지 않음
 src/bsae/gui/window.py,integrated,approve_selection,선수 확인 버튼/체크박스 후 다시 검수 승인,D,통합: 한 번의 승인으로 직접 확인·승인 이력 원자적 저장
 src/bsae/gui/window.py,integrated,save_project,이미 정한 프로젝트 저장 위치를 매번 재선택,B,"기존 경로 저장, 다른 이름 저장은 별도 메뉴 유지"
 src/bsae/gui/window.py,removed,require_active_identity,입력 선수와 현재 프로젝트 선수 불일치 시 검수·출력 거절,B,제거: 현재 프로젝트 대상을 고정하고 별도 다른 선수 찾기 제공
