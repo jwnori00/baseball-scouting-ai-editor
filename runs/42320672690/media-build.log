@@ -1,0 +1,2348 @@
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/x264/.git/
+From https://github.com/mirror/x264
+ * branch            c24e06c2e184345ceb33eb20a15d1024d9fd3497 -> FETCH_HEAD
+HEAD is now at c24e06c configure: Check for SVE support in MS armasm64 via as_check
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/.git/
+From https://github.com/videolan/dav1d
+ * branch            c720f4d3556a01916324aea155555d3efba842e8 -> FETCH_HEAD
+HEAD is now at c720f4d cli: Fix input_open() memory leak on fopen() failure
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/ffmpeg/.git/
+From https://github.com/FFmpeg/FFmpeg
+ * branch            f46e514491172d15bd74b4abb1814cd2f05a763e -> FETCH_HEAD
+HEAD is now at f46e514 Changelog: update
+Native media build jobs: 4
+The Meson build system
+Version: 1.12.1
+Source dir: D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d
+Build dir: D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d-build
+Build type: native build
+Project name: dav1d
+Project version: 1.5.2
+C compiler for the host machine: cc (gcc 16.2.0 "cc (Rev6, Built by MSYS2 project) 16.2.0")
+C linker for the host machine: cc ld.bfd 2.47.20260726
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Fetching value of define "DAV1D_API_VERSION_MAJOR" : 7 
+Fetching value of define "DAV1D_API_VERSION_MINOR" : 0 
+Fetching value of define "DAV1D_API_VERSION_PATCH" : 0 
+Fetching value of define "__ILP32__" : (undefined) 
+Checking for function "fseeko" : YES 
+Library m found: YES
+Check usable header "stdatomic.h" : YES 
+Check usable header "sys/types.h" : YES 
+Check usable header "unistd.h" : YES 
+Check usable header "io.h" : YES 
+Check usable header "pthread_np.h" : NO 
+Checking for function "getopt_long" : YES 
+Checking for function "pthread_getaffinity_np" : NO 
+Checking for function "pthread_setaffinity_np" : NO 
+Checking for function "pthread_setname_np" : YES 
+Checking for function "pthread_set_name_np" : NO 
+Checking if "_Generic" compiles: YES 
+Compiler for C supports arguments -fvisibility=hidden: YES 
+Compiler for C supports arguments -Wundef: YES 
+Compiler for C supports arguments -Werror=vla: YES 
+Compiler for C supports arguments -Wno-maybe-uninitialized: YES 
+Compiler for C supports arguments -Wno-missing-field-initializers: YES 
+Compiler for C supports arguments -Wno-unused-parameter: YES 
+Compiler for C supports arguments -Wstrict-prototypes: YES 
+Compiler for C supports arguments -Werror=missing-prototypes: YES 
+Compiler for C supports arguments -Wshorten-64-to-32: NO 
+Compiler for C supports arguments -fomit-frame-pointer: YES 
+Compiler for C supports arguments -ffast-math: YES 
+Compiler for C supports link arguments -Wl,--dynamicbase,--nxcompat,--tsaware,--high-entropy-va: YES 
+Fetching value of define "__AVX__" : (undefined) 
+Program nasm found: YES (D:\a\_temp\msys64\usr\bin/nasm.exe)
+Configuring config.asm using configuration
+Configuring config.h using configuration
+Found pkg-config: YES (D:\a\_temp\msys64\mingw64\bin/pkg-config.exe) 3.0.10
+Build targets in project: 6
+
+dav1d 1.5.2
+
+  User defined options
+    buildtype      : release
+    default_library: static
+    enable_examples: false
+    enable_tests   : false
+    enable_tools   : false
+    libdir         : lib
+    prefix         : D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media
+    xxhash_muxer   : disabled
+
+Found ninja-1.13.2 at D:\a\_temp\msys64\mingw64\bin/ninja.exe
+ninja: Entering directory `D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d-build'
+[1/101] Generating include/vcs_version.h with a custom command
+[2/101] Compiling C object src/libdav1d_bitdepth_8.a.p/cdef_tmpl.c.obj
+[3/101] Compiling C object src/libdav1d_bitdepth_8.a.p/fg_apply_tmpl.c.obj
+[4/101] Compiling C object src/libdav1d_bitdepth_8.a.p/ipred_prepare_tmpl.c.obj
+[5/101] Compiling C object src/libdav1d_bitdepth_8.a.p/filmgrain_tmpl.c.obj
+[6/101] Compiling C object src/libdav1d_bitdepth_8.a.p/cdef_apply_tmpl.c.obj
+[7/101] Compiling C object src/libdav1d_bitdepth_8.a.p/ipred_tmpl.c.obj
+[8/101] Compiling C object src/libdav1d_bitdepth_8.a.p/itx_tmpl.c.obj
+[9/101] Compiling C object src/libdav1d_bitdepth_8.a.p/loopfilter_tmpl.c.obj
+[10/101] Compiling C object src/libdav1d_bitdepth_8.a.p/lf_apply_tmpl.c.obj
+[11/101] Compiling C object src/libdav1d_bitdepth_8.a.p/looprestoration_tmpl.c.obj
+[12/101] Compiling C object src/libdav1d_bitdepth_8.a.p/lr_apply_tmpl.c.obj
+[13/101] Compiling C object src/libdav1d_bitdepth_16.a.p/cdef_tmpl.c.obj
+[14/101] Compiling C object src/libdav1d_bitdepth_16.a.p/cdef_apply_tmpl.c.obj
+[15/101] Compiling C object src/libdav1d_bitdepth_16.a.p/fg_apply_tmpl.c.obj
+[16/101] Compiling C object src/libdav1d_bitdepth_16.a.p/ipred_prepare_tmpl.c.obj
+[17/101] Compiling C object src/libdav1d_bitdepth_16.a.p/filmgrain_tmpl.c.obj
+[18/101] Compiling C object src/libdav1d_bitdepth_8.a.p/mc_tmpl.c.obj
+[19/101] Compiling C object src/libdav1d_bitdepth_16.a.p/ipred_tmpl.c.obj
+[20/101] Compiling C object src/libdav1d_bitdepth_16.a.p/itx_tmpl.c.obj
+[21/101] Compiling C object src/libdav1d_bitdepth_16.a.p/loopfilter_tmpl.c.obj
+[22/101] Compiling C object src/libdav1d_bitdepth_16.a.p/lf_apply_tmpl.c.obj
+[23/101] Compiling C object src/libdav1d_bitdepth_8.a.p/recon_tmpl.c.obj
+[24/101] Compiling C object src/libdav1d_bitdepth_16.a.p/looprestoration_tmpl.c.obj
+[25/101] Compiling C object src/libdav1d_bitdepth_16.a.p/lr_apply_tmpl.c.obj
+[26/101] Generating 'src/libdav1d.a.p/cpuid.obj'
+[27/101] Generating 'src/libdav1d.a.p/msac.obj'
+[28/101] Generating 'src/libdav1d.a.p/pal.obj'
+[29/101] Generating 'src/libdav1d.a.p/refmvs.obj'
+[30/101] Compiling C object src/libdav1d_bitdepth_16.a.p/mc_tmpl.c.obj
+[31/101] Compiling C object src/libdav1d_bitdepth_16.a.p/recon_tmpl.c.obj
+[32/101] Generating 'src/libdav1d.a.p/cdef_avx2.obj'
+[33/101] Generating 'src/libdav1d.a.p/cdef_sse.obj'
+[34/101] Generating 'src/libdav1d.a.p/cdef_avx512.obj'
+[35/101] Generating 'src/libdav1d.a.p/filmgrain_avx512.obj'
+[36/101] Generating 'src/libdav1d.a.p/itx_avx2.obj'
+[37/101] Generating 'src/libdav1d.a.p/ipred_avx512.obj'
+[38/101] Generating 'src/libdav1d.a.p/itx_avx512.obj'
+[39/101] Generating 'src/libdav1d.a.p/looprestoration_avx512.obj'
+[40/101] Generating 'src/libdav1d.a.p/loopfilter_avx512.obj'
+[41/101] Generating 'src/libdav1d.a.p/itx_sse.obj'
+[42/101] Generating 'src/libdav1d.a.p/filmgrain_avx2.obj'
+[43/101] Generating 'src/libdav1d.a.p/mc_avx512.obj'
+[44/101] Generating 'src/libdav1d.a.p/looprestoration_avx2.obj'
+[45/101] Generating 'src/libdav1d.a.p/loopfilter_avx2.obj'
+[46/101] Generating 'src/libdav1d.a.p/ipred_avx2.obj'
+[47/101] Generating 'src/libdav1d.a.p/loopfilter_sse.obj'
+[48/101] Generating 'src/libdav1d.a.p/filmgrain_sse.obj'
+[49/101] Generating 'src/libdav1d.a.p/looprestoration_sse.obj'
+[50/101] Generating 'src/libdav1d.a.p/ipred_sse.obj'
+[51/101] Generating 'src/libdav1d.a.p/cdef16_avx512.obj'
+[52/101] Generating 'src/libdav1d.a.p/mc_avx2.obj'
+[53/101] Generating 'src/libdav1d.a.p/filmgrain16_avx512.obj'
+[54/101] Generating 'src/libdav1d.a.p/ipred16_avx512.obj'
+[55/101] Generating 'src/libdav1d.a.p/loopfilter16_avx512.obj'
+[56/101] Generating 'src/libdav1d.a.p/looprestoration16_avx512.obj'
+[57/101] Generating 'src/libdav1d.a.p/cdef16_avx2.obj'
+[58/101] Generating 'src/libdav1d.a.p/mc16_avx512.obj'
+[59/101] Generating 'src/libdav1d.a.p/filmgrain16_avx2.obj'
+[60/101] Generating 'src/libdav1d.a.p/mc_sse.obj'
+[61/101] Generating 'src/libdav1d.a.p/itx16_avx512.obj'
+[62/101] Generating 'src/libdav1d.a.p/loopfilter16_avx2.obj'
+[63/101] Generating 'src/libdav1d.a.p/looprestoration16_avx2.obj'
+[64/101] Generating 'src/libdav1d.a.p/ipred16_avx2.obj'
+[65/101] Generating 'src/libdav1d.a.p/cdef16_sse.obj'
+[66/101] Generating 'src/libdav1d.a.p/ipred16_sse.obj'
+[67/101] Generating 'src/libdav1d.a.p/filmgrain16_sse.obj'
+[68/101] Generating 'src/libdav1d.a.p/loopfilter16_sse.obj'
+[69/101] Generating 'src/libdav1d.a.p/mc16_avx2.obj'
+[70/101] Generating 'src/libdav1d.a.p/looprestoration16_sse.obj'
+[71/101] Compiling C object src/libdav1d.a.p/cdf.c.obj
+[72/101] Compiling C object src/libdav1d.a.p/cpu.c.obj
+[73/101] Compiling C object src/libdav1d.a.p/ctx.c.obj
+[74/101] Compiling C object src/libdav1d.a.p/data.c.obj
+[75/101] Compiling C object src/libdav1d.a.p/decode.c.obj
+[76/101] Generating 'src/libdav1d.a.p/itx16_sse.obj'
+[77/101] Compiling C object src/libdav1d.a.p/dequant_tables.c.obj
+[78/101] Compiling C object src/libdav1d.a.p/intra_edge.c.obj
+[79/101] Compiling C object src/libdav1d.a.p/getbits.c.obj
+[80/101] Generating 'src/libdav1d.a.p/itx16_avx2.obj'
+[81/101] Compiling C object src/libdav1d.a.p/lf_mask.c.obj
+[82/101] Compiling C object src/libdav1d.a.p/itx_1d.c.obj
+[83/101] Compiling C object src/libdav1d.a.p/lib.c.obj
+[84/101] Compiling C object src/libdav1d.a.p/msac.c.obj
+[85/101] Compiling C object src/libdav1d.a.p/log.c.obj
+[86/101] Compiling C object src/libdav1d.a.p/pal.c.obj
+[87/101] Compiling C object src/libdav1d.a.p/mem.c.obj
+[88/101] Compiling C object src/libdav1d.a.p/qm.c.obj
+[89/101] Compiling C object src/libdav1d.a.p/picture.c.obj
+[90/101] Compiling C object src/libdav1d.a.p/ref.c.obj
+[91/101] Compiling C object src/libdav1d.a.p/obu.c.obj
+[92/101] Compiling C object src/libdav1d.a.p/tables.c.obj
+[93/101] Compiling C object src/libdav1d.a.p/scan.c.obj
+[94/101] Compiling C object src/libdav1d.a.p/warpmv.c.obj
+[95/101] Compiling C object src/libdav1d.a.p/refmvs.c.obj
+[96/101] Compiling C object src/libdav1d.a.p/wedge.c.obj
+[97/101] Compiling C object src/libdav1d.a.p/x86_cpu.c.obj
+[98/101] Compiling C object src/libdav1d.a.p/thread_task.c.obj
+[99/101] Compiling C object src/libdav1d.a.p/win32_thread.c.obj
+[100/101] Generating 'src/libdav1d.a.p/mc16_sse.obj'
+[101/101] Linking static target src/libdav1d.a
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: D:\a\_temp\msys64\mingw64\bin/ninja.exe -C D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d-build -j 4
+ninja: Entering directory `D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d-build'
+[1/3] Generating include/vcs_version.h with a custom command
+Installing src/libdav1d.a to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/include/dav1d/common.h to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include/dav1d
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/include/dav1d/data.h to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include/dav1d
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/include/dav1d/dav1d.h to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include/dav1d
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/include/dav1d/headers.h to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include/dav1d
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/include/dav1d/picture.h to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include/dav1d
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d/include/dav1d/version.h to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include/dav1d
+Installing D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/build/media/dav1d-build/meson-private/dav1d.pc to D:/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/pkgconfig
+platform:       X86_64
+byte order:     little-endian
+system:         WINDOWS
+cli:            no
+libx264:        internal
+shared:         no
+static:         yes
+bashcompletion: no
+asm:            yes
+interlaced:     yes
+avs:            no
+lavf:           no
+ffms:           no
+mp4:            no
+gpl:            yes
+thread:         win32
+opencl:         no
+filters:        crop select_every
+lto:            no
+debug:          no
+gprof:          no
+strip:          no
+PIC:            no
+bit depth:      all
+chroma format:  all
+
+You can run 'make' or 'make fprofiled' now.
+dependency file generation...
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/osdep.c -o common/osdep.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/base.c -o common/base.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/cpu.c -o common/cpu.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/tables.c -o common/tables.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/api.c -o encoder/api.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/win32thread.c -o common/win32thread.o
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mc.c -o common/mc-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/predict.c -o common/predict-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/pixel.c -o common/pixel-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/macroblock.c -o common/macroblock-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/frame.c -o common/frame-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/dct.c -o common/dct-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/cabac.c -o common/cabac-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/common.c -o common/common-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/rectangle.c -o common/rectangle-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/set.c -o common/set-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/quant.c -o common/quant-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/deblock.c -o common/deblock-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/vlc.c -o common/vlc-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mvpred.c -o common/mvpred-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/bitstream.c -o common/bitstream-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/analyse.c -o encoder/analyse-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/me.c -o encoder/me-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/ratecontrol.c -o encoder/ratecontrol-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+In file included from encoder/rdo.c:53,
+                 from encoder/analyse.c:33:
+encoder/cavlc.c: In function 'cavlc_block_residual_internal':
+encoder/cavlc.c:128:18: warning: variable 'i_sign' set but not used [-Wunused-but-set-variable=]
+  128 |     unsigned int i_sign;
+      |                  ^~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/set.c -o encoder/set-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+encoder/rdo.c: In function 'quant_trellis_cabac':
+encoder/rdo.c:834:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  834 |             ssd0[k] = ssd1[k];\
+      |                       ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:17: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |             ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:46: warning: dangling pointer to 'cost_siglast' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |                                  ~~~~~~~~~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:789:13: note: 'cost_siglast' declared here
+  789 |         int cost_siglast[3]; /* { zero, nonzero, nonzero-and-last } */\
+      |             ^~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:72: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                    ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:80: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                            ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/ratecontrol.c: In function 'vbv_pass2':
+encoder/ratecontrol.c:2883:9: warning: variable 'iterations' set but not used [-Wunused-but-set-variable=]
+ 2883 |     int iterations = 0;
+      |         ^~~~~~~~~~
+In function 'get_diff_limited_q',
+    inlined from 'init_pass2' at encoder/ratecontrol.c:3049:25,
+    inlined from 'x264_8_ratecontrol_new' at encoder/ratecontrol.c:1149:17:
+encoder/ratecontrol.c:2082:25: warning: array subscript [0, 2] is outside array bounds of 'double[3]' [-Warray-bounds=]
+ 2082 |     rcc->last_qscale_for[pict_type] = q;
+      |     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+encoder/ratecontrol.c: In function 'x264_8_ratecontrol_new':
+encoder/ratecontrol.c:132:12: note: while referencing 'last_qscale_for'
+  132 |     double last_qscale_for[3];  /* last qscale for a specific pict type, used for max_diff & ipb factor stuff */
+      |            ^~~~~~~~~~~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/macroblock.c -o encoder/macroblock-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cabac.c -o encoder/cabac-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cavlc.c -o encoder/cavlc-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/encoder.c -o encoder/encoder-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/lookahead.c -o encoder/lookahead-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/threadpool.c -o common/threadpool-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/mc-c.c -o common/x86/mc-c-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/predict-c.c -o common/x86/predict-c-8.o -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mc.c -o common/mc-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/predict.c -o common/predict-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/pixel.c -o common/pixel-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/macroblock.c -o common/macroblock-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/frame.c -o common/frame-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/dct.c -o common/dct-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/cabac.c -o common/cabac-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/common.c -o common/common-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/rectangle.c -o common/rectangle-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/set.c -o common/set-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/quant.c -o common/quant-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/deblock.c -o common/deblock-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/vlc.c -o common/vlc-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/mvpred.c -o common/mvpred-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/bitstream.c -o common/bitstream-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/analyse.c -o encoder/analyse-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/me.c -o encoder/me-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/ratecontrol.c -o encoder/ratecontrol-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/set.c -o encoder/set-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+In file included from encoder/rdo.c:53,
+                 from encoder/analyse.c:33:
+encoder/cavlc.c: In function 'cavlc_block_residual_internal':
+encoder/cavlc.c:128:18: warning: variable 'i_sign' set but not used [-Wunused-but-set-variable=]
+  128 |     unsigned int i_sign;
+      |                  ^~~~~~
+encoder/rdo.c: In function 'quant_trellis_cabac':
+encoder/rdo.c:834:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  834 |             ssd0[k] = ssd1[k];\
+      |                       ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:17: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |             ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:847:46: warning: dangling pointer to 'cost_siglast' may be used [-Wdangling-pointer=]
+  847 |             ssd1[0] += (uint64_t)cost_siglast[0] * lambda2 >> ( CABAC_SIZE_BITS - LAMBDA_BITS );\
+      |                                  ~~~~~~~~~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:789:13: note: 'cost_siglast' declared here
+  789 |         int cost_siglast[3]; /* { zero, nonzero, nonzero-and-last } */\
+      |             ^~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:848:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  848 |             levels_used = trellis_coef0_##ctx_hi( ssd0[0]-ssd1[0], nodes_cur, nodes_prev, level_tree, levels_used );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:72: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                    ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:80: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                                            ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:55: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                   ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:849:63: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  849 |             levels_used = trellis_coef1_##ctx_hi( ssd0[1]-ssd1[0], ssd1[1]-ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                                                           ~~~~^~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:852:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  852 |             levels_used = trellis_coef1_##ctx_hi( ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:853:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  853 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:856:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  856 |             levels_used = trellis_coefn_##ctx_hi( q-1, ssd0[0], ssd1[0], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd1' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:27: note: 'ssd1' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                           ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:857:27: warning: dangling pointer to 'ssd0' may be used [-Wdangling-pointer=]
+  857 |             levels_used = trellis_coefn_##ctx_hi( q, ssd0[1], ssd1[1], cost_siglast, nodes_cur, nodes_prev, level_tree, levels_used, lambda2, level_state, levelgt1_ctx );\
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/rdo.c:815:18: note: 'ssd0' declared here
+  815 |         uint64_t ssd0[2], ssd1[2];\
+      |                  ^~~~
+encoder/rdo.c:884:9: note: in expansion of macro 'TRELLIS_LOOP'
+  884 |         TRELLIS_LOOP(1);
+      |         ^~~~~~~~~~~~
+encoder/ratecontrol.c: In function 'vbv_pass2':
+encoder/ratecontrol.c:2883:9: warning: variable 'iterations' set but not used [-Wunused-but-set-variable=]
+ 2883 |     int iterations = 0;
+      |         ^~~~~~~~~~
+In function 'get_diff_limited_q',
+    inlined from 'init_pass2' at encoder/ratecontrol.c:3049:25,
+    inlined from 'x264_10_ratecontrol_new' at encoder/ratecontrol.c:1149:17:
+encoder/ratecontrol.c:2082:25: warning: array subscript [0, 2] is outside array bounds of 'double[3]' [-Warray-bounds=]
+ 2082 |     rcc->last_qscale_for[pict_type] = q;
+      |     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+encoder/ratecontrol.c: In function 'x264_10_ratecontrol_new':
+encoder/ratecontrol.c:132:12: note: while referencing 'last_qscale_for'
+  132 |     double last_qscale_for[3];  /* last qscale for a specific pict type, used for max_diff & ipb factor stuff */
+      |            ^~~~~~~~~~~~~~~
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/macroblock.c -o encoder/macroblock-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cabac.c -o encoder/cabac-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/cavlc.c -o encoder/cavlc-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/encoder.c -o encoder/encoder-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c encoder/lookahead.c -o encoder/lookahead-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/threadpool.c -o common/threadpool-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/mc-c.c -o common/x86/mc-c-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+gcc -Wno-maybe-uninitialized -Wshadow -O3 -ffast-math -m64  -Wall -I. -I. -D_POSIX_C_SOURCE=200112L -std=gnu99 -D_GNU_SOURCE -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden   -c common/x86/predict-c.c -o common/x86/predict-c-10.o -DHIGH_BIT_DEPTH=1 -DBIT_DEPTH=10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/cpu-a.o common/x86/cpu-a.asm
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-64-8.o common/x86/dct-64.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/trellis-64-8.o common/x86/trellis-64.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/bitstream-a-8.o common/x86/bitstream-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/const-a-8.o common/x86/const-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/cabac-a-8.o common/x86/cabac-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-a-8.o common/x86/dct-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/deblock-a-8.o common/x86/deblock-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a-8.o common/x86/mc-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a2-8.o common/x86/mc-a2.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/pixel-a-8.o common/x86/pixel-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/predict-a-8.o common/x86/predict-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/quant-a-8.o common/x86/quant-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/sad-a-8.o common/x86/sad-a.asm -DBIT_DEPTH=8 -Dprivate_prefix=x264_8
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-64-10.o common/x86/dct-64.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/trellis-64-10.o common/x86/trellis-64.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/bitstream-a-10.o common/x86/bitstream-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/const-a-10.o common/x86/const-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/cabac-a-10.o common/x86/cabac-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/dct-a-10.o common/x86/dct-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/deblock-a-10.o common/x86/deblock-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a-10.o common/x86/mc-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/mc-a2-10.o common/x86/mc-a2.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/pixel-a-10.o common/x86/pixel-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/predict-a-10.o common/x86/predict-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/quant-a-10.o common/x86/quant-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+nasm -I. -I. -DARCH_X86_64=1 -I./common/x86/ -f win64 -DSTACK_ALIGNMENT=16 -o common/x86/sad16-a-10.o common/x86/sad16-a.asm -DBIT_DEPTH=10 -Dprivate_prefix=x264_10
+rm -f libx264.a
+gcc-ar rc libx264.a common/osdep.o common/base.o common/cpu.o common/tables.o encoder/api.o common/win32thread.o common/mc-8.o common/predict-8.o common/pixel-8.o common/macroblock-8.o common/frame-8.o common/dct-8.o common/cabac-8.o common/common-8.o common/rectangle-8.o common/set-8.o common/quant-8.o common/deblock-8.o common/vlc-8.o common/mvpred-8.o common/bitstream-8.o encoder/analyse-8.o encoder/me-8.o encoder/ratecontrol-8.o encoder/set-8.o encoder/macroblock-8.o encoder/cabac-8.o encoder/cavlc-8.o encoder/encoder-8.o encoder/lookahead-8.o common/threadpool-8.o common/x86/mc-c-8.o common/x86/predict-c-8.o  common/mc-10.o common/predict-10.o common/pixel-10.o common/macroblock-10.o common/frame-10.o common/dct-10.o common/cabac-10.o common/common-10.o common/rectangle-10.o common/set-10.o common/quant-10.o common/deblock-10.o common/vlc-10.o common/mvpred-10.o common/bitstream-10.o encoder/analyse-10.o encoder/me-10.o encoder/ratecontrol-10.o encoder/set-10.o encoder/macroblock-10.o encoder/cabac-10.o encoder/cavlc-10.o encoder/encoder-10.o encoder/lookahead-10.o common/threadpool-10.o common/x86/mc-c-10.o common/x86/predict-c-10.o common/x86/cpu-a.o common/x86/dct-64-8.o common/x86/trellis-64-8.o common/x86/bitstream-a-8.o common/x86/const-a-8.o common/x86/cabac-a-8.o common/x86/dct-a-8.o common/x86/deblock-a-8.o common/x86/mc-a-8.o common/x86/mc-a2-8.o common/x86/pixel-a-8.o common/x86/predict-a-8.o common/x86/quant-a-8.o common/x86/sad-a-8.o common/x86/dct-64-10.o common/x86/trellis-64-10.o common/x86/bitstream-a-10.o common/x86/const-a-10.o common/x86/cabac-a-10.o common/x86/dct-a-10.o common/x86/deblock-a-10.o common/x86/mc-a-10.o common/x86/mc-a2-10.o common/x86/pixel-a-10.o common/x86/predict-a-10.o common/x86/quant-a-10.o common/x86/sad16-a-10.o
+gcc-ranlib libx264.a
+install -d /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include
+install -d /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/pkgconfig
+install -m 644 ./x264.h x264_config.h /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/include
+install -m 644 x264.pc /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/pkgconfig
+install -d /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib
+install -m 644 libx264.a /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib
+gcc-ranlib /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media/lib/libx264.a
+install prefix            /d/a/baseball-scouting-ai-editor/baseball-scouting-ai-editor/vendor/media
+source path               .
+C compiler                gcc
+C library                 mingw64
+ARCH                      x86 (generic)
+big-endian                no
+runtime cpu detection     yes
+standalone assembly       yes
+x86 assembler             nasm
+MMX enabled               yes
+MMXEXT enabled            yes
+3DNow! enabled            yes
+3DNow! extended enabled   yes
+SSE enabled               yes
+SSSE3 enabled             yes
+AESNI enabled             yes
+AVX enabled               yes
+AVX2 enabled              yes
+AVX-512 enabled           yes
+AVX-512ICL enabled        yes
+XOP enabled               yes
+FMA3 enabled              yes
+FMA4 enabled              yes
+i686 features enabled     yes
+CMOV is fast              yes
+EBX available             yes
+EBP available             yes
+debug symbols             no
+strip symbols             yes
+optimize for size         no
+optimizations             yes
+static                    yes
+shared                    no
+postprocessing support    yes
+network support           no
+threading support         w32threads
+safe bitstream reader     yes
+texi2html enabled         no
+perl enabled              yes
+pod2man enabled           yes
+makeinfo enabled          no
+makeinfo supports HTML    no
+xmllint enabled           no
+
+External libraries:
+libdav1d                libx264
+
+External libraries providing hardware acceleration:
+
+Libraries:
+avcodec                 avformat                swresample
+avdevice                avutil                  swscale
+avfilter                postproc
+
+Programs:
+ffmpeg                  ffprobe
+
+Enabled decoders:
+aac                     h264                    pcm_f32le
+aac_fixed               hevc                    pcm_s16le
+ac3                     libdav1d                pcm_s24le
+alac                    mjpeg                   pcm_u8
+bmp                     mp3                     rawvideo
+eac3                    mp3float                vorbis
+ffv1                    mpeg2video              vp8
+flac                    mpeg4                   vp9
+h263                    opus                    wrapped_avframe
+
+Enabled encoders:
+aac                     libx264                 rawvideo
+ffv1                    pcm_s16le               wrapped_avframe
+
+Enabled hwaccels:
+
+Enabled parsers:
+aac                     dvdsub                  mpegaudio
+aac_latm                evc                     mpegvideo
+ac3                     flac                    opus
+adx                     ftr                     png
+amr                     g723_1                  pnm
+av1                     g729                    qoi
+avs2                    gif                     rv34
+avs3                    gsm                     sbc
+bmp                     h261                    sipr
+cavsvideo               h263                    tak
+cook                    h264                    vc1
+cri                     hdr                     vorbis
+dca                     hevc                    vp3
+dirac                   ipu                     vp8
+dnxhd                   jpeg2000                vp9
+dolby_e                 jpegxl                  vvc
+dpx                     misc4                   webp
+dvaudio                 mjpeg                   xbm
+dvbsub                  mlp                     xma
+dvd_nav                 mpeg4video              xwd
+
+Enabled demuxers:
+avi                     mov                     rawvideo
+concat                  mpegps
+matroska                mpegts
+
+Enabled muxers:
+matroska                mp4                     rawvideo
+mov                     null
+
+Enabled protocols:
+async                   data                    pipe
+cache                   fd                      prompeg
+concat                  file                    subfile
+concatf                 hls                     tee
+crypto                  md5
+
+Enabled filters:
+aformat                 hflip                   showinfo
+anull                   null                    sine
+anullsrc                pad                     testsrc2
+aresample               rotate                  transpose
+atrim                   scale                   trim
+crop                    select                  vflip
+format                  setpts
+fps                     setsar
+
+Enabled bsfs:
+aac_adtstoasc           h264_mp4toannexb        pcm_rechunk
+av1_frame_merge         h264_redundant_pps      pgs_frame_merge
+av1_frame_split         hapqa_extract           prores_metadata
+av1_metadata            hevc_metadata           remove_extradata
+chomp                   hevc_mp4toannexb        setts
+dca_core                imx_dump_header         showinfo
+dovi_rpu                media100_to_mjpegb      text2movsub
+dts2pts                 mjpeg2jpeg              trace_headers
+dump_extradata          mjpega_dump_header      truehd_core
+dv_error_marker         mov2textsub             vp9_metadata
+eac3_core               mpeg2_metadata          vp9_raw_reorder
+evc_frame_merge         mpeg4_unpack_bframes    vp9_superframe
+extract_extradata       noise                   vp9_superframe_split
+filter_units            null                    vvc_metadata
+h264_metadata           opus_metadata           vvc_mp4toannexb
+
+Enabled indevs:
+dshow                   lavfi
+gdigrab                 vfwcap
+
+Enabled outdevs:
+
+License: GPL version 2 or later
+GEN	libavdevice/libavdevice.version
+GEN	libavfilter/libavfilter.version
+GEN	libavformat/libavformat.version
+GEN	libavcodec/libavcodec.version
+GEN	libpostproc/libpostproc.version
+GEN	libswresample/libswresample.version
+GEN	libswscale/libswscale.version
+GEN	libavutil/libavutil.version
+CC	libavdevice/alldevices.o
+CC	libavdevice/avdevice.o
+CC	libavdevice/dshow.o
+CC	libavdevice/dshow_common.o
+CC	libavdevice/dshow_crossbar.o
+CC	libavdevice/dshow_enummediatypes.o
+libavdevice/dshow.c: In function 'dshow_cycle_formats':
+libavdevice/dshow.c:988:39: warning: unused variable 'acaps' [-Wunused-variable]
+  988 |             AUDIO_STREAM_CONFIG_CAPS *acaps = caps;
+      |                                       ^~~~~
+CC	libavdevice/dshow_enumpins.o
+CC	libavdevice/dshow_filter.o
+CC	libavdevice/dshow_pin.o
+CC	libavdevice/gdigrab.o
+CC	libavdevice/lavfi.o
+CC	libavdevice/utils.o
+CC	libavdevice/version.o
+CC	libavdevice/vfwcap.o
+GEN	libavdevice/libavdevice.pc
+CC	libavfilter/af_aformat.o
+CC	libavfilter/af_anull.o
+CC	libavfilter/af_aresample.o
+CC	libavfilter/allfilters.o
+CC	libavfilter/asrc_anullsrc.o
+CC	libavfilter/asrc_sine.o
+CC	libavfilter/audio.o
+CC	libavfilter/avfilter.o
+CC	libavfilter/avfiltergraph.o
+CC	libavfilter/buffersink.o
+CC	libavfilter/buffersrc.o
+CC	libavfilter/ccfifo.o
+CC	libavfilter/colorspace.o
+CC	libavfilter/drawutils.o
+CC	libavfilter/f_select.o
+CC	libavfilter/formats.o
+CC	libavfilter/framepool.o
+CC	libavfilter/framequeue.o
+CC	libavfilter/framesync.o
+CC	libavfilter/graphdump.o
+CC	libavfilter/graphparser.o
+CC	libavfilter/pthread.o
+CC	libavfilter/scale_eval.o
+CC	libavfilter/scene_sad.o
+CC	libavfilter/setpts.o
+CC	libavfilter/trim.o
+CC	libavfilter/version.o
+CC	libavfilter/vf_aspect.o
+CC	libavfilter/vf_crop.o
+CC	libavfilter/vf_format.o
+CC	libavfilter/vf_fps.o
+CC	libavfilter/vf_hflip.o
+CC	libavfilter/vf_null.o
+CC	libavfilter/vf_pad.o
+CC	libavfilter/vf_rotate.o
+CC	libavfilter/vf_scale.o
+CC	libavfilter/vf_showinfo.o
+CC	libavfilter/vf_transpose.o
+CC	libavfilter/vf_vflip.o
+CC	libavfilter/video.o
+CC	libavfilter/vsrc_testsrc.o
+X86ASM	libavfilter/x86/scene_sad.o
+CC	libavfilter/x86/scene_sad_init.o
+X86ASM	libavfilter/x86/vf_hflip.o
+CC	libavfilter/x86/vf_hflip_init.o
+STRIP	libavfilter/x86/scene_sad.o
+X86ASM	libavfilter/x86/vf_transpose.o
+CC	libavfilter/x86/vf_transpose_init.o
+GEN	libavfilter/libavfilter.pc
+STRIP	libavfilter/x86/vf_hflip.o
+CC	libavformat/allformats.o
+CC	libavformat/async.o
+CC	libavformat/av1.o
+CC	libavformat/avc.o
+STRIP	libavfilter/x86/vf_transpose.o
+CC	libavformat/avformat.o
+CC	libavformat/avidec.o
+libavformat/avidec.c: In function 'read_gab2_sub':
+libavformat/avidec.c:1129:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1129 |         AVIOContext *pb = avio_alloc_context(pkt->data + 7,
+      |         ^~~~~~~~~~~
+CC	libavformat/avio.o
+CC	libavformat/aviobuf.o
+CC	libavformat/avlanguage.o
+CC	libavformat/cache.o
+CC	libavformat/concat.o
+CC	libavformat/concatdec.o
+CC	libavformat/crypto.o
+CC	libavformat/data_uri.o
+CC	libavformat/demux.o
+CC	libavformat/demux_utils.o
+libavformat/demux.c: In function 'read_frame_internal':
+libavformat/demux.c:1374:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1374 |         int new_extradata = !!av_packet_side_data_get(pkt->side_data, pkt->side_data_elems,
+      |         ^~~
+CC	libavformat/dovi_isom.o
+CC	libavformat/dump.o
+CC	libavformat/dv.o
+CC	libavformat/evc.o
+CC	libavformat/file.o
+CC	libavformat/flac_picture.o
+CC	libavformat/flacenc_header.o
+CC	libavformat/format.o
+CC	libavformat/hevc.o
+CC	libavformat/hlsproto.o
+CC	libavformat/iamf.o
+CC	libavformat/iamf_parse.o
+CC	libavformat/iamf_reader.o
+CC	libavformat/iamf_writer.o
+CC	libavformat/id3v1.o
+CC	libavformat/id3v2.o
+CC	libavformat/isom.o
+CC	libavformat/isom_tags.o
+CC	libavformat/matroska.o
+CC	libavformat/matroskadec.o
+CC	libavformat/matroskaenc.o
+CC	libavformat/md5proto.o
+CC	libavformat/metadata.o
+CC	libavformat/mov.o
+CC	libavformat/mov_chan.o
+CC	libavformat/mov_esds.o
+CC	libavformat/movenc.o
+libavformat/matroskaenc.c: In function 'mkv_write_trailer':
+libavformat/matroskaenc.c:3341:79: warning: '%012.9f' directive output may be truncated writing between 12 and 320 bytes into a region of size between 8 and 14 [-Wformat-truncation=]
+ 3341 |                 snprintf(duration_string, sizeof(duration_string), "%02d:%02d:%012.9f",
+      |                                                                               ^~~~~~~
+libavformat/matroskaenc.c:3341:17: note: 'snprintf' output between 19 and 333 bytes into a destination of size 20
+ 3341 |                 snprintf(duration_string, sizeof(duration_string), "%02d:%02d:%012.9f",
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 3342 |                          (int) duration_sec / 3600, ((int) duration_sec / 60) % 60,
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 3343 |                          fmod(duration_sec, 60));
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/movenc_ttml.o
+CC	libavformat/movenccenc.o
+CC	libavformat/movenchint.o
+CC	libavformat/mpeg.o
+CC	libavformat/mpegts.o
+CC	libavformat/mux.o
+CC	libavformat/mux_utils.o
+CC	libavformat/nal.o
+CC	libavformat/nullenc.o
+CC	libavformat/oggparsevorbis.o
+CC	libavformat/options.o
+CC	libavformat/os_support.o
+CC	libavformat/prompeg.o
+CC	libavformat/protocols.o
+CC	libavformat/qtpalette.o
+CC	libavformat/rawenc.o
+CC	libavformat/rawutils.o
+CC	libavformat/rawvideodec.o
+CC	libavformat/replaygain.o
+CC	libavformat/riff.o
+CC	libavformat/riffdec.o
+CC	libavformat/riffenc.o
+CC	libavformat/rmsipr.o
+CC	libavformat/rtp.o
+CC	libavformat/rtpenc_chain.o
+CC	libavformat/sdp.o
+CC	libavformat/seek.o
+CC	libavformat/subfile.o
+CC	libavformat/tee_common.o
+CC	libavformat/teeproto.o
+CC	libavformat/url.o
+CC	libavformat/utils.o
+CC	libavformat/version.o
+CC	libavformat/vorbiscomment.o
+CC	libavformat/vpcc.o
+CC	libavformat/vvc.o
+libavformat/vorbiscomment.c: In function 'ff_vorbiscomment_write':
+libavformat/vorbiscomment.c:103:63: warning: '%03d' directive output may be truncated writing between 3 and 10 bytes into a region of size 4 [-Wformat-truncation=]
+  103 |             snprintf(chapter_number, sizeof(chapter_number), "%03d", i);
+      |                                                               ^~~~
+libavformat/vorbiscomment.c:103:62: note: directive argument in the range [0, 2147483647]
+  103 |             snprintf(chapter_number, sizeof(chapter_number), "%03d", i);
+      |                                                              ^~~~~~
+libavformat/vorbiscomment.c:103:13: note: 'snprintf' output between 4 and 11 bytes into a destination of size 4
+  103 |             snprintf(chapter_number, sizeof(chapter_number), "%03d", i);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/vorbiscomment.c:104:69: warning: '%02d' directive output may be truncated writing between 2 and 3 bytes into a region of size between 1 and 7 [-Wformat-truncation=]
+  104 |             snprintf(chapter_time, sizeof(chapter_time), "%02d:%02d:%02d.%03d", h, m, s, ms);
+      |                                                                     ^~~~
+libavformat/vorbiscomment.c:104:58: note: directive argument in the range [-59, 59]
+  104 |             snprintf(chapter_time, sizeof(chapter_time), "%02d:%02d:%02d.%03d", h, m, s, ms);
+      |                                                          ^~~~~~~~~~~~~~~~~~~~~
+libavformat/vorbiscomment.c:104:58: note: directive argument in the range [-999, 999]
+libavformat/vorbiscomment.c:104:13: note: 'snprintf' output between 13 and 21 bytes into a destination of size 13
+  104 |             snprintf(chapter_time, sizeof(chapter_time), "%02d:%02d:%02d.%03d", h, m, s, ms);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/wv.o
+GEN	libavformat/libavformat.pc
+CC	libavcodec/aac/aacdec.o
+libavcodec/aac/aacdec.c: In function 'decode_close':
+libavcodec/aac/aacdec.c:1132:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1132 |         AACUSACConfig *usac = &oc->usac;
+      |         ^~~~~~~~~~~~~
+CC	libavcodec/aac/aacdec_ac.o
+CC	libavcodec/aac/aacdec_fixed.o
+CC	libavcodec/aac/aacdec_float.o
+CC	libavcodec/aac/aacdec_lpd.o
+CC	libavcodec/aac/aacdec_tab.o
+CC	libavcodec/aac/aacdec_usac.o
+CC	libavcodec/aac_ac3_parser.o
+libavcodec/aac_ac3_parser.c: In function 'ff_aac_ac3_parse':
+libavcodec/aac_ac3_parser.c:151:17: warning: unused variable 'profile' [-Wunused-variable]
+  151 |             int profile;
+      |                 ^~~~~~~
+CC	libavcodec/aac_parser.o
+CC	libavcodec/aaccoder.o
+CC	libavcodec/aacenc.o
+CC	libavcodec/aacenc_is.o
+CC	libavcodec/aacenc_ltp.o
+CC	libavcodec/aacenc_pred.o
+CC	libavcodec/aacenc_tns.o
+CC	libavcodec/aacenctab.o
+CC	libavcodec/aacps_common.o
+CC	libavcodec/aacps_fixed.o
+CC	libavcodec/aacps_float.o
+CC	libavcodec/aacpsdsp_fixed.o
+CC	libavcodec/aacpsdsp_float.o
+CC	libavcodec/aacpsy.o
+CC	libavcodec/aacsbr.o
+CC	libavcodec/aacsbr_fixed.o
+CC	libavcodec/aactab.o
+CC	libavcodec/ac3.o
+CC	libavcodec/ac3_channel_layout_tab.o
+CC	libavcodec/ac3_parser.o
+In file included from libavcodec/aacsbr.c:383:
+libavcodec/aacsbr_template.c: In function 'read_sbr_grid':
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aacsbr.c:31:
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967295] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967294] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967293] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [2147483649, 4294967292] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+CC	libavcodec/ac3dec_data.o
+CC	libavcodec/ac3dec_float.o
+CC	libavcodec/ac3dsp.o
+In file included from libavcodec/aacsbr_fixed.c:610:
+libavcodec/aacsbr_template.c: In function 'read_sbr_grid':
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aacsbr_fixed.c:60:
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -1] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -2] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -3] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+libavcodec/aacsbr_template.c:729:57: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  729 |             ch_data->t_env[ch_data->bs_num_env - 1 - i] =
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+  730 |                 ch_data->t_env[ch_data->bs_num_env - i] - 2 * get_bits(gb, 2) - 2;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/sbr.h:106:24: note: at offset [-2147483647, -4] into destination object 't_env' of size 9
+  106 |     uint8_t            t_env[9];
+      |                        ^~~~~
+CC	libavcodec/ac3tab.o
+CC	libavcodec/adts_header.o
+CC	libavcodec/adts_parser.o
+CC	libavcodec/adx_parser.o
+CC	libavcodec/alac.o
+CC	libavcodec/alac_data.o
+CC	libavcodec/alacdsp.o
+CC	libavcodec/allcodecs.o
+CC	libavcodec/amr_parser.o
+In file included from libavcodec/ac3dec_float.c:38:
+In function 'spx_strategy',
+    inlined from 'decode_audio_block' at libavcodec/ac3dec.c:1142:24:
+libavcodec/ac3dec.c:854:37: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  854 |             s->channel_uses_spx[ch] = get_bits1(bc);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+In file included from libavcodec/ac3dec_float.c:34:
+libavcodec/ac3dec.h: In function 'decode_audio_block':
+libavcodec/ac3dec.h:144:13: note: at offset 7 into destination object 'channel_uses_spx' of size 7
+  144 |     uint8_t channel_uses_spx[AC3_MAX_CHANNELS]; ///< channel uses spectral extension        (chinspx)
+      |             ^~~~~~~~~~~~~~~~
+CC	libavcodec/aom_film_grain.o
+CC	libavcodec/atsc_a53.o
+CC	libavcodec/audio_frame_queue.o
+CC	libavcodec/av1_parse.o
+CC	libavcodec/av1_parser.o
+CC	libavcodec/avcodec.o
+CC	libavcodec/avdct.o
+CC	libavcodec/avfft.o
+CC	libavcodec/avs2.o
+CC	libavcodec/avs2_parser.o
+CC	libavcodec/avs3_parser.o
+CC	libavcodec/bitstream.o
+CC	libavcodec/bitstream_filters.o
+CC	libavcodec/blockdsp.o
+CC	libavcodec/bmp.o
+CC	libavcodec/bmp_parser.o
+CC	libavcodec/bsf.o
+CC	libavcodec/bsf/aac_adtstoasc.o
+CC	libavcodec/bsf/av1_frame_merge.o
+CC	libavcodec/bsf/av1_frame_split.o
+CC	libavcodec/bsf/av1_metadata.o
+CC	libavcodec/bsf/chomp.o
+CC	libavcodec/bsf/dca_core.o
+CC	libavcodec/bsf/dovi_rpu.o
+CC	libavcodec/bsf/dts2pts.o
+CC	libavcodec/bsf/dump_extradata.o
+CC	libavcodec/bsf/dv_error_marker.o
+CC	libavcodec/bsf/eac3_core.o
+CC	libavcodec/bsf/evc_frame_merge.o
+CC	libavcodec/bsf/extract_extradata.o
+CC	libavcodec/bsf/filter_units.o
+CC	libavcodec/bsf/h264_metadata.o
+CC	libavcodec/bsf/h264_mp4toannexb.o
+CC	libavcodec/bsf/h264_redundant_pps.o
+CC	libavcodec/bsf/h265_metadata.o
+CC	libavcodec/bsf/h266_metadata.o
+CC	libavcodec/bsf/hapqa_extract.o
+CC	libavcodec/bsf/hevc_mp4toannexb.o
+CC	libavcodec/bsf/imx_dump_header.o
+CC	libavcodec/bsf/media100_to_mjpegb.o
+CC	libavcodec/bsf/mjpeg2jpeg.o
+CC	libavcodec/bsf/mjpega_dump_header.o
+CC	libavcodec/bsf/movsub.o
+CC	libavcodec/bsf/mpeg2_metadata.o
+CC	libavcodec/bsf/mpeg4_unpack_bframes.o
+CC	libavcodec/bsf/noise.o
+CC	libavcodec/bsf/null.o
+CC	libavcodec/bsf/opus_metadata.o
+CC	libavcodec/bsf/pcm_rechunk.o
+CC	libavcodec/bsf/pgs_frame_merge.o
+CC	libavcodec/bsf/prores_metadata.o
+CC	libavcodec/bsf/remove_extradata.o
+CC	libavcodec/bsf/setts.o
+CC	libavcodec/bsf/showinfo.o
+CC	libavcodec/bsf/trace_headers.o
+CC	libavcodec/bsf/truehd_core.o
+CC	libavcodec/bsf/vp9_metadata.o
+CC	libavcodec/bsf/vp9_raw_reorder.o
+CC	libavcodec/bsf/vp9_superframe.o
+CC	libavcodec/bsf/vp9_superframe_split.o
+CC	libavcodec/bsf/vvc_mp4toannexb.o
+CC	libavcodec/bswapdsp.o
+CC	libavcodec/cabac.o
+CC	libavcodec/cavs_parser.o
+CC	libavcodec/cbrt_data.o
+CC	libavcodec/cbrt_data_fixed.o
+CC	libavcodec/cbs.o
+CC	libavcodec/cbs_av1.o
+CC	libavcodec/cbs_bsf.o
+CC	libavcodec/cbs_h2645.o
+CC	libavcodec/cbs_mpeg2.o
+CC	libavcodec/cbs_sei.o
+CC	libavcodec/cbs_vp8.o
+CC	libavcodec/cbs_vp9.o
+CC	libavcodec/codec_desc.o
+CC	libavcodec/codec_par.o
+CC	libavcodec/container_fifo.o
+CC	libavcodec/cook_parser.o
+CC	libavcodec/cri_parser.o
+CC	libavcodec/d3d11va.o
+CC	libavcodec/dca.o
+CC	libavcodec/dca_exss.o
+CC	libavcodec/dca_parser.o
+CC	libavcodec/dca_sample_rate_tab.o
+CC	libavcodec/dct32_fixed.o
+CC	libavcodec/dct32_float.o
+CC	libavcodec/decode.o
+CC	libavcodec/dirac.o
+CC	libavcodec/dirac_parser.o
+CC	libavcodec/dnxhd_parser.o
+CC	libavcodec/dnxhddata.o
+CC	libavcodec/dolby_e_parse.o
+CC	libavcodec/dolby_e_parser.o
+CC	libavcodec/dovi_rpu.o
+CC	libavcodec/dovi_rpudec.o
+CC	libavcodec/dovi_rpuenc.o
+CC	libavcodec/dpx_parser.o
+CC	libavcodec/dv_profile.o
+CC	libavcodec/dvaudio_parser.o
+CC	libavcodec/dvbsub_parser.o
+CC	libavcodec/dvd_nav_parser.o
+CC	libavcodec/dvdsub_parser.o
+CC	libavcodec/dynamic_hdr_vivid.o
+CC	libavcodec/eac3_data.o
+CC	libavcodec/encode.o
+CC	libavcodec/error_resilience.o
+CC	libavcodec/evc_parse.o
+CC	libavcodec/evc_parser.o
+CC	libavcodec/evc_ps.o
+CC	libavcodec/exif.o
+CC	libavcodec/faandct.o
+CC	libavcodec/faanidct.o
+CC	libavcodec/fdctdsp.o
+CC	libavcodec/ffv1.o
+CC	libavcodec/ffv1dec.o
+CC	libavcodec/ffv1enc.o
+CC	libavcodec/flac.o
+CC	libavcodec/flac_parser.o
+CC	libavcodec/flacdata.o
+CC	libavcodec/flacdec.o
+CC	libavcodec/flacdsp.o
+CC	libavcodec/fmtconvert.o
+CC	libavcodec/frame_thread_encoder.o
+CC	libavcodec/ftr_parser.o
+CC	libavcodec/g723_1_parser.o
+CC	libavcodec/g729_parser.o
+CC	libavcodec/get_buffer.o
+CC	libavcodec/gif_parser.o
+CC	libavcodec/golomb.o
+CC	libavcodec/gsm_parser.o
+CC	libavcodec/h261_parser.o
+CC	libavcodec/h263.o
+CC	libavcodec/h263_parser.o
+CC	libavcodec/h263data.o
+CC	libavcodec/h263dec.o
+CC	libavcodec/h263dsp.o
+CC	libavcodec/h2645_parse.o
+CC	libavcodec/h2645_sei.o
+CC	libavcodec/h2645_vui.o
+libavcodec/h263dec.c: In function 'ff_h263_decode_frame':
+libavcodec/h263dec.c:649:1: warning: label 'frame_end' defined but not used [-Wunused-label]
+  649 | frame_end:
+      | ^~~~~~~~~
+CC	libavcodec/h2645data.o
+CC	libavcodec/h264_cabac.o
+CC	libavcodec/h264_cavlc.o
+CC	libavcodec/h264_direct.o
+CC	libavcodec/h264_levels.o
+CC	libavcodec/h264_loopfilter.o
+CC	libavcodec/h264_mb.o
+CC	libavcodec/h264_parse.o
+CC	libavcodec/h264_parser.o
+CC	libavcodec/h264_picture.o
+CC	libavcodec/h264_ps.o
+CC	libavcodec/h264_refs.o
+CC	libavcodec/h264_sei.o
+CC	libavcodec/h264_slice.o
+CC	libavcodec/h264chroma.o
+CC	libavcodec/h264data.o
+CC	libavcodec/h264dec.o
+CC	libavcodec/h264dsp.o
+CC	libavcodec/h264idct.o
+CC	libavcodec/h264pred.o
+CC	libavcodec/h264qpel.o
+CC	libavcodec/h265_profile_level.o
+CC	libavcodec/h274.o
+CC	libavcodec/hap.o
+CC	libavcodec/hdr_parser.o
+CC	libavcodec/hevc/cabac.o
+CC	libavcodec/hevc/data.o
+CC	libavcodec/hevc/dsp.o
+CC	libavcodec/hevc/filter.o
+CC	libavcodec/hevc/hevcdec.o
+CC	libavcodec/hevc/mvs.o
+CC	libavcodec/hevc/parse.o
+CC	libavcodec/hevc/parser.o
+CC	libavcodec/hevc/pred.o
+libavcodec/hevc/hevcdec.c: In function 'pred_weight_table':
+libavcodec/hevc/hevcdec.c:199:32: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  199 |         luma_weight_l0_flag[i] = get_bits1(gb);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:177:13: note: at offset 16 into destination object 'luma_weight_l0_flag' of size 16
+  177 |     uint8_t luma_weight_l0_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:207:38: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  207 |             chroma_weight_l0_flag[i] = get_bits1(gb);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:178:13: note: at offset 16 into destination object 'chroma_weight_l0_flag' of size 16
+  178 |     uint8_t chroma_weight_l0_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:243:36: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  243 |             luma_weight_l1_flag[i] = get_bits1(gb);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:179:13: note: at offset 16 into destination object 'luma_weight_l1_flag' of size 16
+  179 |     uint8_t luma_weight_l1_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:251:42: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  251 |                 chroma_weight_l1_flag[i] = get_bits1(gb);
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:180:13: note: at offset 16 into destination object 'chroma_weight_l1_flag' of size 16
+  180 |     uint8_t chroma_weight_l1_flag[16];
+      |             ^~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/hevc/ps.o
+CC	libavcodec/hevc/refs.o
+CC	libavcodec/hevc/sei.o
+CC	libavcodec/hpeldsp.o
+CC	libavcodec/idctdsp.o
+CC	libavcodec/iirfilter.o
+CC	libavcodec/imgconvert.o
+CC	libavcodec/ipu_parser.o
+CC	libavcodec/ituh263dec.o
+CC	libavcodec/jfdctfst.o
+CC	libavcodec/jfdctint.o
+CC	libavcodec/jni.o
+CC	libavcodec/jpeg2000_parser.o
+CC	libavcodec/jpegtables.o
+CC	libavcodec/jpegxl_parse.o
+CC	libavcodec/jpegxl_parser.o
+CC	libavcodec/jrevdct.o
+libavcodec/jrevdct.c:215:28: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+  215 | void ff_j_rev_dct(DCTBLOCK data)
+      |                   ~~~~~~~~~^~~~
+In file included from libavcodec/jrevdct.c:70:
+libavcodec/dct.h:30:28: note: previously declared as 'int16_t *' {aka 'short int *'}
+   30 | void ff_j_rev_dct(int16_t *data);
+      |                   ~~~~~~~~~^~~~
+libavcodec/jrevdct.c:953:29: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+  953 | void ff_j_rev_dct4(DCTBLOCK data)
+      |                    ~~~~~~~~~^~~~
+libavcodec/dct.h:31:29: note: previously declared as 'int16_t *' {aka 'short int *'}
+   31 | void ff_j_rev_dct4(int16_t *data);
+      |                    ~~~~~~~~~^~~~
+libavcodec/jrevdct.c:1140:29: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+ 1140 | void ff_j_rev_dct2(DCTBLOCK data){
+      |                    ~~~~~~~~~^~~~
+libavcodec/dct.h:32:29: note: previously declared as 'int16_t *' {aka 'short int *'}
+   32 | void ff_j_rev_dct2(int16_t *data);
+      |                    ~~~~~~~~~^~~~
+libavcodec/jrevdct.c:1155:29: warning: argument 1 of type 'int16_t[64]' {aka 'short int[64]'} with mismatched bound [-Warray-parameter=]
+ 1155 | void ff_j_rev_dct1(DCTBLOCK data){
+      |                    ~~~~~~~~~^~~~
+libavcodec/dct.h:33:29: note: previously declared as 'int16_t *' {aka 'short int *'}
+   33 | void ff_j_rev_dct1(int16_t *data);
+      |                    ~~~~~~~~~^~~~
+CC	libavcodec/kbdwin.o
+CC	libavcodec/latm_parser.o
+CC	libavcodec/lcevcdec.o
+CC	libavcodec/libdav1d.o
+CC	libavcodec/libx264.o
+CC	libavcodec/lpc.o
+CC	libavcodec/mathtables.o
+CC	libavcodec/me_cmp.o
+CC	libavcodec/mediacodec.o
+CC	libavcodec/misc4_parser.o
+CC	libavcodec/mjpeg_parser.o
+CC	libavcodec/mjpegdec.o
+CC	libavcodec/mjpegdec_common.o
+CC	libavcodec/mlp.o
+CC	libavcodec/mlp_parse.o
+CC	libavcodec/mlp_parser.o
+CC	libavcodec/mpeg12.o
+CC	libavcodec/mpeg12data.o
+CC	libavcodec/mpeg12dec.o
+CC	libavcodec/mpeg12framerate.o
+CC	libavcodec/mpeg4audio.o
+CC	libavcodec/mpeg4audio_sample_rates.o
+CC	libavcodec/mpeg4video.o
+CC	libavcodec/mpeg4video_parser.o
+CC	libavcodec/mpeg4videodec.o
+CC	libavcodec/mpeg4videodsp.o
+CC	libavcodec/mpeg_er.o
+CC	libavcodec/mpegaudio.o
+CC	libavcodec/mpegaudio_parser.o
+CC	libavcodec/mpegaudiodata.o
+CC	libavcodec/mpegaudiodec_common.o
+CC	libavcodec/mpegaudiodec_fixed.o
+CC	libavcodec/mpegaudiodec_float.o
+CC	libavcodec/mpegaudiodecheader.o
+CC	libavcodec/mpegaudiodsp.o
+CC	libavcodec/mpegaudiodsp_data.o
+CC	libavcodec/mpegaudiodsp_fixed.o
+CC	libavcodec/mpegaudiodsp_float.o
+CC	libavcodec/mpegaudiotabs.o
+CC	libavcodec/mpegpicture.o
+CC	libavcodec/mpegutils.o
+CC	libavcodec/mpegvideo.o
+CC	libavcodec/mpegvideo_dec.o
+CC	libavcodec/mpegvideo_motion.o
+CC	libavcodec/mpegvideo_parser.o
+CC	libavcodec/mpegvideodata.o
+CC	libavcodec/msrledec.o
+CC	libavcodec/options.o
+CC	libavcodec/opus/celt.o
+CC	libavcodec/opus/dec.o
+CC	libavcodec/opus/dec_celt.o
+CC	libavcodec/opus/dsp.o
+CC	libavcodec/opus/parse.o
+CC	libavcodec/opus/parser.o
+CC	libavcodec/opus/pvq.o
+CC	libavcodec/opus/rc.o
+CC	libavcodec/opus/silk.o
+CC	libavcodec/opus/tab.o
+CC	libavcodec/packet.o
+CC	libavcodec/parser.o
+CC	libavcodec/parsers.o
+CC	libavcodec/pcm.o
+CC	libavcodec/png_parser.o
+CC	libavcodec/pnm.o
+CC	libavcodec/pnm_parser.o
+CC	libavcodec/profiles.o
+CC	libavcodec/psymodel.o
+CC	libavcodec/pthread.o
+CC	libavcodec/pthread_frame.o
+CC	libavcodec/pthread_slice.o
+libavcodec/pcm.c: In function 'pcm_decode_init':
+libavcodec/pcm.c:287:5: warning: 'sample_fmts' is deprecated [-Wdeprecated-declarations]
+  287 |     avctx->sample_fmt = avctx->codec->sample_fmts[0];
+      |     ^~~~~
+In file included from libavcodec/avcodec.h:41,
+                 from libavcodec/pcm.c:34:
+libavcodec/codec.h:219:32: note: declared here
+  219 |     const enum AVSampleFormat *sample_fmts; ///< @deprecated use avcodec_get_supported_config()
+      |                                ^~~~~~~~~~~
+CC	libavcodec/qoi_parser.o
+CC	libavcodec/qpeldsp.o
+CC	libavcodec/qsv_api.o
+CC	libavcodec/rangecoder.o
+CC	libavcodec/raw.o
+CC	libavcodec/rawdec.o
+CC	libavcodec/rawenc.o
+CC	libavcodec/refstruct.o
+CC	libavcodec/rl.o
+CC	libavcodec/rv34_parser.o
+CC	libavcodec/sbc_parser.o
+CC	libavcodec/sbrdsp.o
+CC	libavcodec/sbrdsp_fixed.o
+CC	libavcodec/simple_idct.o
+CC	libavcodec/sinewin.o
+CC	libavcodec/sipr_parser.o
+CC	libavcodec/startcode.o
+CC	libavcodec/tak.o
+CC	libavcodec/tak_parser.o
+CC	libavcodec/threadprogress.o
+CC	libavcodec/tiff_common.o
+CC	libavcodec/to_upper4.o
+CC	libavcodec/utils.o
+CC	libavcodec/vc1.o
+CC	libavcodec/vc1_parser.o
+CC	libavcodec/vc1data.o
+CC	libavcodec/vc1dsp.o
+CC	libavcodec/version.o
+CC	libavcodec/videodsp.o
+CC	libavcodec/vlc.o
+CC	libavcodec/vorbis.o
+In function 'add_level',
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'vlc_multi_gen' at libavcodec/vlc.c:508:5,
+    inlined from 'ff_vlc_init_multi_from_lengths' at libavcodec/vlc.c:564:11:
+libavcodec/vlc.c:443:36: warning: array subscript 3 is above array bounds of 'uint16_t[3]' {aka 'short unsigned int[3]'} [-Warray-bounds=]
+  443 |             if (is16bit) info.val16[curlevel] = sym;
+      |                          ~~~~~~~~~~^~~~~~~~~~
+In file included from libavcodec/vlc.c:39:
+libavcodec/vlc.h: In function 'ff_vlc_init_multi_from_lengths':
+libavcodec/vlc.h:45:18: note: while referencing 'val16'
+   45 |         uint16_t val16[VLC_MULTI_MAX_SYMBOLS / 2];
+      |                  ^~~~~
+In function 'add_level',
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'vlc_multi_gen' at libavcodec/vlc.c:508:5,
+    inlined from 'ff_vlc_init_multi_from_lengths' at libavcodec/vlc.c:564:11:
+libavcodec/vlc.c:443:36: warning: array subscript 4 is above array bounds of 'uint16_t[3]' {aka 'short unsigned int[3]'} [-Warray-bounds=]
+  443 |             if (is16bit) info.val16[curlevel] = sym;
+      |                          ~~~~~~~~~~^~~~~~~~~~
+libavcodec/vlc.h: In function 'ff_vlc_init_multi_from_lengths':
+libavcodec/vlc.h:45:18: note: while referencing 'val16'
+   45 |         uint16_t val16[VLC_MULTI_MAX_SYMBOLS / 2];
+      |                  ^~~~~
+In function 'add_level',
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'add_level' at libavcodec/vlc.c:457:17,
+    inlined from 'vlc_multi_gen' at libavcodec/vlc.c:508:5,
+    inlined from 'ff_vlc_init_multi_from_lengths' at libavcodec/vlc.c:564:11:
+libavcodec/vlc.c:443:36: warning: array subscript 5 is above array bounds of 'uint16_t[3]' {aka 'short unsigned int[3]'} [-Warray-bounds=]
+  443 |             if (is16bit) info.val16[curlevel] = sym;
+      |                          ~~~~~~~~~~^~~~~~~~~~
+libavcodec/vlc.h: In function 'ff_vlc_init_multi_from_lengths':
+libavcodec/vlc.h:45:18: note: while referencing 'val16'
+   45 |         uint16_t val16[VLC_MULTI_MAX_SYMBOLS / 2];
+      |                  ^~~~~
+CC	libavcodec/vorbis_data.o
+CC	libavcodec/vorbis_parser.o
+CC	libavcodec/vorbisdec.o
+CC	libavcodec/vorbisdsp.o
+CC	libavcodec/vp3_parser.o
+CC	libavcodec/vp8.o
+CC	libavcodec/vp8_parser.o
+CC	libavcodec/vp8data.o
+CC	libavcodec/vp8dsp.o
+libavcodec/vp8.c: In function 'filter_mb_row':
+libavcodec/vp8.c:2534:20: warning: variable 'mb' set but not used [-Wunused-but-set-variable=]
+ 2534 |     VP8Macroblock *mb;
+      |                    ^~
+CC	libavcodec/vp9.o
+CC	libavcodec/vp9_parser.o
+CC	libavcodec/vp9block.o
+CC	libavcodec/vp9data.o
+CC	libavcodec/vp9dsp.o
+CC	libavcodec/vp9dsp_10bpp.o
+CC	libavcodec/vp9dsp_12bpp.o
+CC	libavcodec/vp9dsp_8bpp.o
+CC	libavcodec/vp9lpf.o
+CC	libavcodec/vp9mvs.o
+CC	libavcodec/vp9prob.o
+CC	libavcodec/vp9recon.o
+CC	libavcodec/vpx_rac.o
+CC	libavcodec/vvc_parser.o
+CC	libavcodec/webp_parser.o
+CC	libavcodec/wmv2data.o
+CC	libavcodec/wrapped_avframe.o
+X86ASM	libavcodec/x86/aacencdsp.o
+CC	libavcodec/x86/aacencdsp_init.o
+X86ASM	libavcodec/x86/aacpsdsp.o
+STRIP	libavcodec/x86/aacencdsp.o
+CC	libavcodec/x86/aacpsdsp_init.o
+X86ASM	libavcodec/x86/ac3dsp.o
+X86ASM	libavcodec/x86/ac3dsp_downmix.o
+STRIP	libavcodec/x86/ac3dsp.o
+CC	libavcodec/x86/ac3dsp_init.o
+STRIP	libavcodec/x86/aacpsdsp.o
+X86ASM	libavcodec/x86/alacdsp.o
+CC	libavcodec/x86/alacdsp_init.o
+X86ASM	libavcodec/x86/blockdsp.o
+STRIP	libavcodec/x86/alacdsp.o
+CC	libavcodec/x86/blockdsp_init.o
+X86ASM	libavcodec/x86/bswapdsp.o
+STRIP	libavcodec/x86/blockdsp.o
+CC	libavcodec/x86/bswapdsp_init.o
+CC	libavcodec/x86/constants.o
+X86ASM	libavcodec/x86/dct32.o
+STRIP	libavcodec/x86/bswapdsp.o
+STRIP	libavcodec/x86/ac3dsp_downmix.o
+CC	libavcodec/x86/fdct.o
+CC	libavcodec/x86/fdctdsp_init.o
+X86ASM	libavcodec/x86/flacdsp.o
+CC	libavcodec/x86/flacdsp_init.o
+X86ASM	libavcodec/x86/fmtconvert.o
+STRIP	libavcodec/x86/dct32.o
+STRIP	libavcodec/x86/fmtconvert.o
+CC	libavcodec/x86/fmtconvert_init.o
+X86ASM	libavcodec/x86/fpel.o
+X86ASM	libavcodec/x86/h263_loopfilter.o
+STRIP	libavcodec/x86/fpel.o
+CC	libavcodec/x86/h263dsp_init.o
+STRIP	libavcodec/x86/h263_loopfilter.o
+X86ASM	libavcodec/x86/h264_chromamc.o
+X86ASM	libavcodec/x86/h264_chromamc_10bit.o
+STRIP	libavcodec/x86/flacdsp.o
+X86ASM	libavcodec/x86/h264_deblock.o
+STRIP	libavcodec/x86/h264_chromamc_10bit.o
+X86ASM	libavcodec/x86/h264_deblock_10bit.o
+STRIP	libavcodec/x86/h264_chromamc.o
+X86ASM	libavcodec/x86/h264_idct.o
+STRIP	libavcodec/x86/h264_deblock_10bit.o
+X86ASM	libavcodec/x86/h264_idct_10bit.o
+libavcodec/x86/h264_idct.asm:764: warning: redefining multi-line macro `STORE_DIFFx2' [-w+pp-macro-redef-multi]
+STRIP	libavcodec/x86/h264_idct.o
+X86ASM	libavcodec/x86/h264_intrapred.o
+STRIP	libavcodec/x86/h264_deblock.o
+X86ASM	libavcodec/x86/h264_intrapred_10bit.o
+STRIP	libavcodec/x86/h264_idct_10bit.o
+CC	libavcodec/x86/h264_intrapred_init.o
+CC	libavcodec/x86/h264_qpel.o
+X86ASM	libavcodec/x86/h264_qpel_10bit.o
+STRIP	libavcodec/x86/h264_intrapred_10bit.o
+X86ASM	libavcodec/x86/h264_qpel_8bit.o
+X86ASM	libavcodec/x86/h264_weight.o
+STRIP	libavcodec/x86/h264_intrapred.o
+X86ASM	libavcodec/x86/h264_weight_10bit.o
+STRIP	libavcodec/x86/h264_weight.o
+CC	libavcodec/x86/h264chroma_init.o
+CC	libavcodec/x86/h264dsp_init.o
+X86ASM	libavcodec/x86/h26x/h2656_inter.o
+STRIP	libavcodec/x86/h264_weight_10bit.o
+CC	libavcodec/x86/h26x/h2656dsp.o
+X86ASM	libavcodec/x86/hevc_add_res.o
+STRIP	libavcodec/x86/hevc_add_res.o
+X86ASM	libavcodec/x86/hevc_deblock.o
+STRIP	libavcodec/x86/h264_qpel_10bit.o
+X86ASM	libavcodec/x86/hevc_idct.o
+STRIP	libavcodec/x86/h264_qpel_8bit.o
+X86ASM	libavcodec/x86/hevc_mc.o
+STRIP	libavcodec/x86/hevc_idct.o
+X86ASM	libavcodec/x86/hevc_sao.o
+STRIP	libavcodec/x86/hevc_sao.o
+X86ASM	libavcodec/x86/hevc_sao_10bit.o
+STRIP	libavcodec/x86/hevc_mc.o
+CC	libavcodec/x86/hevcdsp_init.o
+STRIP	libavcodec/x86/hevc_deblock.o
+X86ASM	libavcodec/x86/hpeldsp.o
+STRIP	libavcodec/x86/hpeldsp.o
+CC	libavcodec/x86/hpeldsp_init.o
+X86ASM	libavcodec/x86/idctdsp.o
+STRIP	libavcodec/x86/idctdsp.o
+CC	libavcodec/x86/idctdsp_init.o
+X86ASM	libavcodec/x86/imdct36.o
+STRIP	libavcodec/x86/imdct36.o
+X86ASM	libavcodec/x86/lpc.o
+STRIP	libavcodec/x86/h26x/h2656_inter.o
+CC	libavcodec/x86/lpc_init.o
+STRIP	libavcodec/x86/lpc.o
+X86ASM	libavcodec/x86/me_cmp.o
+CC	libavcodec/x86/me_cmp_init.o
+CC	libavcodec/x86/mpeg4videodsp.o
+CC	libavcodec/x86/mpegaudiodsp.o
+CC	libavcodec/x86/mpegvideo.o
+STRIP	libavcodec/x86/hevc_sao_10bit.o
+STRIP	libavcodec/x86/me_cmp.o
+X86ASM	libavcodec/x86/opusdsp.o
+CC	libavcodec/x86/opusdsp_init.o
+X86ASM	libavcodec/x86/qpel.o
+X86ASM	libavcodec/x86/qpeldsp.o
+STRIP	libavcodec/x86/opusdsp.o
+CC	libavcodec/x86/qpeldsp_init.o
+STRIP	libavcodec/x86/qpel.o
+X86ASM	libavcodec/x86/sbrdsp.o
+CC	libavcodec/x86/sbrdsp_init.o
+X86ASM	libavcodec/x86/simple_idct10.o
+CC	libavcodec/x86/vc1dsp_init.o
+X86ASM	libavcodec/x86/vc1dsp_loopfilter.o
+STRIP	libavcodec/x86/sbrdsp.o
+X86ASM	libavcodec/x86/vc1dsp_mc.o
+STRIP	libavcodec/x86/vc1dsp_mc.o
+CC	libavcodec/x86/vc1dsp_mmx.o
+STRIP	libavcodec/x86/vc1dsp_loopfilter.o
+X86ASM	libavcodec/x86/videodsp.o
+CC	libavcodec/x86/videodsp_init.o
+X86ASM	libavcodec/x86/vorbisdsp.o
+STRIP	libavcodec/x86/vorbisdsp.o
+STRIP	libavcodec/x86/qpeldsp.o
+CC	libavcodec/x86/vorbisdsp_init.o
+X86ASM	libavcodec/x86/vp8dsp.o
+CC	libavcodec/x86/vp8dsp_init.o
+X86ASM	libavcodec/x86/vp8dsp_loopfilter.o
+STRIP	libavcodec/x86/videodsp.o
+CC	libavcodec/x86/vp9dsp_init.o
+STRIP	libavcodec/x86/vp8dsp.o
+CC	libavcodec/x86/vp9dsp_init_10bpp.o
+CC	libavcodec/x86/vp9dsp_init_12bpp.o
+CC	libavcodec/x86/vp9dsp_init_16bpp.o
+X86ASM	libavcodec/x86/vp9intrapred.o
+X86ASM	libavcodec/x86/vp9intrapred_16bpp.o
+STRIP	libavcodec/x86/simple_idct10.o
+X86ASM	libavcodec/x86/vp9itxfm.o
+STRIP	libavcodec/x86/vp8dsp_loopfilter.o
+X86ASM	libavcodec/x86/vp9itxfm_16bpp.o
+STRIP	libavcodec/x86/vp9intrapred.o
+X86ASM	libavcodec/x86/vp9lpf.o
+STRIP	libavcodec/x86/vp9intrapred_16bpp.o
+X86ASM	libavcodec/x86/vp9lpf_16bpp.o
+STRIP	libavcodec/x86/vp9lpf_16bpp.o
+X86ASM	libavcodec/x86/vp9mc.o
+STRIP	libavcodec/x86/vp9itxfm_16bpp.o
+X86ASM	libavcodec/x86/vp9mc_16bpp.o
+STRIP	libavcodec/x86/vp9mc_16bpp.o
+X86ASM	libavcodec/x86/xvididct.o
+STRIP	libavcodec/x86/vp9mc.o
+CC	libavcodec/x86/xvididct_init.o
+CC	libavcodec/xbm_parser.o
+CC	libavcodec/xiph.o
+CC	libavcodec/xma_parser.o
+CC	libavcodec/xvididct.o
+CC	libavcodec/xwd_parser.o
+GEN	libavcodec/libavcodec.pc
+CC	libpostproc/postprocess.o
+In file included from libpostproc/postprocess_internal.h:33,
+                 from libpostproc/postprocess.c:89:
+libpostproc/postprocess_template.c: In function 'dering_SSE2':
+libpostproc/postprocess_template.c:839:24: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  839 |     DECLARE_ALIGNED(8, uint64_t, tmp)[3];
+      |                        ^~~~~~~~
+./libavutil/mem_internal.h:85:41: note: in definition of macro 'DECLARE_ALIGNED_T'
+   85 |     #define DECLARE_ALIGNED_T(n,t,v)    t __attribute__ ((aligned (n))) v
+      |                                         ^
+./libavutil/mem_internal.h:113:34: note: in expansion of macro 'DECLARE_ALIGNED_8'
+  113 | #define DECLARE_ALIGNED_V(n,t,v) DECLARE_ALIGNED_##n(t,v)
+      |                                  ^~~~~~~~~~~~~~~~
+./libavutil/mem_internal.h:109:32: note: in expansion of macro 'DECLARE_ALIGNED_V'
+  109 | #define DECLARE_ALIGNED(n,t,v) DECLARE_ALIGNED_V(n,t,v)
+      |                                ^~~~~~~~~~~~~~~~~
+libpostproc/postprocess_template.c:839:5: note: in expansion of macro 'DECLARE_ALIGNED'
+  839 |     DECLARE_ALIGNED(8, uint64_t, tmp)[3];
+      |     ^~~~~~~~~~~~~~~
+STRIP	libavcodec/x86/xvididct.o
+CC	libpostproc/version.o
+GEN	libpostproc/libpostproc.pc
+CC	libswresample/audioconvert.o
+STRIP	libavcodec/x86/vp9lpf.o
+CC	libswresample/dither.o
+CC	libswresample/options.o
+CC	libswresample/rematrix.o
+CC	libswresample/resample.o
+CC	libswresample/resample_dsp.o
+CC	libswresample/swresample.o
+CC	libswresample/swresample_frame.o
+CC	libswresample/version.o
+X86ASM	libswresample/x86/audio_convert.o
+CC	libswresample/x86/audio_convert_init.o
+X86ASM	libswresample/x86/rematrix.o
+CC	libswresample/x86/rematrix_init.o
+X86ASM	libswresample/x86/resample.o
+STRIP	libswresample/x86/rematrix.o
+CC	libswresample/x86/resample_init.o
+GEN	libswresample/libswresample.pc
+CC	libswscale/alphablend.o
+STRIP	libswresample/x86/resample.o
+CC	libswscale/gamma.o
+CC	libswscale/half2float.o
+CC	libswscale/hscale.o
+CC	libswscale/hscale_fast_bilinear.o
+CC	libswscale/input.o
+CC	libswscale/options.o
+CC	libswscale/output.o
+CC	libswscale/rgb2rgb.o
+STRIP	libswresample/x86/audio_convert.o
+CC	libswscale/slice.o
+CC	libswscale/swscale.o
+CC	libswscale/swscale_unscaled.o
+CC	libswscale/utils.o
+CC	libswscale/version.o
+CC	libswscale/vscale.o
+CC	libswscale/x86/hscale_fast_bilinear_simd.o
+X86ASM	libswscale/x86/input.o
+X86ASM	libswscale/x86/output.o
+X86ASM	libswscale/x86/range_convert.o
+STRIP	libswscale/x86/range_convert.o
+CC	libswscale/x86/rgb2rgb.o
+X86ASM	libswscale/x86/rgb_2_rgb.o
+STRIP	libswscale/x86/rgb_2_rgb.o
+X86ASM	libswscale/x86/scale.o
+STRIP	libswscale/x86/input.o
+X86ASM	libswscale/x86/scale_avx2.o
+STRIP	libswscale/x86/scale.o
+CC	libswscale/x86/swscale.o
+STRIP	libswscale/x86/scale_avx2.o
+CC	libswscale/x86/yuv2rgb.o
+X86ASM	libswscale/x86/yuv2yuvX.o
+X86ASM	libswscale/x86/yuv_2_rgb.o
+libswscale/x86/yuv2yuvX.asm:128: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:57: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1520: ... from macro `psrlq' defined here
+libavutil/x86/x86inc.asm:1427: ... from macro `RUN_AVX_INSTR' defined here
+libswscale/x86/yuv2yuvX.asm:128: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:58: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1520: ... from macro `psllq' defined here
+libavutil/x86/x86inc.asm:1427: ... from macro `RUN_AVX_INSTR' defined here
+libswscale/x86/yuv2yuvX.asm:128: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:97: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1293: ... from macro `add' defined here
+libswscale/x86/yuv2yuvX.asm:128: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:97: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1296: ... from macro `add' defined here
+libswscale/x86/yuv2yuvX.asm:130: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:57: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1520: ... from macro `psrlq' defined here
+libavutil/x86/x86inc.asm:1427: ... from macro `RUN_AVX_INSTR' defined here
+libswscale/x86/yuv2yuvX.asm:130: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:58: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1520: ... from macro `psllq' defined here
+libavutil/x86/x86inc.asm:1427: ... from macro `RUN_AVX_INSTR' defined here
+libswscale/x86/yuv2yuvX.asm:130: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:97: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1293: ... from macro `add' defined here
+libswscale/x86/yuv2yuvX.asm:130: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:97: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1296: ... from macro `add' defined here
+libswscale/x86/yuv2yuvX.asm:133: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:57: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1520: ... from macro `psrlq' defined here
+libavutil/x86/x86inc.asm:1482: ... from macro `RUN_AVX_INSTR' defined here
+libswscale/x86/yuv2yuvX.asm:133: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:58: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1520: ... from macro `psllq' defined here
+libavutil/x86/x86inc.asm:1482: ... from macro `RUN_AVX_INSTR' defined here
+libswscale/x86/yuv2yuvX.asm:133: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:97: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1293: ... from macro `add' defined here
+libswscale/x86/yuv2yuvX.asm:133: warning: $ prefix for hexadecimal is deprecated [-w+number-deprecated-hex]
+libswscale/x86/yuv2yuvX.asm:97: ... from macro `YUV2YUVX_FUNC' defined here
+libavutil/x86/x86inc.asm:1296: ... from macro `add' defined here
+STRIP	libswscale/x86/yuv2yuvX.o
+CC	libswscale/yuv2rgb.o
+STRIP	libswscale/x86/yuv_2_rgb.o
+GEN	libswscale/libswscale.pc
+CC	libavutil/adler32.o
+CC	libavutil/aes.o
+CC	libavutil/aes_ctr.o
+CC	libavutil/ambient_viewing_environment.o
+CC	libavutil/audio_fifo.o
+CC	libavutil/avsscanf.o
+CC	libavutil/avstring.o
+CC	libavutil/base64.o
+CC	libavutil/blowfish.o
+CC	libavutil/bprint.o
+CC	libavutil/buffer.o
+CC	libavutil/camellia.o
+CC	libavutil/cast5.o
+CC	libavutil/channel_layout.o
+CC	libavutil/cpu.o
+CC	libavutil/crc.o
+CC	libavutil/csp.o
+CC	libavutil/des.o
+CC	libavutil/detection_bbox.o
+CC	libavutil/dict.o
+CC	libavutil/display.o
+CC	libavutil/dovi_meta.o
+CC	libavutil/downmix_info.o
+CC	libavutil/encryption_info.o
+CC	libavutil/error.o
+CC	libavutil/eval.o
+CC	libavutil/executor.o
+CC	libavutil/fifo.o
+CC	libavutil/file.o
+CC	libavutil/file_open.o
+CC	libavutil/film_grain_params.o
+CC	libavutil/fixed_dsp.o
+CC	libavutil/float_dsp.o
+CC	libavutil/frame.o
+CC	libavutil/hash.o
+CC	libavutil/hdr_dynamic_metadata.o
+CC	libavutil/hdr_dynamic_vivid_metadata.o
+CC	libavutil/hmac.o
+CC	libavutil/hwcontext.o
+CC	libavutil/hwcontext_stub.o
+CC	libavutil/iamf.o
+CC	libavutil/imgutils.o
+STRIP	libswscale/x86/output.o
+CC	libavutil/integer.o
+CC	libavutil/intmath.o
+CC	libavutil/lfg.o
+CC	libavutil/lls.o
+CC	libavutil/log.o
+CC	libavutil/log2_tab.o
+CC	libavutil/lzo.o
+CC	libavutil/mastering_display_metadata.o
+CC	libavutil/mathematics.o
+CC	libavutil/md5.o
+CC	libavutil/mem.o
+CC	libavutil/murmur3.o
+CC	libavutil/opt.o
+CC	libavutil/parseutils.o
+CC	libavutil/pixdesc.o
+CC	libavutil/pixelutils.o
+CC	libavutil/random_seed.o
+CC	libavutil/rational.o
+CC	libavutil/rc4.o
+CC	libavutil/reverse.o
+CC	libavutil/ripemd.o
+CC	libavutil/samplefmt.o
+CC	libavutil/sha.o
+CC	libavutil/sha512.o
+CC	libavutil/slicethread.o
+CC	libavutil/spherical.o
+CC	libavutil/stereo3d.o
+CC	libavutil/tea.o
+CC	libavutil/threadmessage.o
+CC	libavutil/time.o
+CC	libavutil/timecode.o
+libavutil/timecode.c: In function 'av_timecode_make_string':
+libavutil/timecode.c:124:60: warning: '%0*d' directive output may be truncated writing between 1 and 10 bytes into a region of size between 3 and 14 [-Wformat-truncation=]
+  124 |     snprintf(buf, AV_TIMECODE_STR_SIZE, "%s%02d:%02d:%02d%c%0*d",
+      |                                                            ^~~~
+libavutil/timecode.c:124:41: note: directive argument in the range [0, 2147483647]
+  124 |     snprintf(buf, AV_TIMECODE_STR_SIZE, "%s%02d:%02d:%02d%c%0*d",
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~
+libavutil/timecode.c:124:5: note: 'snprintf' output between 11 and 31 bytes into a destination of size 23
+  124 |     snprintf(buf, AV_TIMECODE_STR_SIZE, "%s%02d:%02d:%02d%c%0*d",
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  125 |              neg ? "-" : "",
+      |              ~~~~~~~~~~~~~~~
+  126 |              hh, mm, ss, drop ? ';' : ':', ff_len, ff);
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavutil/timestamp.o
+CC	libavutil/tree.o
+CC	libavutil/twofish.o
+CC	libavutil/tx.o
+CC	libavutil/tx_double.o
+CC	libavutil/tx_float.o
+CC	libavutil/tx_int32.o
+CC	libavutil/utils.o
+CC	libavutil/uuid.o
+CC	libavutil/version.o
+CC	libavutil/video_enc_params.o
+CC	libavutil/video_hint.o
+CC	libavutil/x86/cpu.o
+X86ASM	libavutil/x86/cpuid.o
+X86ASM	libavutil/x86/fixed_dsp.o
+STRIP	libavutil/x86/cpuid.o
+CC	libavutil/x86/fixed_dsp_init.o
+X86ASM	libavutil/x86/float_dsp.o
+STRIP	libavutil/x86/fixed_dsp.o
+CC	libavutil/x86/float_dsp_init.o
+X86ASM	libavutil/x86/imgutils.o
+STRIP	libavutil/x86/imgutils.o
+CC	libavutil/x86/imgutils_init.o
+X86ASM	libavutil/x86/lls.o
+CC	libavutil/x86/lls_init.o
+X86ASM	libavutil/x86/tx_float.o
+STRIP	libavutil/x86/float_dsp.o
+CC	libavutil/x86/tx_float_init.o
+STRIP	libavutil/x86/lls.o
+CC	libavutil/xga_font_data.o
+CC	libavutil/xtea.o
+GEN	libavutil/libavutil.pc
+CC	fftools/ffmpeg_dec.o
+CC	fftools/ffmpeg_demux.o
+CC	fftools/ffmpeg_enc.o
+CC	fftools/ffmpeg_filter.o
+CC	fftools/ffmpeg_hw.o
+CC	fftools/ffmpeg_mux.o
+CC	fftools/ffmpeg_mux_init.o
+CC	fftools/ffmpeg_opt.o
+CC	fftools/ffmpeg_sched.o
+CC	fftools/objpool.o
+CC	fftools/sync_queue.o
+CC	fftools/thread_queue.o
+CC	fftools/cmdutils.o
+CC	fftools/opt_common.o
+fftools/cmdutils.c: In function 'get_preset_file':
+fftools/cmdutils.c:962:21: warning: 'strncat' specified bound 10 equals source length [-Wstringop-overflow=]
+  962 |                     strncat(datadir, "/ffpresets",  desired_size - 1 - datadir_len);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	fftools/ffmpeg.o
+WINDRES	fftools/fftoolsres.o
+CC	fftools/ffprobe.o
+AR	libavdevice/libavdevice.a
+AR	libavfilter/libavfilter.a
+AR	libavformat/libavformat.a
+AR	libpostproc/libpostproc.a
+AR	libswresample/libswresample.a
+AR	libswscale/libswscale.a
+STRIP	libavcodec/x86/vp9itxfm.o
+AR	libavcodec/libavcodec.a
+STRIP	libavutil/x86/tx_float.o
+AR	libavutil/libavutil.a
+LD	ffmpeg_g.exe
+LD	ffprobe_g.exe
+STRIP	ffprobe.exe
+STRIP	ffmpeg.exe
+INSTALL	install-progs-yes
+INSTALL	ffmpeg.exe
+INSTALL	ffprobe.exe
+INSTALL	presets/libvpx-1080p.ffpreset
+INSTALL	presets/libvpx-1080p50_60.ffpreset
+INSTALL	presets/libvpx-360p.ffpreset
+INSTALL	presets/libvpx-720p.ffpreset
+INSTALL	presets/libvpx-720p50_60.ffpreset
+INSTALL	doc/ffprobe.xsd
+INSTALL	doc/examples/avio_http_serve_files.c
+INSTALL	doc/examples/avio_list_dir.c
+INSTALL	doc/examples/avio_read_callback.c
+INSTALL	doc/examples/decode_audio.c
+INSTALL	doc/examples/decode_filter_audio.c
+INSTALL	doc/examples/decode_filter_video.c
+INSTALL	doc/examples/decode_video.c
+INSTALL	doc/examples/demux_decode.c
+INSTALL	doc/examples/encode_audio.c
+INSTALL	doc/examples/encode_video.c
+INSTALL	doc/examples/extract_mvs.c
+INSTALL	doc/examples/filter_audio.c
+INSTALL	doc/examples/hw_decode.c
+INSTALL	doc/examples/mux.c
+INSTALL	doc/examples/qsv_decode.c
+INSTALL	doc/examples/qsv_transcode.c
+INSTALL	doc/examples/remux.c
+INSTALL	doc/examples/resample_audio.c
+INSTALL	doc/examples/scale_video.c
+INSTALL	doc/examples/show_metadata.c
+INSTALL	doc/examples/transcode.c
+INSTALL	doc/examples/transcode_aac.c
+INSTALL	doc/examples/vaapi_encode.c
+INSTALL	doc/examples/vaapi_transcode.c
+INSTALL	doc/examples/README
+INSTALL	doc/examples/Makefile
+INSTALL	doc/examples/avio_http_serve_files.c
+INSTALL	doc/examples/avio_list_dir.c
+INSTALL	doc/examples/avio_read_callback.c
+INSTALL	doc/examples/decode_audio.c
+INSTALL	doc/examples/decode_filter_audio.c
+INSTALL	doc/examples/decode_filter_video.c
+INSTALL	doc/examples/decode_video.c
+INSTALL	doc/examples/demux_decode.c
+INSTALL	doc/examples/encode_audio.c
+INSTALL	doc/examples/encode_video.c
+INSTALL	doc/examples/extract_mvs.c
+INSTALL	doc/examples/filter_audio.c
+INSTALL	doc/examples/hw_decode.c
+INSTALL	doc/examples/mux.c
+INSTALL	doc/examples/qsv_decode.c
+INSTALL	doc/examples/qsv_transcode.c
+INSTALL	doc/examples/remux.c
+INSTALL	doc/examples/resample_audio.c
+INSTALL	doc/examples/scale_video.c
+INSTALL	doc/examples/show_metadata.c
+INSTALL	doc/examples/transcode.c
+INSTALL	doc/examples/transcode_aac.c
+INSTALL	doc/examples/vaapi_encode.c
+INSTALL	doc/examples/vaapi_transcode.c
+INSTALL	doc/examples/README
+INSTALL	doc/examples/Makefile
+INSTALL	libavdevice/libavdevice.a
+INSTALL	libavfilter/libavfilter.a
+INSTALL	libavformat/libavformat.a
+INSTALL	libavcodec/libavcodec.a
+INSTALL	libpostproc/libpostproc.a
+INSTALL	libswresample/libswresample.a
+INSTALL	libswscale/libswscale.a
+INSTALL	libavutil/libavutil.a
+INSTALL	libavdevice/avdevice.h
+INSTALL	libavdevice/version.h
+INSTALL	libavdevice/version_major.h
+INSTALL	libavdevice/libavdevice.pc
+INSTALL	libavfilter/avfilter.h
+INSTALL	libavfilter/buffersink.h
+INSTALL	libavfilter/buffersrc.h
+INSTALL	libavfilter/version.h
+INSTALL	libavfilter/version_major.h
+INSTALL	libavfilter/libavfilter.pc
+INSTALL	libavformat/avformat.h
+INSTALL	libavformat/avio.h
+INSTALL	libavformat/version.h
+INSTALL	libavformat/version_major.h
+INSTALL	libavformat/libavformat.pc
+INSTALL	libavcodec/ac3_parser.h
+INSTALL	libavcodec/adts_parser.h
+INSTALL	libavcodec/avcodec.h
+INSTALL	libavcodec/avdct.h
+INSTALL	libavcodec/avfft.h
+INSTALL	libavcodec/bsf.h
+INSTALL	libavcodec/codec.h
+INSTALL	libavcodec/codec_desc.h
+INSTALL	libavcodec/codec_id.h
+INSTALL	libavcodec/codec_par.h
+INSTALL	libavcodec/d3d11va.h
+INSTALL	libavcodec/defs.h
+INSTALL	libavcodec/dirac.h
+INSTALL	libavcodec/dv_profile.h
+INSTALL	libavcodec/dxva2.h
+INSTALL	libavcodec/jni.h
+INSTALL	libavcodec/mediacodec.h
+INSTALL	libavcodec/packet.h
+INSTALL	libavcodec/qsv.h
+INSTALL	libavcodec/vdpau.h
+INSTALL	libavcodec/version.h
+INSTALL	libavcodec/version_major.h
+INSTALL	libavcodec/videotoolbox.h
+INSTALL	libavcodec/vorbis_parser.h
+INSTALL	libavcodec/libavcodec.pc
+INSTALL	libpostproc/postprocess.h
+INSTALL	libpostproc/version.h
+INSTALL	libpostproc/version_major.h
+INSTALL	libpostproc/libpostproc.pc
+INSTALL	libswresample/swresample.h
+INSTALL	libswresample/version.h
+INSTALL	libswresample/version_major.h
+INSTALL	libswresample/libswresample.pc
+INSTALL	libswscale/swscale.h
+INSTALL	libswscale/version.h
+INSTALL	libswscale/version_major.h
+INSTALL	libswscale/libswscale.pc
+INSTALL	libavutil/adler32.h
+INSTALL	libavutil/aes.h
+INSTALL	libavutil/aes_ctr.h
+INSTALL	libavutil/ambient_viewing_environment.h
+INSTALL	libavutil/attributes.h
+INSTALL	libavutil/audio_fifo.h
+INSTALL	libavutil/avassert.h
+INSTALL	libavutil/avstring.h
+INSTALL	libavutil/avutil.h
+INSTALL	libavutil/base64.h
+INSTALL	libavutil/blowfish.h
+INSTALL	libavutil/bprint.h
+INSTALL	libavutil/bswap.h
+INSTALL	libavutil/buffer.h
+INSTALL	libavutil/cast5.h
+INSTALL	libavutil/camellia.h
+INSTALL	libavutil/channel_layout.h
+INSTALL	libavutil/common.h
+INSTALL	libavutil/cpu.h
+INSTALL	libavutil/crc.h
+INSTALL	libavutil/csp.h
+INSTALL	libavutil/des.h
+INSTALL	libavutil/detection_bbox.h
+INSTALL	libavutil/dict.h
+INSTALL	libavutil/display.h
+INSTALL	libavutil/dovi_meta.h
+INSTALL	libavutil/downmix_info.h
+INSTALL	libavutil/encryption_info.h
+INSTALL	libavutil/error.h
+INSTALL	libavutil/eval.h
+INSTALL	libavutil/executor.h
+INSTALL	libavutil/fifo.h
+INSTALL	libavutil/file.h
+INSTALL	libavutil/frame.h
+INSTALL	libavutil/hash.h
+INSTALL	libavutil/hdr_dynamic_metadata.h
+INSTALL	libavutil/hdr_dynamic_vivid_metadata.h
+INSTALL	libavutil/hmac.h
+INSTALL	libavutil/hwcontext.h
+INSTALL	libavutil/hwcontext_cuda.h
+INSTALL	libavutil/hwcontext_d3d11va.h
+INSTALL	libavutil/hwcontext_d3d12va.h
+INSTALL	libavutil/hwcontext_drm.h
+INSTALL	libavutil/hwcontext_dxva2.h
+INSTALL	libavutil/hwcontext_qsv.h
+INSTALL	libavutil/hwcontext_mediacodec.h
+INSTALL	libavutil/hwcontext_opencl.h
+INSTALL	libavutil/hwcontext_vaapi.h
+INSTALL	libavutil/hwcontext_videotoolbox.h
+INSTALL	libavutil/hwcontext_vdpau.h
+INSTALL	libavutil/hwcontext_vulkan.h
+INSTALL	libavutil/iamf.h
+INSTALL	libavutil/imgutils.h
+INSTALL	libavutil/intfloat.h
+INSTALL	libavutil/intreadwrite.h
+INSTALL	libavutil/lfg.h
+INSTALL	libavutil/log.h
+INSTALL	libavutil/lzo.h
+INSTALL	libavutil/macros.h
+INSTALL	libavutil/mathematics.h
+INSTALL	libavutil/mastering_display_metadata.h
+INSTALL	libavutil/md5.h
+INSTALL	libavutil/mem.h
+INSTALL	libavutil/motion_vector.h
+INSTALL	libavutil/murmur3.h
+INSTALL	libavutil/opt.h
+INSTALL	libavutil/parseutils.h
+INSTALL	libavutil/pixdesc.h
+INSTALL	libavutil/pixelutils.h
+INSTALL	libavutil/pixfmt.h
+INSTALL	libavutil/random_seed.h
+INSTALL	libavutil/rc4.h
+INSTALL	libavutil/rational.h
+INSTALL	libavutil/replaygain.h
+INSTALL	libavutil/ripemd.h
+INSTALL	libavutil/samplefmt.h
+INSTALL	libavutil/sha.h
+INSTALL	libavutil/sha512.h
+INSTALL	libavutil/spherical.h
+INSTALL	libavutil/stereo3d.h
+INSTALL	libavutil/threadmessage.h
+INSTALL	libavutil/time.h
+INSTALL	libavutil/timecode.h
+INSTALL	libavutil/timestamp.h
+INSTALL	libavutil/tree.h
+INSTALL	libavutil/twofish.h
+INSTALL	libavutil/uuid.h
+INSTALL	libavutil/version.h
+INSTALL	libavutil/video_enc_params.h
+INSTALL	libavutil/xtea.h
+INSTALL	libavutil/tea.h
+INSTALL	libavutil/tx.h
+INSTALL	libavutil/film_grain_params.h
+INSTALL	libavutil/video_hint.h
+INSTALL	libavutil/avconfig.h
+INSTALL	libavutil/ffversion.h
+INSTALL	libavutil/libavutil.pc
