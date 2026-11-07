@@ -1,0 +1,21 @@
+{
+  "preview_layout": "PASS",
+  "analysis_round_preservation": "PASS",
+  "portrait_output": "PASS",
+  "av1_decode": "PASS",
+  "executable": "PASS",
+  "gui_construction": "PASS",
+  "synthetic_render": "PASS",
+  "unicode_install_ocr": "PASS",
+  "player_library_restart": "PASS",
+  "multilingual_ocr_data": "PASS",
+  "scene_model_integrity": "PASS",
+  "batch_review": "PASS",
+  "inning_edit": "PASS",
+  "output_720p30": "PASS",
+  "model_integrity": "NOT_INCLUDED_DEVELOPMENT",
+  "automatic_analysis": "RULES_AVAILABLE",
+  "synthetic_auto_scan": "PASS",
+  "baseball_accuracy": "NOT_EVALUATED",
+  "windows_user_pc": "NOT_TESTED"
+}
