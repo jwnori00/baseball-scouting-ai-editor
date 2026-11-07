@@ -161,3 +161,19 @@ def test_caption_of_another_batter_breaks_previous_slot_context():
  def feed(t,text):a.feed(t,dict(pitch_view=True,motion=0,catcher_motion=0,field=.2,signature=str(t),cut=False,text_blocks=[dict(text=text,region=[.1,.7,.4,.8],ocr_confidence=90)]))
  feed(0,'9 CF 정수빈');feed(2,'B. 강민호 2타수');feed(4,'정수빈 .254')
  assert a.recent[-1][1]['identity']['state']!='target'
+
+
+def test_real_confirmation_button_does_not_confirm_unknown_bulk():
+ from PySide6.QtWidgets import QApplication,QMessageBox
+ from PySide6.QtCore import QTimer
+ from bsae.gui.window import Window
+ app=QApplication.instance() or QApplication([]);w=Window();s=game()
+ w.registered(s);w.review_filter.setCurrentIndex(1);w.table.selectAll()
+ errors=[];w.error=errors.append
+ def click_yes():
+  modal=app.activeModalWidget()
+  assert isinstance(modal,QMessageBox)
+  modal.button(QMessageBox.Yes).click()
+ QTimer.singleShot(50,click_yes);w.approve_selected()
+ assert errors and all(e.status=='REVIEW_REQUIRED' and not e.manual_identity_confirmed for e in s.events)
+ w.dirty=False;w.close()

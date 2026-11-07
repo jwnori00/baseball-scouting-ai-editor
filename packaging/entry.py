@@ -124,9 +124,9 @@ if __name__=='__main__':
                 errors=[];window.error=errors.append;window.table.selectAll()
                 def answer_guard():
                     modal=app.activeModalWidget()
-                    if modal:modal.done(QMessageBox.Yes)
+                    if isinstance(modal,QMessageBox):modal.button(QMessageBox.Yes).click()
                 QTimer.singleShot(50,answer_guard);window.approve_selected()
-                assert errors and game.events[1].status=='REVIEW_REQUIRED' and not game.events[1].manual_identity_confirmed
+                assert errors and game.events[1].status=='REVIEW_REQUIRED' and not game.events[1].manual_identity_confirmed, str(dict(errors=[str(e) for e in errors],events=[(e.status,e.manual_identity_confirmed) for e in game.events]))
                 assert all(e.identity_status=='IDENTITY_UNKNOWN' for e in game.events)
                 window.error=fail_test
                 review_many(game,[e.id for e in game.events],confirm_identity=True)
