@@ -42,13 +42,13 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
     if mode not in ('all', 'pitch', 'plate'):
         raise ValueError('출력 모드 오류')
     session.validate()
-    if any(e.status=='APPROVED' and e.event_type in ('replay','other_player_or_ocr_error') for e in session.events):
+    if any(e.status=='APPROVED' and (e.event_type in ('replay','other_player_or_ocr_error') or e.broadcast_status in ('REPLAY_SUSPECTED','ARCHIVE_SUSPECTED')) for e in session.events):
         raise ValueError('리플레이·다른 선수 후보는 원본 확인 후 투구로 재분류해야 출력할 수 있습니다')
     events = sorted([e for e in session.events if e.status == 'APPROVED' and (include_pickoffs or e.event_type != 'pickoff')], key=lambda e:e.timeline_start)
     if not events:
         raise ValueError('검수 승인된 투구가 없습니다')
     role_field = 'pitcher_id' if session.player.role == 'pitcher' else 'batter_id'
-    if any(getattr(e, role_field) != session.player.id for e in events):
+    if any(getattr(e,role_field)!=session.player.id or not (e.identity_status=='TARGET_CONFIRMED' or e.manual_identity_confirmed) for e in events):
         raise ValueError('대상 선수 미확정 이벤트')
     for a,b in zip(events, events[1:]):
         if a.timeline_end > b.timeline_start + 1e-5:
@@ -112,7 +112,7 @@ def export(session, destination, mode='all', progress=lambda value: None, stop=N
         atomic_json(destination/'framing.json', dict(automatic=auto_frame, output_settings=settings, segments=framing))
         atomic_json(destination/'events.json', [asdict(e) for e in events])
         from bsae.evaluation import write_csv
-        write_csv(destination/'events.csv', [dict(id=e.id, pitch_number=e.number, inning=e.inning, plate_id=e.plate_id,
+        write_csv(destination/'events.csv', [dict(id=e.id, pitch_number=e.number,identity_status=e.identity_status,manual_identity_confirmed=e.manual_identity_confirmed,broadcast_status=e.broadcast_status, inning=e.inning, plate_id=e.plate_id,
             start=e.timeline_start, end=e.timeline_end, type=e.event_type, status=e.status) for e in events])
         for s in sources.values():
             if fingerprint(s.path) != s.fingerprint:

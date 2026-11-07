@@ -189,7 +189,7 @@ def test_gui_button_calls_rules_engine_and_saves_results(motion_video,tmp_path,m
     assert not w.job.isRunning()
     assert w.session and w.session.analysis['engine']==VERSION
     assert w.session.events and GameSession.load(output).analysis['engine']==VERSION
-    assert w.table.columnCount()==7 and w.table.horizontalHeaderItem(6).text()=='타자'
+    assert w.table.columnCount()==8 and w.table.horizontalHeaderItem(6).text()=='타자' and w.table.horizontalHeaderItem(7).text()=='신원'
     w.dirty=False;w.close();app.processEvents()
 
 

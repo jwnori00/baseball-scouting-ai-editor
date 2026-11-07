@@ -108,6 +108,7 @@ if __name__=='__main__':
                     checkpoint('automatic_scan')
                     analyze_plays(game,load_profile(window.profile.text() or None),d/'auto.sqlite')
                     assert game.analysis['engine']==VERSION
+                    assert game.analysis['game_index']['game_key']
                     assert all(e.status!='APPROVED' for e in game.events)
                     auto_scan='PASS'
                     game.events=[];game.appearances=[]
@@ -117,6 +118,17 @@ if __name__=='__main__':
                 window.start.setValue(1.0);window.end.setValue(1.5);window.manual()
                 window.table.selectRow(0);window.confirm.setChecked(True);window.apply('APPROVED')
                 game=window.session
+                checkpoint('unknown_bulk_guard')
+                from PySide6.QtCore import QTimer
+                from PySide6.QtWidgets import QMessageBox
+                errors=[];window.error=errors.append;window.table.selectAll()
+                def answer_guard():
+                    modal=app.activeModalWidget()
+                    if modal:modal.done(QMessageBox.Yes)
+                QTimer.singleShot(50,answer_guard);window.approve_selected()
+                assert errors and game.events[1].status=='REVIEW_REQUIRED' and not game.events[1].manual_identity_confirmed
+                assert all(e.identity_status=='IDENTITY_UNKNOWN' for e in game.events)
+                window.error=fail_test
                 review_many(game,[e.id for e in game.events],confirm_identity=True)
                 set_innings(game,[e.id for e in game.events],'9초')
                 assert len(game.events)==2 and all(e.status=='APPROVED' and e.inning=='9초' for e in game.events)
@@ -177,7 +189,7 @@ if __name__=='__main__':
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                unknown_bulk_guard='PASS',common_game_index='PASS_SYNTHETIC_ONLY' if policy['kind']=='rules-preview' else 'NOT_RUN',batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:

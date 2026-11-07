@@ -44,7 +44,9 @@ def test_gui_partial_selection_apply_preserves_unselected(monkeypatch):
     assert len(w.selected_event_ids())==2
     w.start.setValue(.2);w.end.setValue(2.8);w.confirm.setChecked(True)
     errors=[];monkeypatch.setattr(w,'error',errors.append);monkeypatch.setattr(QMessageBox,'question',lambda *a,**k:QMessageBox.Yes)
-    original=deepcopy(w.session.events[2:]);w.apply('APPROVED')
+    original=deepcopy(w.session.events[2:])
+    from bsae.core.review import confirm_manual_identities
+    confirm_manual_identities(w.session,w.selected_event_ids());w.apply('APPROVED')
     assert not errors
     assert [e.status for e in w.session.events]==['APPROVED','APPROVED','REVIEW_REQUIRED','REVIEW_REQUIRED']
     assert [(e.timeline_start,e.timeline_end) for e in w.session.events[:2]]==[(.2,2.8),(5,8)]

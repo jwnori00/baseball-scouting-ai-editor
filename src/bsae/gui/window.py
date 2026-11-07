@@ -37,9 +37,17 @@ class Job(QThread):
     done=Signal(object)
     error=Signal(str)
     progress=Signal(str,float)
+    preflight=Signal(object)
 
     def __init__(self, operation):
         super().__init__();self.stop=threading.Event();self.operation=operation
+
+    def ask_preflight(self,assessment):
+        from bsae.vision.pipeline import Cancelled
+        self.preflight_reply=threading.Event();self.preflight_continue=False;self.preflight.emit(assessment)
+        while not self.preflight_reply.wait(.1):
+            if self.stop.is_set():raise Cancelled('사전 진단 중 사용자가 중단했습니다')
+        if not self.preflight_continue:raise Cancelled('신원 미확정 후보 탐색을 시작하지 않았습니다')
 
     def run(self):
         try:self.done.emit(self.operation(self))
@@ -106,12 +114,12 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.analyze_button=self.button(row,'선수 플레이 자동 탐색',self.start_analysis);self.analyze_button.setEnabled(False)
         self.button(row,'중단',self.cancel)
         self.progress=QProgressBar();row.addWidget(self.progress)
-        self.stage=QLabel('대기');layout.addWidget(self.stage)
+        self.stage=QLabel('대기');self.stage.setWordWrap(True);layout.addWidget(self.stage)
         self.review_filter=QComboBox();self.review_filter.addItems(['기본: 타자는 목표 근거만 / 투수는 후보','전체 플레이 후보','기존 다른 선수·OCR 오류','리플레이','누락 의심 구간','목표 선수 근거 있음','타자명 일치 근거·신원 미확정','신원 근거 충돌','다른 타자 이름 근거·검수'])
         self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
         self.visible_events=[]
-        self.active_context=QLabel();layout.addWidget(self.active_context)
-        self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(['투구 번호','타석','이닝','시작','종료','검수','타자'])
+        self.active_context=QLabel();self.active_context.setWordWrap(True);layout.addWidget(self.active_context)
+        self.table=QTableWidget(0,8);self.table.setHorizontalHeaderLabels(['투구 번호','타석','이닝','시작','종료','검수','타자','신원'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected)
         self.review_splitter=QSplitter(Qt.Vertical)
@@ -124,6 +132,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.button(bulk_row,'선택 플레이 일괄 검수 완료',self.approve_selected)
         self.button(bulk_row,'선택 플레이 이닝 수정',self.edit_inning)
         self.button(bulk_row,'투구 번호 수정',self.edit_pitch_number)
+        self.button(bulk_row,'선택 후보 선수 확인',self.confirm_selected_players)
         bulk_row.addWidget(QLabel('Ctrl/Shift 다중 선택 · 번호/이닝 칸 더블클릭'))
         plate_row=QHBoxLayout();layout.addLayout(plate_row)
         self.button(plate_row,'선택 투구를 한 타석으로',self.assign_selected_plate)
@@ -272,6 +281,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         for widget,enabled in self.locked_widgets:widget.setEnabled(False)
         self.project_menu.setEnabled(False)
         self.job=Job(operation)
+        self.job.preflight.connect(self.show_analysis_preflight)
         self.job.progress.connect(lambda stage,v:(self.stage.setText(stage),self.progress.setValue(int(v*100))))
         self.job.error.connect(self.error);self.job.done.connect(done)
         self.job.finished.connect(self.job_finished);self.analyze_button.setEnabled(False);self.job.start()
@@ -292,6 +302,12 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         identity=self.current_identity()
         game_date=self.date.text()
         self.launch(lambda job:GameSession(identity.name,identity,add_sources(paths),game_date=game_date),self.registered)
+
+    def show_analysis_preflight(self,assessment):
+        details=assessment.get('preflight',{})
+        text=(f"대표 화면 사전 진단 (전체 경기 판정 아님)\n투구 구도 관측: {details.get('pitch_camera_observed')}\n문자 관측 화면: {details.get('text_frames',0)}\n요청 이름 자막 근거: {details.get('requested_name_hint_frames',0)}\n선수 식별 근거 화면: {details.get('identity_evidence_frames',0)}\n\n식별 준비가 확인되지 않았습니다. 신원 미확정 후보 탐색을 계속할까요? 자동 선수 확인으로 처리하지 않습니다.")
+        answer=QMessageBox.question(self,'전체 분석 전 신원 근거 진단',text,QMessageBox.Yes|QMessageBox.No,QMessageBox.No)
+        self.job.preflight_continue=answer==QMessageBox.Yes;self.job.preflight_reply.set()
 
     def registered(self,session):
         self.session=session;self.fill_identity(session.player);self.dirty=True;self.refresh();self.load_output_preferences()
@@ -326,7 +342,9 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
                 if auto_profile:
                     from bsae.vision.profile_detection import select_profile
                     progress('중계 구도·문자 영역 자동 탐색 시도',0)
-                    selected,assessment=select_profile(work.sources[0],stop)
+                    selected,assessment=select_profile(work.sources[0],stop,work.player)
+                    work.analysis['preflight']=assessment.get('preflight',{})
+                    if not assessment.get('preflight',{}).get('identity_evidence_frames') and work.player.role=='batter':job.ask_preflight(assessment)
                 analyze_plays(work,selected,cache,stop,progress)
                 work.analysis.setdefault('profile_snapshot',{k:v for k,v in selected.items() if k!='scene_weights'})
                 if assessment:
@@ -351,8 +369,8 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         active=f'{self.session.player.name} ({"투수" if self.session.player.role=="pitcher" else "타자"})' if self.session else '없음'
         self.active_context.setText(f'현재 검수 선수: {active} / 입력한 분석 선수: {self.name.text()} ({self.role.currentText()})')
         if self.session and self.session.player.role=='batter':
-            total=len(self.session.events);matched=sum(e.batter_id==self.session.player.id for e in self.session.events)
-            self.active_context.setText(self.active_context.text()+f' / 목표 근거 {matched}개 · 미확정 등 {total-matched}개')
+            total=len(self.session.events);automatic=sum(e.identity_status=='TARGET_CONFIRMED' for e in self.session.events);manual=sum(e.manual_identity_confirmed for e in self.session.events)
+            self.active_context.setText(self.active_context.text()+f' / 자동 근거 {automatic}개 · 수동 확인 {manual}개 · 미확정 {sum(e.identity_status=="IDENTITY_UNKNOWN" and not e.manual_identity_confirmed for e in self.session.events)}개 · 전체 {total}개')
 
     def require_active_identity(self):
         from bsae.core.rounds import identity_key
@@ -368,10 +386,10 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         else:
             for e in self.session.events:
                 state=next((x.value for x in e.evidence if x.kind=='identity_state'),'unconfirmed')
-                target=getattr(e,'batter_id' if self.session.player.role=='batter' else 'pitcher_id')==self.session.player.id
+                target=getattr(e,'batter_id' if self.session.player.role=='batter' else 'pitcher_id')==self.session.player.id and (e.identity_status=='TARGET_CONFIRMED' or e.manual_identity_confirmed)
                 hint=any(x.kind=='ocr:batter_name_hint' for x in e.evidence)
                 legacy_other=e.event_type=='other_player_or_ocr_error' or state=='other_or_ocr_error'
-                other=legacy_other or (state=='other_evidence' and not target);replay=e.event_type=='replay'
+                other=legacy_other or (state=='other_evidence' and not target);replay=e.event_type=='replay' or e.broadcast_status in ('REPLAY_SUSPECTED','ARCHIVE_SUSPECTED')
                 if mode==0 and self.session.player.role=='batter' and not target:continue
                 if mode==5 and (not target or replay or e.event_type=='pickoff'):continue
                 if mode==6 and (target or not hint):continue
@@ -389,6 +407,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             if isinstance(e,dict):values=['?', '-', '-',f"{e['start']:.3f}",f"{e['end']:.3f}",'누락 의심: 투구 아님']
             else:values=[e.number,plates.get(e.plate_id,'?'),e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',{'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[e.status]]
             values.append('-' if isinstance(e,dict) else plate_names.get(e.plate_id) or '미확인')
+            values.append('-' if isinstance(e,dict) else {'TARGET_CONFIRMED':'자동 목표 근거','OTHER_PLAYER':'다른 선수 근거','IDENTITY_UNKNOWN':'미확정'}[e.identity_status]+(' · 수동 확인' if e.manual_identity_confirmed else ''))
             for j,value in enumerate(values):self.table.setItem(i,j,QTableWidgetItem(str(value)))
             if not isinstance(e,dict):self.table.item(i,1).setToolTip('타자: '+(plate_names.get(e.plate_id) or '미확인'))
 
@@ -422,9 +441,28 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         try:
             from bsae.core.review import review_many
             ids=self.selected_event_ids()
-            if QMessageBox.question(self,'선택 플레이 검수 완료',f'선택한 {len(ids)}개 후보의 구간과 대상 선수를 모두 확인했나요?\n각 후보의 현재 시작·종료 시각을 그대로 승인합니다.')!=QMessageBox.Yes:return
-            count=review_many(self.session,ids,confirm_identity=True)
+            if QMessageBox.question(self,'선택 플레이 검수 완료',f'선택한 {len(ids)}개 후보의 구간과 대상 선수를 모두 확인했나요?\n현재 구간을 승인하며 미확정 신원을 자동으로 바꾸지 않습니다. 먼저 선택 후보 선수 확인을 사용하세요.')!=QMessageBox.Yes:return
+            count=review_many(self.session,ids,confirm_identity=False)
             self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 승인 완료 · 프로젝트를 저장하세요')
+        except Exception as exc:self.error(exc)
+
+    def confirm_selected_players(self):
+        try:
+            from PySide6.QtWidgets import QDialog
+            from bsae.core.review import confirm_manual_identities
+            ids=self.selected_event_ids();events=[e for e in self.session.events if e.id in ids]
+            dialog=QDialog(self);dialog.setWindowTitle('직접 확인한 후보만 선수 확인 · 자동 판정은 유지');dialog.resize(800,450)
+            layout=QVBoxLayout(dialog);layout.addWidget(QLabel('각 영상을 확인한 행만 체크하세요. 선수 입력만으로 확인되지 않습니다. 이 작업은 구간 승인과 별개입니다.'))
+            table=QTableWidget(len(events),4);table.setHorizontalHeaderLabels(['직접 확인','투구 번호','구간','자동 신원 판정']);checks=[];layout.addWidget(table)
+            for i,e in enumerate(events):
+                check=QCheckBox();table.setCellWidget(i,0,check);checks.append(check)
+                for j,v in enumerate([e.number,f'{e.timeline_start:.2f}–{e.timeline_end:.2f}',e.identity_status],1):table.setItem(i,j,QTableWidgetItem(str(v)))
+            def confirm():
+                try:
+                    chosen=[e.id for e,c in zip(events,checks) if c.isChecked()]
+                    count=confirm_manual_identities(self.session,chosen);self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 수동 선수 확인 · 자동 신원 판정 유지 · 구간 검수 후 승인하세요');dialog.accept()
+                except Exception as exc:self.error(exc)
+            self.button(layout,'체크한 후보만 수동 선수 확인',confirm);dialog.exec()
         except Exception as exc:self.error(exc)
 
     def edit_pitch_number(self):
@@ -509,8 +547,8 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             ids=self.selected_event_ids()
             e=self.selected_event()
             ranges={e.id:(self.start.value(),self.end.value())} if e.id in ids else {}
-            if len(ids)>1 and QMessageBox.question(self,'선택 후보 일괄 검수',f'선택한 {len(ids)}개 후보만 처리합니다.\n시각 수정은 현재 행에만 적용하고 나머지는 기존 구간을 유지합니다.\n대상 선수 확인 체크는 선택한 후보 모두에 적용됩니다. 계속할까요?')!=QMessageBox.Yes:return
-            count=review_many(self.session,ids,status,confirm_identity=self.confirm.isChecked(),note='GUI 선택 검수',ranges=ranges)
+            if len(ids)>1 and QMessageBox.question(self,'선택 후보 일괄 검수',f'선택한 {len(ids)}개 후보만 처리합니다.\n시각 수정은 현재 행에만 적용하고 나머지는 기존 구간을 유지합니다.\n미확정 후보는 먼저 선택 후보 선수 확인을 해야 합니다. 계속할까요?')!=QMessageBox.Yes:return
+            count=review_many(self.session,ids,status,confirm_identity=self.confirm.isChecked() and len(ids)==1,note='GUI 선택 검수',ranges=ranges)
             self.dirty=True;self.refresh();self.stage.setText(f'선택 후보 {count}개 처리 완료 · 프로젝트를 저장하세요')
         except Exception as exc:self.error(exc)
 

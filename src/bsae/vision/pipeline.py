@@ -134,7 +134,7 @@ class Assembler:
             pitcher_id=p.id if p.role == 'pitcher' and a['identified'] else None,
             batter_id=p.id if p.role == 'batter' and a['identified'] else None,
             inning=a['readings'].get('inning'), number=len(self.events)+1,
-            event_type=a['kind'], evidence=evidence, warnings=warnings)
+            event_type=a['kind'], evidence=evidence, warnings=warnings,identity_status='TARGET_CONFIRMED' if a['identified'] else 'IDENTITY_UNKNOWN')
         self.events.append(e)
 
 
