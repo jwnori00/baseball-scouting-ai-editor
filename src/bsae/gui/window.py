@@ -4,11 +4,11 @@ from pathlib import Path
 import sys
 import json
 import threading
-from PySide6.QtCore import QThread, Signal, QUrl
+from PySide6.QtCore import QThread, Signal, QUrl, Qt
 from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import (QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QPushButton,QLabel,
     QLineEdit,QComboBox,QFileDialog,QMessageBox,QListWidget,QTableWidget,QTableWidgetItem,
-    QDoubleSpinBox,QProgressBar,QInputDialog,QCheckBox)
+    QDoubleSpinBox,QProgressBar,QInputDialog,QCheckBox,QSplitter,QSizePolicy)
 from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from bsae.core.models import GameSession,PlayerIdentity,PitchEvent,DetectionEvidence
@@ -18,6 +18,19 @@ from .profile_ui import ProfileUI
 from .rounds_ui import RoundsUI
 from .output_ui import OutputUI
 from bsae.ingest.media import add_sources
+
+
+class ReviewVideoWidget(QVideoWidget):
+    """Keep the review player in place while allowing an enlarged native view."""
+    def mouseDoubleClickEvent(self,event):
+        if event.button()==Qt.LeftButton:
+            self.setFullScreen(not self.isFullScreen());event.accept()
+        else:super().mouseDoubleClickEvent(event)
+
+    def keyPressEvent(self,event):
+        if event.key()==Qt.Key_Escape and self.isFullScreen():
+            self.setFullScreen(False);event.accept()
+        else:super().keyPressEvent(event)
 
 
 class Job(QThread):
@@ -37,7 +50,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Baseball Scouting AI Editor — 자동 탐색 검증판 / 검수 필수')
-        self.resize(1100,800)
+        self.resize(1280,900)
         self.session=None;self.project_path=None;self.job=None;self.dirty=False
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
         policy=root/'build-policy.json'
@@ -47,7 +60,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.preview_segments=[];self.preview_index=0
         body=QWidget();self.setCentralWidget(body);layout=QVBoxLayout(body)
         layout.addWidget(QLabel('경기영상 불러오기 → 분석 선수 선택 → 선수 플레이 자동 탐색 → 플레이 검수 → 스카우팅 영상 저장'))
-        self.files=QListWidget();self.files.setMaximumHeight(95);layout.addWidget(self.files)
+        self.files=QListWidget();self.files.setMaximumHeight(55);layout.addWidget(self.files)
         row=QHBoxLayout();layout.addLayout(row)
         project_menu=self.menuBar().addMenu('프로젝트');self.project_menu=project_menu
         project_menu.addAction('검증용 독립 정답 작업 시작',self.register_game)
@@ -100,7 +113,11 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.active_context=QLabel();layout.addWidget(self.active_context)
         self.table=QTableWidget(0,6);self.table.setHorizontalHeaderLabels(['투구','타석','이닝','시작','종료','검수'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.table.itemSelectionChanged.connect(self.selected);layout.addWidget(self.table)
+        self.table.itemSelectionChanged.connect(self.selected)
+        self.review_splitter=QSplitter(Qt.Vertical)
+        self.review_splitter.setChildrenCollapsible(False);self.review_splitter.setHandleWidth(9)
+        self.table.setMinimumHeight(100);self.review_splitter.addWidget(self.table)
+        layout.addWidget(self.review_splitter,1)
         self.table.cellDoubleClicked.connect(lambda row,column:self.edit_inning() if column==2 else None)
         bulk_row=QHBoxLayout();layout.addLayout(bulk_row)
         self.button(bulk_row,'표 전체 선택',self.table.selectAll)
@@ -108,7 +125,14 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.button(bulk_row,'선택 플레이 이닝 수정',self.edit_inning)
         bulk_row.addWidget(QLabel('Ctrl / Shift로 여러 행 선택 · 이닝 칸 더블클릭으로 수정'))
         self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence);self.evidence.hide()
-        self.video=QVideoWidget();self.video.setMinimumHeight(180);layout.addWidget(self.video)
+        self.video=ReviewVideoWidget();self.video.setMinimumHeight(180)
+        self.video.setSizePolicy(QSizePolicy.Ignored,QSizePolicy.Ignored)
+        self.video.setAspectRatioMode(Qt.KeepAspectRatio)
+        self.video.setFocusPolicy(Qt.StrongFocus)
+        self.video.fullScreenChanged.connect(lambda full:self.video.setFocus() if full else None)
+        self.review_splitter.addWidget(self.video)
+        self.review_splitter.setStretchFactor(0,1);self.review_splitter.setStretchFactor(1,3)
+        self.review_splitter.setSizes([130,390])
         self.player=QMediaPlayer(self);self.audio=QAudioOutput(self);self.player.setAudioOutput(self.audio);self.player.setVideoOutput(self.video)
         self.player.positionChanged.connect(self.preview_position)
         self.player.mediaStatusChanged.connect(self.preview_status)
@@ -118,6 +142,8 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             spin.setRange(0,9999999);spin.setDecimals(3);row.addWidget(QLabel(label));row.addWidget(spin)
         self.confirm=QCheckBox('대상 선수 확인');row.addWidget(self.confirm)
         self.button(row,'플레이 후보 재생',self.preview);self.button(row,'일시정지',self.player.pause)
+        self.button(row,'미리보기 크게 보기',lambda:self.video.setFullScreen(True))
+        self.video.setToolTip('목록과 영상 사이 경계선을 끌어 크기 조절 · 더블클릭: 전체 화면 · Esc: 돌아오기')
         row=QHBoxLayout();layout.addLayout(row)
         self.button(row,'수정 저장·검수 완료',lambda:self.apply('APPROVED'))
         self.button(row,'제외',lambda:self.apply('EXCLUDED'))
@@ -501,6 +527,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.launch(lambda job:export(session,Path(parent)/name,mode,include_pickoffs=include_pickoffs,auto_frame=auto_frame,progress=lambda v:job.progress.emit('승인 영상 출력·검증',v),stop=job.stop),lambda path:self.stage.setText('검증 완료: '+str(path)))
 
     def closeEvent(self,event):
+        self.video.setFullScreen(False)
         if self.job and self.job.isRunning():
             self.cancel();self.error('작업 중단 후 창을 닫으세요.');event.ignore();return
         if not self.discard():event.ignore();return

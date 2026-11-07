@@ -72,6 +72,15 @@ if __name__=='__main__':
             app=QApplication([]);window=Window();window.show();app.processEvents()
             def fail_test(message):raise RuntimeError('GUI self-test: '+str(message))
             window.error=fail_test
+            checkpoint('preview_layout')
+            assert window.review_splitter.widget(1) is window.video
+            assert window.video.height()>window.table.height()
+            window.video.setFullScreen(True);app.processEvents()
+            assert window.video.isFullScreen()
+            from PySide6.QtCore import Qt,QEvent
+            from PySide6.QtGui import QKeyEvent
+            window.video.keyPressEvent(QKeyEvent(QEvent.KeyPress,Qt.Key_Escape,Qt.NoModifier));app.processEvents()
+            assert not window.video.isFullScreen() and window.player.videoOutput() is window.video
             if policy['kind']=='development':
                 assert not window.analyze_button.isEnabled()
             auto_scan='NOT_RUN'
@@ -142,7 +151,7 @@ if __name__=='__main__':
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:
