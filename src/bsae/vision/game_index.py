@@ -1,6 +1,6 @@
 """Source/config keyed common candidates, independent of requested player and review."""
 import hashlib,json
-QUERY_VERSION='batter-scorebug-v4-followup'
+QUERY_VERSION='rc1-historical-broadcast-safety'
 from dataclasses import asdict
 
 

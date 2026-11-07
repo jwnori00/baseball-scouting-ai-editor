@@ -25,9 +25,9 @@ def test_single_version_and_generated_build_provenance(tmp_path):
     assets=tmp_path/'assets';assets.mkdir();evidence=tmp_path/'evidence'
     value=module.create(assets,'rules-preview',evidence)
     assert value['version']==APP_VERSION and value['engine']==VERSION and len(value['commit'])==40
-    assert json.loads((evidence/'build-info.json').read_text())==value
+    assert json.loads((evidence/'build-info.json').read_text(encoding='utf-8'))==value
     assert APP_VERSION in (evidence/'CLIENT_MANUAL.txt').read_text(encoding='utf-8-sig')
-    ast.parse((evidence/'windows-version.txt').read_text())
+    ast.parse((evidence/'windows-version.txt').read_text(encoding='utf-8'))
 
 
 @pytest.mark.parametrize('scale',['1','1.5','2'])
@@ -36,7 +36,7 @@ def test_rc_window_dpi_fullscreen_and_process_shutdown(scale,tmp_path):
     env=dict(os.environ,QT_QPA_PLATFORM='offscreen',QT_SCALE_FACTOR=scale)
     result=subprocess.run([sys.executable,str(ROOT/'packaging/entry.py'),'--layout-probe',str(report)],env=env,capture_output=True,text=True,timeout=30)
     assert result.returncode==0,result.stdout+result.stderr
-    data=json.loads(report.read_text());assert data['status']=='PASS' and data['fullscreen_return']=='PASS'
+    data=json.loads(report.read_text(encoding='utf-8'));assert data['status']=='PASS' and data['fullscreen_return']=='PASS'
     assert data['columns']==8 and data['window']==[1024,720]
     assert not data['overlapping_buttons'] and not data['truncated_buttons']
     assert report.with_suffix('.png').is_file()
@@ -58,3 +58,29 @@ def test_acceptance_uses_same_rules_workflow_without_approving(make_video,tmp_pa
     assert report['release_qualification']=='NOT_GRANTED_BY_THIS_TEST' and reference.read_bytes()==before
     plan['cache']=plan['candidate_project'];path.write_text(json.dumps(plan))
     with pytest.raises(ValueError,match='경로'):run_acceptance(path,tmp_path/'other-report.json')
+
+
+@pytest.mark.parametrize('role',['pitcher','batter'])
+@pytest.mark.parametrize('marker',['replay','archive'])
+def test_historical_caption_cannot_confirm_current_player(role,marker):
+    from bsae.vision.rules import Identity
+    p=PlayerIdentity('Player',role,'TEAM','12');i=Identity(p,load_profile())
+    observed={role+'_name':'Player',role+'_team':'TEAM',role+'_jersey':'12'}
+    assert i.update(0,observed)['state']=='target'
+    assert i.update(2,dict(observed,**{marker:'REPLAY' if marker=='replay' else '자료화면'}))['state']!='target'
+    assert i.update(3,{})['state']!='target'
+
+
+def test_archived_caption_is_not_a_live_plate_group():
+    from bsae.core.models import DetectionEvidence
+    from bsae.vision.rules import group_plates
+    s=GameSession('Archive',PlayerIdentity('Player','batter'),[VideoSource('/synthetic',10,'x')])
+    e=PitchEvent(s.id,s.split(0,2),0,2,broadcast_status='ARCHIVE_SUSPECTED',evidence=[DetectionEvidence('ocr:batter_name','Player',0)])
+    assert group_plates([e])==[] and e.plate_id is None
+
+
+def test_unrelated_logo_in_replay_roi_does_not_invalidate_pitcher():
+    from bsae.vision.rules import Identity
+    p=PlayerIdentity('Player','pitcher','TEAM');i=Identity(p,load_profile())
+    assert i.update(0,dict(pitcher_name='Player',pitcher_team='TEAM',replay='SPORTS LIVE'))['state']=='target'
+    assert i.update(1,{})['state']=='target'

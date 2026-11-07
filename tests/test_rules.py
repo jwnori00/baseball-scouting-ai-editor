@@ -273,6 +273,7 @@ def test_gui_rerun_same_document_preserves_approved_play(motion_video,tmp_path,m
     def scan():
         w.analyze_button.click();assert not w.name.isEnabled() and not w.table.isEnabled();loop=QEventLoop();w.job.finished.connect(loop.quit);QTimer.singleShot(15000,loop.quit);loop.exec();app.processEvents();assert not w.job.isRunning()
     scan();assert w.session.events
+    assert w.session.analysis['execution_path']=='bsae.vision.workflow.analyze_for_review'
     w.table.selectRow(0);w.confirm.setChecked(True);w.apply('APPROVED')
     event_id=w.session.events[0].id;before=deepcopy(w.session.events[0]);scan()
     assert not errors and len(dialogs)==1 and proposals

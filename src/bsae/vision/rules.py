@@ -130,6 +130,9 @@ class Identity:
 
     def update(self,t,readings):
         prefix=self.player.role+'_';name=clean_name(readings.get(prefix+'name',''))
+        if replay_marker(readings) or readings.get('archive'):
+            self.fields={};self.confirmation=None;self.other_observation=None;self.scorebug_observation=None
+            return dict(state='unconfirmed',proof=[('historical_broadcast',str(readings.get('replay') or readings.get('archive')))])
         if self.player.role=='batter':
             inning=parse_inning(readings.get('inning',''));count=parse_count(readings.get('count',''))
             if inning and self.last_inning and inning!=self.last_inning or count==(0,0) and self.last_count not in (None,(0,0)) or readings.get('replay') or readings.get('archive'):
@@ -182,7 +185,6 @@ class Identity:
         if match and len(proof)>=2:self.confirmation=(t,proof);self.other_observation=None
         if self.confirmation and t-self.confirmation[0]<=20:
             evidence=self.confirmation[1]
-            if readings.get('replay') or readings.get('archive'):self.confirmation=None;self.fields={}
             return dict(state='target',proof=evidence)
         if self.player.role=='batter' and observed and not match:
             from difflib import SequenceMatcher
@@ -283,7 +285,7 @@ def peaks(rows,profile):
 
 
 def replay_marker(readings):
-    return normalize(readings.get('replay','')) in ('replay','repeticion','repeticao')
+    return normalize(readings.get('replay','')) in ('replay','repeticion','repeticao','리플레이')
 
 
 class Assembly:
@@ -460,7 +462,7 @@ def group_plates(events):
     result=[];previous=None
     for event in events:
         event.plate_id=None
-        if event.event_type in ('replay','pickoff'):previous=None;continue
+        if event.event_type in ('replay','pickoff') or event.broadcast_status in ('REPLAY_SUSPECTED','ARCHIVE_SUSPECTED'):previous=None;continue
         readings={e.kind[4:]:e.value for e in event.evidence if e.kind.startswith('ocr:')}
         batter=clean_name(readings.get('batter_name',''))
         inning=event.inning
