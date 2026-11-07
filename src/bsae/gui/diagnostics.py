@@ -30,3 +30,26 @@ def layout_probe(report):
     window.grab().save(str(report.with_suffix('.png')))
     atomic_json(report,outcome);window.dirty=False;window.close();app.processEvents()
     return outcome
+
+
+def preview_probe(window,timeout_ms=10000):
+    """Wait for a decoded frame through the actual review player, then pause."""
+    from PySide6.QtCore import QEventLoop,QTimer
+    from PySide6.QtMultimedia import QMediaPlayer
+    loop=QEventLoop();received=[];sink=window.video.videoSink()
+    def playback_ready(*args):
+        if received and window.player.playbackState()==QMediaPlayer.PlayingState:loop.quit()
+    def frame_ready(frame):
+        if frame.isValid():received.append([frame.width(),frame.height()]);playback_ready()
+    sink.videoFrameChanged.connect(frame_ready);window.player.playbackStateChanged.connect(playback_ready)
+    timer=QTimer();timer.setSingleShot(True);timer.timeout.connect(loop.quit)
+    try:
+        window.preview();timer.start(timeout_ms)
+        if not received or window.player.playbackState()!=QMediaPlayer.PlayingState:loop.exec()
+        window.player.pause()
+        if not received or window.player.error()!=QMediaPlayer.NoError:
+            raise RuntimeError('미리보기 프레임 수신 실패: '+window.player.errorString())
+        if window.player.playbackState()!=QMediaPlayer.PausedState:raise RuntimeError('미리보기 일시정지 실패')
+        return dict(decoded_frame=received[0],paused=True)
+    finally:
+        timer.stop();sink.videoFrameChanged.disconnect(frame_ready);window.player.playbackStateChanged.disconnect(playback_ready);window.player.stop();window.preview_segments=[]

@@ -84,3 +84,18 @@ def test_unrelated_logo_in_replay_roi_does_not_invalidate_pitcher():
     p=PlayerIdentity('Player','pitcher','TEAM');i=Identity(p,load_profile())
     assert i.update(0,dict(pitcher_name='Player',pitcher_team='TEAM',replay='SPORTS LIVE'))['state']=='target'
     assert i.update(1,{})['state']=='target'
+
+
+def test_actual_review_preview_decodes_and_pauses(make_video,tmp_path):
+    from PySide6.QtWidgets import QApplication
+    from bsae.gui.window import Window
+    from bsae.gui.diagnostics import preview_probe
+    from bsae.ingest.media import add_sources,run
+    raw=make_video(['setup','delivery','receive']);video=tmp_path/'한글 영상 Martínez.mp4'
+    run('ffmpeg',['-v','error','-i',raw,'-c:v','libx264',video])
+    app=QApplication.instance() or QApplication([]);w=Window();w.show()
+    w.registered(GameSession('Preview',PlayerIdentity('Player'),add_sources([video])))
+    w.start.setValue(0);w.end.setValue(2.5)
+    result=preview_probe(w)
+    assert result['decoded_frame']==[160,90] and result['paused']
+    w.dirty=False;w.close();app.processEvents()
