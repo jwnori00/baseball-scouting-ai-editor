@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "fullscreen_return": "PASS",
+  "scale": "2",
+  "device_pixel_ratio": 2.0,
+  "window": [
+    1024,
+    720
+  ],
+  "viewport": [
+    992,
+    160
+  ],
+  "body": [
+    1024,
+    703
+  ],
+  "vertical_scroll": true,
+  "horizontal_scroll": false,
+  "overlapping_buttons": [],
+  "truncated_buttons": [],
+  "columns": 8,
+  "build": {
+    "version": "1.0.0rc1",
+    "kind": "rules-preview",
+    "engine": "broadcast-rules-v2",
+    "commit": "c18036e642e03e21faee61d2ba7bda9e621c3dc6",
+    "built_at": "2026-11-07T07:43:02.213028+00:00",
+    "analysis_sources": {
+      "rules.py": "41476f0f9624e2904e87708d3ab5d52b6381e5e70e538406496b3e30fb849084",
+      "batter_text.py": "a7b7b95b9005c8856cd4af4cb5e4e29765602aaf8e69850ffb6c9043e9086169",
+      "scoreboard.py": "12105c1219d988ac666791e9127179656e78605b476aced74ae58dacc04d2c5f",
+      "workflow.py": "e5a47e6581006ea4c350e07216001c1dd512989e4c777a341d28184ffdb32218",
+      "scene.py": "63dd78a5f562a9f96d236096849ac48f3697f2335034a91807ccc0810023515f",
+      "game_index.py": "1a89fc5b55b3f13b144bdc18ce6ffab81027c445a004d15f07f85fdc6fa235e3"
+    },
+    "label": "배포 후보판(RC) · 검수 필수",
+    "automatic_analysis": true,
+    "runtime_engine": "broadcast-rules-v2",
+    "source_version": "1.0.0rc1"
+  },
+  "scope": "Blank GUI/geometry only; real video playback and user-PC validation are separate"
+}
