@@ -97,6 +97,7 @@ class PlateAppearance:
     inning: str | None
     confirmed: bool = False
     id: str = field(default_factory=uid)
+    batter_name: str = ''
 
 
 @dataclass

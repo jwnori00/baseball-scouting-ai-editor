@@ -111,19 +111,25 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
         self.visible_events=[]
         self.active_context=QLabel();layout.addWidget(self.active_context)
-        self.table=QTableWidget(0,6);self.table.setHorizontalHeaderLabels(['투구','타석','이닝','시작','종료','검수'])
+        self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(['투구','타석','이닝','시작','종료','검수','타자'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected)
         self.review_splitter=QSplitter(Qt.Vertical)
         self.review_splitter.setChildrenCollapsible(False);self.review_splitter.setHandleWidth(9)
         self.table.setMinimumHeight(100);self.review_splitter.addWidget(self.table)
         layout.addWidget(self.review_splitter,1)
-        self.table.cellDoubleClicked.connect(lambda row,column:self.edit_inning() if column==2 else None)
+        self.table.cellDoubleClicked.connect(lambda row,column:self.edit_inning() if column==2 else self.edit_plate_batter() if column==6 else None)
         bulk_row=QHBoxLayout();layout.addLayout(bulk_row)
         self.button(bulk_row,'표 전체 선택',self.table.selectAll)
-        self.button(bulk_row,'선택 플레이 검수 완료',self.approve_selected)
+        self.button(bulk_row,'선택 플레이 일괄 검수 완료',self.approve_selected)
         self.button(bulk_row,'선택 플레이 이닝 수정',self.edit_inning)
         bulk_row.addWidget(QLabel('Ctrl / Shift로 여러 행 선택 · 이닝 칸 더블클릭으로 수정'))
+        plate_row=QHBoxLayout();layout.addLayout(plate_row)
+        self.button(plate_row,'선택 투구를 한 타석으로',self.assign_selected_plate)
+        self.button(plate_row,'선택 플레이부터 새 타석',lambda:self.edit_plate(False))
+        self.button(plate_row,'앞 타석과 합치기',lambda:self.edit_plate(True))
+        self.button(plate_row,'타석 타자명 수정',self.edit_plate_batter)
+        self.plate_summary=QLabel();plate_row.addWidget(self.plate_summary)
         self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence);self.evidence.hide()
         self.video=ReviewVideoWidget();self.video.setMinimumHeight(180)
         self.video.setSizePolicy(QSizePolicy.Ignored,QSizePolicy.Ignored)
@@ -349,7 +355,8 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
     def refresh(self):
         self.update_active_context()
         self.visible_events=[];self.table.setRowCount(0)
-        if not self.session:return
+        if not self.session:
+            self.plate_summary.setText('타석 그룹 0개');return
         mode=self.review_filter.currentIndex()
         if mode==4:self.visible_events=self.session.analysis.get('coverage_gaps',[])
         else:
@@ -360,11 +367,15 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
                 if mode==3 and not replay:continue
                 self.visible_events.append(e)
         plates={p.id:i+1 for i,p in enumerate(self.session.appearances)}
+        self.plate_summary.setText(f'타석 그룹 {len(plates)}개 · 확정 {sum(p.confirmed for p in self.session.appearances)}개')
+        plate_names={p.id:p.batter_name for p in self.session.appearances}
         for i,e in enumerate(self.visible_events):
             self.table.insertRow(i)
             if isinstance(e,dict):values=['?', '-', '-',f"{e['start']:.3f}",f"{e['end']:.3f}",'누락 의심: 투구 아님']
             else:values=[e.number,plates.get(e.plate_id,'?'),e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',{'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[e.status]]
+            values.append('-' if isinstance(e,dict) else plate_names.get(e.plate_id) or '미확인')
             for j,value in enumerate(values):self.table.setItem(i,j,QTableWidgetItem(str(value)))
+            if not isinstance(e,dict):self.table.item(i,1).setToolTip('타자: '+(plate_names.get(e.plate_id) or '미확인'))
 
     def selected_event(self):
         self.require_active_identity()
@@ -442,8 +453,31 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
 
     def apply(self,status):
         try:
-            e=self.selected_event();review(self.session,e.id,status,start=self.start.value(),end=self.end.value(),confirm_identity=self.confirm.isChecked(),note='GUI 검수')
-            self.dirty=True;self.refresh()
+            from bsae.core.review import review_many
+            ids=self.selected_event_ids()
+            e=self.selected_event()
+            ranges={e.id:(self.start.value(),self.end.value())} if e.id in ids else {}
+            if len(ids)>1 and QMessageBox.question(self,'선택 후보 일괄 검수',f'선택한 {len(ids)}개 후보만 처리합니다.\n시각 수정은 현재 행에만 적용하고 나머지는 기존 구간을 유지합니다.\n대상 선수 확인 체크는 선택한 후보 모두에 적용됩니다. 계속할까요?')!=QMessageBox.Yes:return
+            count=review_many(self.session,ids,status,confirm_identity=self.confirm.isChecked(),note='GUI 선택 검수',ranges=ranges)
+            self.dirty=True;self.refresh();self.stage.setText(f'선택 후보 {count}개 처리 완료 · 프로젝트를 저장하세요')
+        except Exception as exc:self.error(exc)
+
+    def assign_selected_plate(self):
+        try:
+            from bsae.core.review import assign_plate
+            ids=self.selected_event_ids()
+            name,ok=QInputDialog.getText(self,'선택 투구 타석 구성','이 투구들을 한 타석으로 묶습니다. 타자 이름 (모르면 빈칸):')
+            if not ok:return
+            assign_plate(self.session,ids,name);self.dirty=True;self.refresh()
+        except Exception as exc:self.error(exc)
+
+    def edit_plate_batter(self):
+        try:
+            from bsae.core.review import name_plate
+            e=self.selected_event();pa=next((p for p in self.session.appearances if p.id==e.plate_id),None)
+            if pa is None:raise ValueError('먼저 선택 투구를 한 타석으로 묶으세요')
+            name,ok=QInputDialog.getText(self,'타석 타자명 수정','상대 타자 이름 (투수의 선수 정보는 바뀌지 않습니다):',text=pa.batter_name)
+            if ok:name_plate(self.session,e.id,name);self.dirty=True;self.refresh()
         except Exception as exc:self.error(exc)
 
     def manual(self):
@@ -459,10 +493,10 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
     def confirm_plate(self):
         try:
             e=self.selected_event()
-            if not e.plate_id:raise ValueError('타석 그룹 없음: CLI/프로젝트에서 그룹을 지정하세요')
+            if not e.plate_id:raise ValueError('선택 투구를 한 타석으로 버튼으로 먼저 구성하세요')
             pa=next(p for p in self.session.appearances if p.id==e.plate_id)
             if QMessageBox.question(self,'타석 그룹 검수',f'이 그룹의 {len(pa.event_ids)}개 투구가 한 타석인지 확인했나요?')==QMessageBox.Yes:
-                pa.confirmed=True;self.dirty=True
+                pa.confirmed=True;self.dirty=True;self.refresh()
         except Exception as exc:self.error(exc)
 
     def preview(self):

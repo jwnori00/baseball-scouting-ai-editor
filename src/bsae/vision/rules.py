@@ -362,7 +362,7 @@ class Assembly:
 def group_plates(events):
     result=[];previous=None
     for event in events:
-        if event.event_type=='replay':continue
+        if event.event_type in ('replay','pickoff'):continue
         readings={e.kind[4:]:e.value for e in event.evidence if e.kind.startswith('ocr:')}
         batter=clean_name(readings.get('batter_name',''))
         inning=event.inning
@@ -376,7 +376,7 @@ def group_plates(events):
                 new=True;event.warnings.append('장시간 간격: 타석 연속성 미확정')
             if inning and previous['inning'] and inning!=previous['inning']:new=True
             if count==(0,0) and previous['count'] not in (None,(0,0)):new=True
-        if new:result.append(PlateAppearance([],event.batter_id,inning))
+        if new:result.append(PlateAppearance([],event.batter_id,inning,batter_name=batter))
         result[-1].event_ids.append(event.id);event.plate_id=result[-1].id
         event.warnings.append('타석 그룹 제안: 타자 변경·타석 종료 검수 필요')
         previous=dict(batter_id=event.batter_id,end=event.timeline_end,batter=batter or (previous or {}).get('batter',''),inning=inning or (previous or {}).get('inning'),count=count or (previous or {}).get('count'))

@@ -92,7 +92,7 @@ def apply_round(session,round_id,mode='replace'):
         for pa in candidate.appearances:
             selected=[mapping[i] for i in pa.event_ids if i in mapping]
             if not selected:continue
-            p=PlateAppearance(selected,work.player.id if pa.batter_id==candidate.player.id else pa.batter_id,pa.inning)
+            p=PlateAppearance(selected,work.player.id if pa.batter_id==candidate.player.id else pa.batter_id,pa.inning,batter_name=pa.batter_name)
             work.appearances.append(p)
             for e in work.events:
                 if e.id in selected:e.plate_id=p.id;e.warnings.append('추가된 플레이의 타석 연결을 다시 검수하세요.')

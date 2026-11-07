@@ -52,7 +52,7 @@ def split_plate(session,event_id):
     pa=next(p for p in session.appearances if p.id==event.plate_id)
     index=pa.event_ids.index(event_id)
     if index:
-        new=PlateAppearance(pa.event_ids[index:],event.batter_id,event.inning)
+        new=PlateAppearance(pa.event_ids[index:],event.batter_id,event.inning,batter_name=pa.batter_name)
         pa.event_ids=pa.event_ids[:index];session.appearances.insert(session.appearances.index(pa)+1,new)
         for e in session.events:
             if e.id in new.event_ids:e.plate_id=new.id
@@ -70,6 +70,7 @@ def merge_previous_plate(session,event_id):
     if index==0:raise ValueError('이전 타석이 없습니다')
     previous=session.appearances[index-1];before=dict(plate_id=current.id)
     previous.event_ids.extend(current.event_ids);previous.confirmed=False
+    if not previous.batter_name:previous.batter_name=current.batter_name
     for e in session.events:
         if e.id in current.event_ids:e.plate_id=previous.id
     session.appearances.remove(current)
@@ -85,15 +86,18 @@ def _selection(session,event_ids):
     return [by_id[i] for i in ids]
 
 
-def review_many(session,event_ids,action='APPROVED',*,confirm_identity=False,note='GUI 선택 후보 일괄 검수'):
+def review_many(session,event_ids,action='APPROVED',*,confirm_identity=False,note='GUI 선택 후보 일괄 검수',ranges=None):
     """Commit the whole selection or leave the original project unchanged."""
     from copy import deepcopy
     selected=_selection(session,event_ids)
     if action=='APPROVED' and any(e.event_type in ('replay','other_player_or_ocr_error') for e in selected):
         raise ValueError('리플레이·다른 선수 후보는 분류를 확인한 뒤 승인하세요')
+    ranges=ranges or {}
+    if set(ranges)-{e.id for e in selected}:raise ValueError('선택하지 않은 후보의 시각은 변경할 수 없습니다')
     working=deepcopy(session)
     for e in selected:
-        review(working,e.id,action,confirm_identity=confirm_identity,note=note)
+        a,b=ranges.get(e.id,(e.timeline_start,e.timeline_end))
+        review(working,e.id,action,start=a,end=b,confirm_identity=confirm_identity,note=note)
     session.events,session.appearances=working.events,working.appearances
     return len(selected)
 
@@ -122,3 +126,48 @@ def set_innings(session,event_ids,value):
         plate.confirmed=False
     working.validate();session.events,session.appearances=working.events,working.appearances
     return len(changed)
+
+
+def assign_plate(session,event_ids,batter_name=''):
+    """Explicitly group a consecutive set of pitches, retaining unselected fragments."""
+    from copy import deepcopy
+    from .models import PlateAppearance
+    chosen=_selection(session,event_ids);ids={e.id for e in chosen}
+    if any(e.event_type in ('replay','pickoff','other_player_or_ocr_error') for e in chosen):raise ValueError('실제 투구 후보만 타석으로 묶을 수 있습니다')
+    ordered=sorted([e for e in session.events if e.event_type not in ('replay','pickoff','other_player_or_ocr_error')],key=lambda e:e.timeline_start)
+    indices=[i for i,e in enumerate(ordered) if e.id in ids]
+    if indices!=list(range(min(indices),max(indices)+1)):raise ValueError('한 타석은 연속된 투구를 선택하세요. 중간 투구를 빠뜨릴 수 없습니다')
+    innings={e.inning for e in chosen if e.inning}
+    if len(innings)>1:raise ValueError('서로 다른 이닝의 투구를 한 타석으로 묶을 수 없습니다')
+    work=deepcopy(session);by_id={e.id:e for e in work.events};groups=[]
+    for pa in work.appearances:
+        if not ids.intersection(pa.event_ids):groups.append(pa);continue
+        # Preserve each contiguous remaining fragment as its own unconfirmed group.
+        fragment=[]
+        for eid in sorted(pa.event_ids,key=lambda i:by_id[i].timeline_start):
+            if eid in ids:
+                if fragment:groups.append(PlateAppearance(fragment,pa.batter_id,pa.inning,batter_name=pa.batter_name));fragment=[]
+            else:fragment.append(eid)
+        if fragment:groups.append(PlateAppearance(fragment,pa.batter_id,pa.inning,batter_name=pa.batter_name))
+    chosen=sorted([by_id[i] for i in ids],key=lambda e:e.timeline_start)
+    batter_ids={e.batter_id for e in chosen if e.batter_id}
+    if len(batter_ids)>1:raise ValueError('다른 타자로 확인된 투구가 섞여 있습니다')
+    pa=PlateAppearance([e.id for e in chosen],next(iter(batter_ids),None),next(iter(innings),None),batter_name=batter_name.strip())
+    groups.append(pa);groups.sort(key=lambda p:min(by_id[i].timeline_start for i in p.event_ids))
+    for group in groups:
+        for eid in group.event_ids:by_id[eid].plate_id=group.id
+    for event in chosen:event.history.append(ReviewRecord('PLATE_ASSIGN',{},dict(plate_id=pa.id,batter_name=pa.batter_name),'검수자가 선택 투구를 한 타석으로 구성',datetime.now(timezone.utc).isoformat()))
+    work.appearances=groups;work.validate();session.events,session.appearances=work.events,work.appearances
+    return pa.id
+
+
+def name_plate(session,event_id,name):
+    from copy import deepcopy
+    work=deepcopy(session);event=next(e for e in work.events if e.id==event_id)
+    pa=next((p for p in work.appearances if p.id==event.plate_id),None)
+    if pa is None:raise ValueError('먼저 선택 투구를 한 타석으로 묶으세요')
+    before=pa.batter_name;pa.batter_name=name.strip();pa.confirmed=False
+    for eid in pa.event_ids:
+        e=next(e for e in work.events if e.id==eid)
+        e.history.append(ReviewRecord('PLATE_BATTER_NAME',dict(batter_name=before),dict(batter_name=pa.batter_name),'검수자 타자명 수정; 자동 신원 확인 아님',datetime.now(timezone.utc).isoformat()))
+    work.validate();session.events,session.appearances=work.events,work.appearances
