@@ -1,6 +1,6 @@
 """Source/config keyed common candidates, independent of requested player and review."""
 import hashlib,json
-QUERY_VERSION='batter-scorebug-v4-count'
+QUERY_VERSION='batter-scorebug-v4-followup'
 from dataclasses import asdict
 
 

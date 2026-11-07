@@ -296,6 +296,13 @@ class Assembly:
 
     def feed(self,t,row):
         self.last_t=t
+        # A wide field/runner shot may fool the binary camera classifier.
+        # Preserve a preceding delivery through that field shot instead of
+        # treating the first false positive as the next delivery. This is a
+        # relative transition check, not a veto on all grass-heavy cameras.
+        if self.session.player.role=='batter' and self.profile['camera'].get('mode')=='learned_scene' and row.get('field',0)>.80:
+            prior_setup=any(r.get('field',1)<=.80 for _,r in self.episode) or any(p.get('peak_field',1)<=.80 for p in self.pending)
+            if prior_setup:row=dict(row,pitch_view=False,field_followup_override=True)
         if self.session.player.role=='batter' and self.profile.get('auto_batter_text') and row.get('cut'):
             self.identity.fields={};self.identity.confirmation=None;self.identity.other_observation=None;self.identity.scorebug_observation=None;self.caption_context=None
             self.ocr={k:v for k,v in self.ocr.items() if not k.startswith('batter_')}
@@ -380,7 +387,7 @@ class Assembly:
             if len(self.signatures)>5000:self.signatures.pop(next(iter(self.signatures)))
             catcher=max(r['catcher_motion'] for _,r in rows[index:index+int(1.5*self.profile['sampling_fps'])])
             self.pending.append(dict(start=rows[start][0],peak=t,energy=energy,threshold=threshold,catcher=catcher,at_camera_start=start<=1,
-                identity=identity,readings=readings,scene_margin=row.get('scene_margin'),extended=False,replay=replay_marker(readings) or duplicate,
+                identity=identity,readings=readings,scene_margin=row.get('scene_margin'),peak_field=row.get('field',1),extended=False,replay=replay_marker(readings) or duplicate,
                 signature_duplicate=duplicate,chunk=chunk))
         if chunk and self.pending:
             # Commit only bursts fully behind the overlap; still conservative.

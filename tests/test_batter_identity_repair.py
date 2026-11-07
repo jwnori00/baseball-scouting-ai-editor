@@ -165,3 +165,24 @@ def test_observed_opposing_team_overrules_matching_batter_caption():
     p=player();i=Identity(p,configure(dict(load_profile(),regions={}),p))
     result=i.update(0,dict(batter_name='정수빈',batter_team='삼성',batter_current_role='B. 정수빈'))
     assert result['state']=='conflict'
+
+
+def test_batter_field_followup_does_not_end_on_false_pitch_camera():
+    s=GameSession('Followup preservation',player(),[VideoSource('/synthetic',16,'synthetic')])
+    profile=configure(dict(load_profile(),regions={}),s.player);profile['camera']['mode']='learned_scene'
+    a=Assembly(s,profile)
+    # Pending delivery previously observed in a normal broadcast setup.
+    a.pending=[dict(peak_field=.55,extended=False)]
+    calls=[];a.finalize_pending=lambda end,reason,**kw:calls.append((end,reason))
+    a.feed(6,dict(pitch_view=True,field=.95,grass=.6,motion=.1,catcher_motion=.1,signature='field'))
+    assert not calls and a.pending[0]['extended'] and not a.episode
+    a.feed(13,dict(pitch_view=False,field=.1,grass=.01,motion=.1,catcher_motion=.1,signature='closeup'))
+    assert calls==[(13,'non_field_camera')]
+
+
+def test_grass_heavy_new_camera_is_not_globally_rejected():
+    s=GameSession('Unfamiliar camera',player(),[VideoSource('/synthetic',16,'synthetic')])
+    profile=configure(dict(load_profile(),regions={}),s.player);profile['camera']['mode']='learned_scene'
+    a=Assembly(s,profile)
+    for t in (0,.1):a.feed(t,dict(pitch_view=True,field=.95,grass=.6,motion=.1,catcher_motion=.1,signature=str(t)))
+    assert len(a.episode)==2
