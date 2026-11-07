@@ -45,7 +45,7 @@ class ScoreboardOCR:
             if not ok:
                 raise RuntimeError('OCR 이미지 인코딩 실패')
             raw = run('tesseract', ['stdin', 'stdout', '-l', self.profile.get('language', 'eng'), '--psm', '7', '-c', 'tessedit_create_tsv=1'], input=image.tobytes())
-            words = [row['text'] for row in csv.DictReader(io.StringIO(raw.decode('utf-8')), delimiter='\t')
+            words = [row['text'] for row in csv.DictReader(io.StringIO(raw.decode('utf-8')), delimiter='\t',quoting=csv.QUOTE_NONE)
                      if row.get('text', '').strip() and float(row.get('conf', -1)) >= self.profile.get('minimum_word_confidence', 60)]
             result[name] = ' '.join(words)
         return result
@@ -58,7 +58,7 @@ def text_regions(rgb,language='eng+kor+jpn',minimum_confidence=45):
     if not ok:raise RuntimeError('문자 영역 프레임 인코딩 실패')
     raw=run('tesseract',['stdin','stdout','-l',language,'--psm','11','-c','tessedit_create_tsv=1'],input=image.tobytes())
     blocks={}
-    for row in csv.DictReader(io.StringIO(raw.decode('utf-8')),delimiter='\t'):
+    for row in csv.DictReader(io.StringIO(raw.decode('utf-8')),delimiter='\t',quoting=csv.QUOTE_NONE):
         if not row.get('text','').strip() or float(row.get('conf',-1))<minimum_confidence:continue
         key=(row['block_num'],row['par_num'],row['line_num']);x,y,bw,bh=[int(row[k]) for k in ('left','top','width','height')]
         if key not in blocks:blocks[key]=dict(text=[],bounds=[x,y,x+bw,y+bh],scores=[])

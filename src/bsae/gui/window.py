@@ -107,7 +107,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.button(row,'중단',self.cancel)
         self.progress=QProgressBar();row.addWidget(self.progress)
         self.stage=QLabel('대기');layout.addWidget(self.stage)
-        self.review_filter=QComboBox();self.review_filter.addItems(['대상·선수 확인 필요','전체 플레이 후보','다른 선수·OCR 오류','리플레이','누락 의심 구간'])
+        self.review_filter=QComboBox();self.review_filter.addItems(['기본: 타자는 목표 근거만 / 투수는 후보','전체 플레이 후보','기존 다른 선수·OCR 오류','리플레이','누락 의심 구간','목표 선수 근거 있음','타자명 일치 근거·신원 미확정','신원 근거 충돌','다른 타자 이름 근거·검수'])
         self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
         self.visible_events=[]
         self.active_context=QLabel();layout.addWidget(self.active_context)
@@ -167,6 +167,8 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.button(row,'스카우팅 영상 저장',self.start_export)
         project_menu.addAction('탐색 회차 비교·되돌리기',lambda:self.show_analysis_rounds())
         project_menu.addAction('탐색 결과 CSV·JSON 저장',self.save_diagnostics)
+        project_menu.addAction('타자명 자막 근거 보기',self.show_batter_captions)
+        project_menu.addAction('근거 없는 자동 타석 정리 · 검수 보관',self.cleanup_automatic_plates)
         project_menu.addAction('선택 플레이부터 새 타석',lambda:self.edit_plate(False))
         project_menu.addAction('앞 타석과 합치기',lambda:self.edit_plate(True))
         for title,kind in [('선택 플레이를 투구로 분류','pitch_candidate'),('선택 플레이를 견제로 분류','pickoff'),('선택 플레이를 리플레이로 분류','replay')]:
@@ -326,7 +328,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
                     progress('중계 구도·문자 영역 자동 탐색 시도',0)
                     selected,assessment=select_profile(work.sources[0],stop)
                 analyze_plays(work,selected,cache,stop,progress)
-                work.analysis['profile_snapshot']={k:v for k,v in selected.items() if k!='scene_weights'}
+                work.analysis.setdefault('profile_snapshot',{k:v for k,v in selected.items() if k!='scene_weights'})
                 if assessment:
                     work.analysis['layout_detection']=assessment
                     if assessment['status']=='UNRECOGNIZED_LAYOUT':work.analysis['status']='UNRECOGNIZED_LAYOUT_REVIEW_REQUIRED'
@@ -340,7 +342,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         counts=session.analysis.get('counts',{})
         layout=session.analysis.get('layout_detection',{})
         prefix=('미검증 촬영 유형 · 선수 추적 미지원 / ' if session.analysis.get('support_status')=='UNVERIFIED_CAMERA_TYPE' else '투구 후보 없음 · 미인식/누락 검수 필요 / ' if not session.events else '화면 구성 인식 실패 · 영역 보정 필요 / ' if layout.get('status')=='UNRECOGNIZED_LAYOUT' else '중계 유형·신원 검수 필요 / ' if layout.get('confidence')=='UNCERTAIN' else '')
-        self.stage.setText(prefix+f"후보 {len(session.events)}개 / 타석 {len(session.appearances)}개 / 선수 확인 필요 {counts.get('uncertain',0)}개 / 누락 의심 {len(session.analysis.get('coverage_gaps',[]))}구간 — 검수 필요")
+        self.stage.setText(('타자 식별 미완료 · 기본 목록은 목표 선수 근거가 있는 후보만 표시 · 전체/미확정 필터 확인 / ' if session.player.role=='batter' and not any(e.batter_id==session.player.id for e in session.events) else '')+prefix+f"후보 {len(session.events)}개 / 타석 {len(session.appearances)}개 / 선수 확인 필요 {counts.get('uncertain',0)}개 / 누락 의심 {len(session.analysis.get('coverage_gaps',[]))}구간 — 검수 필요")
 
     def cancel(self):
         if self.job:self.job.stop.set();self.stage.setText('중단 요청: 현재 처리 단위 종료 후 캐시 보존')
@@ -348,6 +350,9 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
     def update_active_context(self,*args):
         active=f'{self.session.player.name} ({"투수" if self.session.player.role=="pitcher" else "타자"})' if self.session else '없음'
         self.active_context.setText(f'현재 검수 선수: {active} / 입력한 분석 선수: {self.name.text()} ({self.role.currentText()})')
+        if self.session and self.session.player.role=='batter':
+            total=len(self.session.events);matched=sum(e.batter_id==self.session.player.id for e in self.session.events)
+            self.active_context.setText(self.active_context.text()+f' / 목표 근거 {matched}개 · 미확정 등 {total-matched}개')
 
     def require_active_identity(self):
         from bsae.core.rounds import identity_key
@@ -362,9 +367,18 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         if mode==4:self.visible_events=self.session.analysis.get('coverage_gaps',[])
         else:
             for e in self.session.events:
-                other=e.event_type=='other_player_or_ocr_error';replay=e.event_type=='replay'
+                state=next((x.value for x in e.evidence if x.kind=='identity_state'),'unconfirmed')
+                target=getattr(e,'batter_id' if self.session.player.role=='batter' else 'pitcher_id')==self.session.player.id
+                hint=any(x.kind=='ocr:batter_name_hint' for x in e.evidence)
+                legacy_other=e.event_type=='other_player_or_ocr_error' or state=='other_or_ocr_error'
+                other=legacy_other or (state=='other_evidence' and not target);replay=e.event_type=='replay'
+                if mode==0 and self.session.player.role=='batter' and not target:continue
+                if mode==5 and (not target or replay or e.event_type=='pickoff'):continue
+                if mode==6 and (target or not hint):continue
+                if mode==7 and state!='conflict':continue
+                if mode==8 and (state!='other_evidence' or target):continue
                 if mode==0 and (other or replay):continue
-                if mode==2 and not other:continue
+                if mode==2 and not legacy_other:continue
                 if mode==3 and not replay:continue
                 self.visible_events.append(e)
         plates={p.id:i+1 for i,p in enumerate(self.session.appearances)}
@@ -452,6 +466,31 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             (merge_previous_plate if merge else split_plate)(self.session,event.id)
             self.dirty=True;self.refresh()
         except Exception as exc:self.error(exc)
+
+    def cleanup_automatic_plates(self):
+        if not self.session or self.job and self.job.isRunning():return
+        try:
+            from bsae.core.rounds import clear_unsubstantiated_plates
+            self.require_active_identity()
+            if QMessageBox.question(self,'자동 타석 정리','타자 근거·검수 기록이 없는 자동 타석만 미배정으로 되돌립니다. 기존 검수는 보관하며 확인·수정한 그룹은 유지합니다. 진행할까요?')!=QMessageBox.Yes:return
+            count=clear_unsubstantiated_plates(self.session)
+            if count:self.dirty=True;self.refresh()
+            self.stage.setText(f'자동 타석 {count}개 정리 · 회차 메뉴에서 복원 가능 · 프로젝트를 저장하세요')
+        except Exception as exc:self.error(exc)
+
+    def show_batter_captions(self):
+        if not self.session:return
+        from PySide6.QtWidgets import QDialog
+        anchors=self.session.analysis.get('caption_anchors',[])
+        dialog=QDialog(self);dialog.setWindowTitle('타자명 자막 근거 · 선수 신원·타석 확정 아님');dialog.resize(850,450)
+        layout=QVBoxLayout(dialog);layout.addWidget(QLabel('입력한 이름과 일치한 OCR 자막입니다. 등번호는 자막에서 읽힌 값이며 유니폼 번호 인식이 아닙니다. 더블클릭: 주변 영상 확인'))
+        table=QTableWidget(len(anchors),4);table.setHorizontalHeaderLabels(['시각(초)','읽힌 이름','역할·주변 문자','관측 팀/자막 번호']);table.setEditTriggers(QTableWidget.NoEditTriggers);layout.addWidget(table)
+        for i,a in enumerate(anchors):
+            for j,v in enumerate([f"{a['time']:.1f}",a['name'],a['role_text'],a['team']+' / '+a['caption_jersey']]):table.setItem(i,j,QTableWidgetItem(v))
+        def preview(row,column):
+            a=anchors[row]['time'];end=min(sum(s.duration for s in self.session.sources),a+10)
+            self.preview_segments=self.session.split(max(0,a-3),end);self.preview_index=0;self.play_segment()
+        table.cellDoubleClicked.connect(preview);dialog.exec()
 
     def save_diagnostics(self):
         if not self.session:return

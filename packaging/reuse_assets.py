@@ -9,10 +9,10 @@ import tempfile
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
-BASELINE_RUN=42183581537
-BASELINE_COMMIT='78ed471b37bc37c531cd006c46e02326600cb026'
+BASELINE_RUN=42324770599
+BASELINE_COMMIT='f11274d0bd623ffc57efbe4ff73f0c56d8cf79b1'
 INPUTS={
- 'packaging/build_media.sh':'1b623fa5ee2ef5c71bf45501fbf85e0b5545f67286f49cc816ba0d3cae3b198d',
+ 'packaging/build_media.sh':'a6d6594e11fd0de525ea871d7d293a3b8f6d3b429698e8ded671ad420e8a10f2',
  'packaging/prepare_assets.py':'0d295c52e8d377fa588af9bf5df49d72c1dacc79b6e5a8eb631786cb7d8265d6',
  'requirements-dev.txt':'b671c6a45997e7427bd5647dc94668bbdbd77dbffd4755283501e601d030417e'}
 
@@ -28,7 +28,7 @@ def reuse(application,sources):
     if os.environ.get('GITHUB_ACTIONS')!='true':raise RuntimeError('CI artifact reuse only')
     if not eligible():raise ValueError('Media sources or pinned dependency versions changed; rebuild required')
     application=Path(application);sources=Path(sources)
-    name='BaseballScoutingAIEditor-Windows-x64-development.zip'
+    name='BaseballScoutingAIEditor-Windows-x64-rules-preview.zip'
     archive=application/name
     expected=(application/(name+'.sha256')).read_text(encoding='utf-8-sig').split()[0].lower()
     if len(expected)!=64 or digest(archive)!=expected:raise ValueError('Baseline ZIP checksum mismatch')

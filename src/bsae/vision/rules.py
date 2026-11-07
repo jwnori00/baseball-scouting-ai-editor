@@ -130,6 +130,12 @@ class Identity:
 
     def update(self,t,readings):
         prefix=self.player.role+'_';name=clean_name(readings.get(prefix+'name',''))
+        if readings.get(prefix+'identity_conflict'):
+            self.fields={};self.confirmation=None
+            return dict(state='conflict',proof=[('conflict',readings[prefix+'identity_conflict'])])
+        if self.player.role=='batter' and self.profile.get('auto_batter_text') and name_matches(name,self.player) and self.player.jersey and readings.get('batter_jersey') and readings['batter_jersey']!=self.player.jersey:
+            self.fields={};self.confirmation=None
+            return dict(state='conflict',proof=[('caption_number_mismatch',readings['batter_jersey'])])
         old=self.fields.get(prefix+'name')
         if name and old and not compatible_name(name,old[1]):
             self.fields={};self.confirmation=None
@@ -153,12 +159,14 @@ class Identity:
         # Nonmatching text can be OCR noise. Preserve it, never assert a substitute
         # from one fuzzy name. Another player's candidate requires fresh name+team.
         if observed and not match and len(normalize(observed))>=(2 if any(ord(c)>127 for c in observed) else 8) and values.get(prefix+'team'):
-            return dict(state='other_or_ocr_error',proof=[('observed_name',observed),('observed_team',values[prefix+'team'])])
+            return dict(state='other_evidence' if self.player.role=='batter' else 'other_or_ocr_error',proof=[('observed_name',observed),('observed_team',values[prefix+'team'])])
         return dict(state='unconfirmed',proof=proof)
 
 
 def source_cache_key(source,profile):
-    return hashlib.sha256(json.dumps([VERSION,source.fingerprint,profile],sort_keys=True).encode()).hexdigest()
+    parts=[VERSION,source.fingerprint,profile]
+    if profile.get('regions') or profile.get('auto_batter_text'):parts.append('tsv-quote-none-v1')
+    return hashlib.sha256(json.dumps(parts,sort_keys=True).encode()).hexdigest()
 
 
 def scan(source,profile,cache,stop,progress):
@@ -185,11 +193,15 @@ def scan(source,profile,cache,stop,progress):
             previous=rgb
             slot=int((t+1e-5)//interval)
             if last is not None and t<=last+1e-5:last_slot=slot;continue
-            if slot!=last_slot and profile.get('regions'):
+            if slot!=last_slot and (profile.get('regions') or profile.get('auto_batter_text')):
                 raw=run('ffmpeg',['-v','error','-nostdin','-ss',str(t),'-i',source.path,'-frames:v','1',
                     '-vf','scale=1280:720','-threads','1','-f','rawvideo','-pix_fmt','rgb24','-'])
                 if len(raw)!=1280*720*3:raise RuntimeError('OCR 프레임 디코딩 실패')
-                row['ocr']=ocr.read(np.frombuffer(raw,np.uint8).reshape(720,1280,3));row['ocr_time']=t
+                image=np.frombuffer(raw,np.uint8).reshape(720,1280,3)
+                row['ocr']=ocr.read(image);row['ocr_time']=t
+                if profile.get('auto_batter_text'):
+                    from .scoreboard import text_regions
+                    row['text_blocks']=text_regions(image,language=profile['language'])
             last_slot=slot
             cache.put(key,t,row);progress(t/source.duration)
             yield t,row
@@ -238,9 +250,21 @@ class Assembly:
         self.session=session;self.profile=profile;self.identity=Identity(session.player,profile)
         self.episode=[];self.pending=[];self.recent=deque();self.events=[];self.gaps=[]
         self.last_t=0.;self.gap_start=0.;self.last_view=None;self.signatures={};self.ocr={};self.camera_episodes=0
+        self.caption_samples=0;self.caption_hits=0;self.caption_anchors=[]
 
     def feed(self,t,row):
         self.last_t=t
+        if 'text_blocks' in row:
+            self.caption_samples+=1
+            from .batter_text import interpret
+            readings=dict(row.get('ocr',{}));automatic=interpret(row['text_blocks'],self.session.player)
+            for key,value in automatic.items():
+                if key not in readings or not readings[key]:readings[key]=value
+                elif key=='batter_name' and not compatible_name(readings[key],value):readings['batter_identity_conflict']='ROI and full-frame names disagree'
+            row=dict(row,ocr=readings)
+            if automatic.get('batter_name_hint'):
+                self.caption_hits+=1
+                if len(self.caption_anchors)<1000:self.caption_anchors.append(dict(time=t,name=automatic['batter_name_hint'],role_text=automatic.get('batter_role_text',''),team=automatic.get('batter_team',''),caption_jersey=automatic.get('batter_jersey',''),state='caption_evidence_requires_review'))
         if row.get('ocr'):
             for key,value in row['ocr'].items():
                 if value.strip():self.ocr[key]=(t,value)
@@ -277,12 +301,13 @@ class Assembly:
             # Include earliest visible preparation when onset is ambiguous.
             if index-start<3:start=0
             identity=row['identity']
-            if identity['state']!='target':
+            if identity['state']!='target' and self.session.player.role!='batter':
                 for _,following in rows[index:index+int(4*self.profile['sampling_fps'])]:
                     if following['identity']['state']=='target':identity=following['identity'];break
             readings=dict(row['readings'])
-            for _,following in rows[index:index+int(4*self.profile['sampling_fps'])]:
+            for following_time,following in rows[index:index+int(4*self.profile['sampling_fps'])]:
                 for key,value in following.get('ocr',{}).items():
+                    if self.session.player.role=='batter' and following_time>t and key.startswith('batter_'):continue
                     if not value.strip():continue
                     if key.endswith('_name') and compatible_name(value,readings.get(key,'')) and len(normalize(clean_name(value)))<len(normalize(clean_name(readings[key]))):continue
                     readings[key]=clean_name(value) if key.endswith('_name') else value
@@ -316,7 +341,7 @@ class Assembly:
             if item['catcher']<.20:
                 event_type='pitch_or_pickoff_candidate';warnings.append('포수 반응 근거 약함: 투구·견제 구별 검수 필요')
             if item['at_camera_start']:warnings.append('준비동작 전에 방송 화면이 전환됐을 가능성: 가장 이른 확인 장면 사용')
-            if identity['state']=='other_or_ocr_error':event_type='other_player_or_ocr_error'
+            if identity['state']=='other_or_ocr_error' and self.session.player.role!='batter':event_type='other_player_or_ocr_error'
             if item['replay']:event_type='replay';warnings.append('명시적 리플레이 표식 또는 동일 프레임 시퀀스')
             proof=[DetectionEvidence('localized_motion',json.dumps(dict(energy=item['energy'],threshold=item['threshold'])),item['peak'],VERSION),
                 DetectionEvidence('pitch_camera',self.profile['camera'].get('mode','telemetry_panel')+' + field geometry; not a pitch by itself',a,VERSION),
@@ -362,14 +387,17 @@ class Assembly:
 def group_plates(events):
     result=[];previous=None
     for event in events:
-        if event.event_type in ('replay','pickoff'):continue
+        event.plate_id=None
+        if event.event_type in ('replay','pickoff'):previous=None;continue
         readings={e.kind[4:]:e.value for e in event.evidence if e.kind.startswith('ocr:')}
         batter=clean_name(readings.get('batter_name',''))
         inning=event.inning
         count=parse_count(readings.get('count',''))
-        new=not result
-        if not batter and not (previous or {}).get('batter'):
-            new=True;event.warnings.append('타자 근거가 없어 타석 연결 미확정')
+        new=not result or previous is None
+        if not batter:
+            event.warnings.append('타석 미배정: 타자 근거 없음; 후보마다 타석을 생성하지 않음')
+            previous=None
+            continue
         if previous:
             if batter and previous['batter'] and not compatible_name(batter,previous['batter']) and not (event.batter_id and event.batter_id==previous['batter_id']):new=True
             if event.timeline_start-previous['end']>90:
@@ -384,7 +412,8 @@ def group_plates(events):
 
 
 def analyze_plays(session,profile=None,cache_path=None,stop=None,progress=lambda stage,value:None):
-    profile=profile or load_profile();session.validate()
+    from .batter_text import configure
+    profile=configure(profile or load_profile(),session.player);session.validate()
     if cache_path is None:raise ValueError('분석 캐시 경로를 지정하세요')
     if not session.sources:raise ValueError('원본 영상 없음')
     if any(e.history or e.status=='APPROVED' for e in session.events):raise ValueError('검수 기록을 보존하려면 새 분석 프로젝트를 만드세요. 기존 캐시는 재사용됩니다.')
@@ -419,6 +448,12 @@ def analyze_plays(session,profile=None,cache_path=None,stop=None,progress=lambda
             limitations=['other layouts/innings/pickoffs/replays NOT_EVALUATED','endpoints are conservative, not semantic play-end proof'],
             counts=dict(all=len(session.events),target=sum(e.pitcher_id==session.player.id or e.batter_id==session.player.id for e in session.events),
                 uncertain=sum(any(p.kind=='identity_state' and p.value!='target' for p in e.evidence) for e in session.events)))
+        session.analysis['profile_snapshot']={k:v for k,v in profile.items() if k!='scene_weights'}
+        session.analysis['identity_diagnostics']=dict(patch_version='batter-evidence-v1',full_frame_ocr_samples=assembler.caption_samples,name_hint_samples=assembler.caption_hits,caption_anchors_truncated=assembler.caption_hits>len(assembler.caption_anchors),ocr_evidence_events=sum(any(p.kind.startswith('ocr:') for p in e.evidence) for e in session.events),name_hint_events=sum(any(p.kind=='ocr:batter_name_hint' for p in e.evidence) for e in session.events),uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',auto_batter_text=bool(profile.get('auto_batter_text')))
+        session.analysis['caption_anchors']=assembler.caption_anchors
+        if session.player.role=='batter' and not any(e.batter_id==session.player.id for e in session.events):
+            session.analysis['recognition_status']='TARGET_BATTER_NOT_IDENTIFIED'
+            session.analysis['status']='TARGET_BATTER_NOT_IDENTIFIED'
         session.analysis['input_type']=profile.get('input_type','broadcast')
         session.analysis['support_status']='UNVERIFIED_CAMERA_TYPE' if profile.get('input_type') in ('fixed_camera','moving_camera') else 'EXPERIMENTAL_BROADCAST'
         if session.analysis['support_status']=='UNVERIFIED_CAMERA_TYPE':session.analysis['status']='UNVERIFIED_INPUT_REVIEW_REQUIRED'

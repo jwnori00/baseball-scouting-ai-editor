@@ -43,12 +43,7 @@ def classify_event(session,event_id,kind,note='검수자가 이벤트 유형 분
 def split_plate(session,event_id):
     from bsae.core.models import PlateAppearance
     event=next(e for e in session.events if e.id==event_id)
-    if event.plate_id is None:
-        ungrouped=sorted([e for e in session.events if e.plate_id is None and e.event_type not in ('replay','pickoff')],key=lambda e:e.timeline_start)
-        if not ungrouped:raise ValueError('그룹화할 투구가 없습니다')
-        pa=PlateAppearance([e.id for e in ungrouped],event.batter_id,event.inning)
-        session.appearances.append(pa)
-        for e in ungrouped:e.plate_id=pa.id
+    if event.plate_id is None:raise ValueError('타석 미배정 후보입니다. 선택 투구를 한 타석으로 기능으로 먼저 구성하세요')
     pa=next(p for p in session.appearances if p.id==event.plate_id)
     index=pa.event_ids.index(event_id)
     if index:

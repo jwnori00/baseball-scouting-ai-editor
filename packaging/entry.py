@@ -65,6 +65,15 @@ if __name__=='__main__':
             cv2.putText(text_frame,'MARTINEZ',(10,65),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,0),3)
             checkpoint('ocr_text')
             assert 'MARTINEZ' in ScoreboardOCR({'language':'eng+kor+jpn','regions':{'pitcher_name':[0,0,1,1]}}).read(text_frame)['pitcher_name']
+            checkpoint('caption_ocr_synthetic')
+            from bsae.vision.scoreboard import text_regions
+            from bsae.vision.batter_text import interpret,configure
+            from bsae.vision.rules import Identity
+            caption=np.full((140,1000,3),255,np.uint8)
+            cv2.putText(caption,'BATTER MARTINEZ DOOSAN',(10,90),cv2.FONT_HERSHEY_SIMPLEX,1.5,(0,0,0),3)
+            caption_player=PlayerIdentity('MARTINEZ','batter','DOOSAN')
+            caption_readings=interpret(text_regions(caption,language='eng'),caption_player)
+            assert Identity(caption_player,configure({},caption_player)).update(0,caption_readings)['state']=='target'
             checkpoint('av1_decode')
             for name in ('av1-8bit.mp4','av1-10bit.mp4'):
                 run('ffmpeg',['-v','error','-xerror','-i',root/'test-fixtures'/name,'-f','null','-'])
@@ -168,7 +177,7 @@ if __name__=='__main__':
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:

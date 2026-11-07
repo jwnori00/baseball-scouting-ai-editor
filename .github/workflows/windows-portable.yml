@@ -1,7 +1,7 @@
 name: Windows portable EXE
 on:
   push:
-    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update]
+    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update, fix/batter-identity-evidence]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -68,16 +68,16 @@ jobs:
         continue-on-error: true
         with:
           script: |
-            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 42183581537});
-            if (run.data.head_sha !== '78ed471b37bc37c531cd006c46e02326600cb026' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');
+            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 42324770599});
+            if (run.data.head_sha !== 'f11274d0bd623ffc57efbe4ff73f0c56d8cf79b1' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');
       - uses: actions/download-artifact@v4
         id: baseline-application
         if: steps.baseline-run.outcome == 'success'
         continue-on-error: true
         with:
           github-token: ${{ github.token }}
-          run-id: 42183581537
-          name: BaseballScoutingAIEditor-Windows-x64-development
+          run-id: 42324770599
+          name: BaseballScoutingAIEditor-Windows-x64-rules-preview
           path: ${{ runner.temp }}/baseline-application
       - uses: actions/download-artifact@v4
         id: baseline-sources
@@ -85,7 +85,7 @@ jobs:
         continue-on-error: true
         with:
           github-token: ${{ github.token }}
-          run-id: 42183581537
+          run-id: 42324770599
           name: ThirdPartyCorrespondingSources
           path: ${{ runner.temp }}/baseline-sources
       - name: Reuse verified Windows native assets
