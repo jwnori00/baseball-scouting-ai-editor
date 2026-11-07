@@ -1,0 +1,17 @@
+{
+  "analysis_sources": {
+    "rules.py": "6b45044726a4a174683ae678f8976c0c6e07b8494f5228f0e0973ef390e25f0a",
+    "batter_text.py": "a7b7b95b9005c8856cd4af4cb5e4e29765602aaf8e69850ffb6c9043e9086169",
+    "scoreboard.py": "12105c1219d988ac666791e9127179656e78605b476aced74ae58dacc04d2c5f",
+    "workflow.py": "e5a47e6581006ea4c350e07216001c1dd512989e4c777a341d28184ffdb32218",
+    "scene.py": "63dd78a5f562a9f96d236096849ac48f3697f2335034a91807ccc0810023515f",
+    "game_index.py": "15f9cdd56f1830d137e8b99b39c317ce83167f060b5bc912bbe0973f7f711a93"
+  },
+  "version": "1.0.0rc1",
+  "label": "배포 후보판(RC) · 검수 필수",
+  "kind": "rules-preview",
+  "automatic_analysis": true,
+  "engine": "broadcast-rules-v2",
+  "commit": "70290207ad4ff2a20d02d663917e0ae5d11d4cad",
+  "built_at": "2026-11-07T07:30:10.004165+00:00"
+}

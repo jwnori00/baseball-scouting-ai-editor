@@ -1,0 +1,38 @@
+Portable assets verified; release requires independent baseball validation.
+...................................................................F.... [ 55%]
+.........................................................                [100%]
+================================== FAILURES ===================================
+_____________ test_single_version_and_generated_build_provenance ______________
+
+tmp_path = WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-runneradmin/pytest-0/test_single_version_and_genera0')
+
+    def test_single_version_and_generated_build_provenance(tmp_path):
+        assert version('baseball-scouting-ai-editor')==APP_VERSION
+        spec=importlib.util.spec_from_file_location('build_policy',ROOT/'packaging/write_build_policy.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        assets=tmp_path/'assets';assets.mkdir();evidence=tmp_path/'evidence'
+        value=module.create(assets,'rules-preview',evidence)
+        assert value['version']==APP_VERSION and value['engine']==VERSION and len(value['commit'])==40
+>       assert json.loads((evidence/'build-info.json').read_text())==value
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_rc_integration.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py:1028: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.cp1252.IncrementalDecoder object at 0x0000021914E027E0>
+input = b'{\r\n  "analysis_sources": {\r\n    "rules.py": "6b45044726a4a174683ae678f8976c0c6e07b8494f5228f0e0973ef390e25f0a",\...",\r\n  "commit": "70290207ad4ff2a20d02d663917e0ae5d11d4cad",\r\n  "built_at": "2026-11-07T07:30:30.646350+00:00"\r\n}'
+final = True
+
+    def decode(self, input, final=False):
+>       return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 604: character maps to <undefined>
+
+C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py:23: UnicodeDecodeError
+- generated xml file: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build-evidence\windows-tests.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_rc_integration.py::test_single_version_and_generated_build_provenance - UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 604: character maps to <undefined>
+1 failed, 128 passed in 43.35s
