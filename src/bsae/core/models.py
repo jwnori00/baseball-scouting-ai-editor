@@ -88,6 +88,9 @@ class PitchEvent:
     history: list[ReviewRecord] = field(default_factory=list)
     plate_id: str | None = None
     id: str = field(default_factory=uid)
+    identity_status: str = 'IDENTITY_UNKNOWN'
+    manual_identity_confirmed: bool = False
+    broadcast_status: str = 'UNVERIFIED'
 
 
 @dataclass
@@ -97,6 +100,7 @@ class PlateAppearance:
     inning: str | None
     confirmed: bool = False
     id: str = field(default_factory=uid)
+    batter_name: str = ''
 
 
 @dataclass
@@ -135,6 +139,7 @@ class GameSession:
             if not all(math.isfinite(x) for x in (s.duration, s.offset, s.pts_origin)) or s.duration <= 0 or s.offset < 0:
                 raise ValueError('잘못된 원본 시간')
         for e in self.events:
+            if e.identity_status not in ('TARGET_CONFIRMED','OTHER_PLAYER','IDENTITY_UNKNOWN') or type(e.manual_identity_confirmed) is not bool or e.broadcast_status not in ('UNVERIFIED','REPLAY_SUSPECTED','ARCHIVE_SUSPECTED'):raise ValueError('선수 신원/방송 상태 형식 오류')
             if e.game_id != self.id or e.status not in ('REVIEW_REQUIRED', 'APPROVED', 'EXCLUDED'):
                 raise ValueError('잘못된 이벤트/검수 상태')
             if not e.segments or not all(math.isfinite(x) for x in (e.timeline_start, e.timeline_end)) or not 0 <= e.timeline_start < e.timeline_end:
@@ -185,6 +190,16 @@ class GameSession:
         d['player'] = PlayerIdentity(**d['player'])
         d['sources'] = [VideoSource(**s) for s in d['sources']]
         for e in d['events']:
+            role_field='pitcher_id' if d['player'].role=='pitcher' else 'batter_id'
+            if 'identity_status' not in e:
+                states=[x.get('value') for x in e['evidence'] if x.get('kind')=='identity_state']
+                proof={x.get('kind') for x in e['evidence']}
+                known=e.get(role_field)==d['player'].id
+                e['identity_status']='TARGET_CONFIRMED' if known and ('target' in states or 'name' in proof and bool(proof.intersection({'team','jersey'}))) else 'OTHER_PLAYER' if 'other_evidence' in states else 'IDENTITY_UNKNOWN'
+            if 'manual_identity_confirmed' not in e:
+                e['manual_identity_confirmed']=False
+                if e['status']=='APPROVED' and e['identity_status']=='IDENTITY_UNKNOWN':e['warnings'].append('구버전 승인 보존: 신원 근거 미확정이므로 선택 후보 선수 확인을 다시 진행하세요')
+            e.setdefault('broadcast_status','REPLAY_SUSPECTED' if e['event_type']=='replay' else 'UNVERIFIED')
             e['segments'] = [PlaySegment(**s) for s in e['segments']]
             e['evidence'] = [DetectionEvidence(**v) for v in e['evidence']]
             e['history'] = [ReviewRecord(**v) for v in e['history']]

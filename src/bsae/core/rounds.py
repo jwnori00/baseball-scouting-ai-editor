@@ -86,18 +86,18 @@ def apply_round(session,round_id,mode='replace'):
             if e.id not in new_ids:continue
             if any(e.timeline_start<old.timeline_end and old.timeline_start<e.timeline_end for old in work.events):continue
             old_id=e.id;e=deepcopy(e);e.id=uid();mapping[old_id]=e.id;e.plate_id=None
+            e.number=max((old.number for old in work.events),default=0)+1
             for field in ('pitcher_id','batter_id'):
                 if getattr(e,field)==candidate.player.id:setattr(e,field,work.player.id)
             e.status='EXCLUDED' if e.event_type=='replay' else 'REVIEW_REQUIRED';work.events.append(e)
         for pa in candidate.appearances:
             selected=[mapping[i] for i in pa.event_ids if i in mapping]
             if not selected:continue
-            p=PlateAppearance(selected,work.player.id if pa.batter_id==candidate.player.id else pa.batter_id,pa.inning)
+            p=PlateAppearance(selected,work.player.id if pa.batter_id==candidate.player.id else pa.batter_id,pa.inning,batter_name=pa.batter_name)
             work.appearances.append(p)
             for e in work.events:
                 if e.id in selected:e.plate_id=p.id;e.warnings.append('추가된 플레이의 타석 연결을 다시 검수하세요.')
         work.events.sort(key=lambda e:e.timeline_start)
-        for i,e in enumerate(work.events,1):e.number=i
         work.analysis['round_merge']=dict(round_id=round_id,added=len(mapping))
     applied=next(r for r in work.analysis_runs if r['id']==round_id)
     applied['last_application']=dict(mode=mode,at=datetime.now(timezone.utc).isoformat())
@@ -105,3 +105,22 @@ def apply_round(session,round_id,mode='replace'):
     work.validate()
     for name in ('player','events','appearances','analysis','analysis_runs','active_round_id','output_settings'):setattr(session,name,getattr(work,name))
     return session
+
+
+def clear_unsubstantiated_plates(session):
+    """Explicit migration of untouched automatic guesses, with a restore point."""
+    work=deepcopy(session);by_id={e.id:e for e in work.events};remove=set()
+    for pa in work.appearances:
+        events=[by_id[i] for i in pa.event_ids]
+        if pa.confirmed or pa.batter_id or pa.batter_name:continue
+        if any(e.history or e.batter_id or e.event_type=='manual_candidate' or any(x.kind=='ocr:batter_name' and x.value.strip() for x in e.evidence) for e in events):continue
+        remove.add(pa.id)
+    if not remove:return 0
+    checkpoint(work,'근거 없는 자동 타석 정리 전 검수 보관')
+    work.appearances=[p for p in work.appearances if p.id not in remove]
+    for e in work.events:
+        if e.plate_id in remove:e.plate_id=None
+    work.analysis['automatic_plate_cleanup']=dict(removed=len(remove),reviewed_groups_preserved=True)
+    work.validate()
+    session.events,session.appearances,session.analysis,session.analysis_runs=work.events,work.appearances,work.analysis,work.analysis_runs
+    return len(remove)

@@ -1,7 +1,7 @@
 name: Windows portable EXE
 on:
   push:
-    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update]
+    branches: [main, fix/windows-portable-build, feat/rules-play-integration, fix/windows-unicode-ocr, fix/automatic-export-framing, feat/kbo-mbc-discovery, feat/final-integrated-update, fix/batter-identity-evidence, feat/batter-scorebug-identity]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -68,16 +68,16 @@ jobs:
         continue-on-error: true
         with:
           script: |
-            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 42183581537});
-            if (run.data.head_sha !== '78ed471b37bc37c531cd006c46e02326600cb026' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');
+            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 42324770599});
+            if (run.data.head_sha !== 'f11274d0bd623ffc57efbe4ff73f0c56d8cf79b1' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');
       - uses: actions/download-artifact@v4
         id: baseline-application
         if: steps.baseline-run.outcome == 'success'
         continue-on-error: true
         with:
           github-token: ${{ github.token }}
-          run-id: 42183581537
-          name: BaseballScoutingAIEditor-Windows-x64-development
+          run-id: 42324770599
+          name: BaseballScoutingAIEditor-Windows-x64-rules-preview
           path: ${{ runner.temp }}/baseline-application
       - uses: actions/download-artifact@v4
         id: baseline-sources
@@ -85,7 +85,7 @@ jobs:
         continue-on-error: true
         with:
           github-token: ${{ github.token }}
-          run-id: 42183581537
+          run-id: 42324770599
           name: ThirdPartyCorrespondingSources
           path: ${{ runner.temp }}/baseline-sources
       - name: Reuse verified Windows native assets
@@ -190,7 +190,7 @@ jobs:
           if-no-files-found: warn
   evidence:
     if: always() && github.event_name != 'pull_request'
-    needs: build
+    needs: [build, review]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -206,5 +206,46 @@ jobs:
           BUILD_RESULT: ${{ needs.build.result }}
           ARTIFACT_URL: ${{ needs.build.outputs.artifact_url }}
           SOURCES_URL: ${{ needs.build.outputs.sources_url }}
+          PR_URL: ${{ needs.review.outputs.url }}
+          PR_ERROR: ${{ needs.review.outputs.error }}
           EVIDENCE_PATH: ${{ runner.temp }}/portable-evidence
         run: python scripts/publish_portable_evidence.py
+
+  review:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/fix/batter-identity-evidence' && needs.build.result == 'success'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      url: ${{ steps.pr.outputs.url }}
+      error: ${{ steps.pr.outputs.error }}
+    steps:
+      - uses: actions/github-script@v7
+        id: pr
+        env:
+          ZIP_ARTIFACT: ${{ needs.build.outputs.artifact_url }}
+        with:
+          script: |
+            try {
+              const head = context.repo.owner + ':' + context.ref.replace('refs/heads/', '');
+              const existing = await github.rest.pulls.list({...context.repo, state: 'open', head, base: 'main'});
+              let pr = existing.data[0];
+              if (!pr) {
+                const body = [
+                  'Unknown-player pitch candidates previously appeared alongside requested-batter results and could gain a target ID during bulk approval.',
+                  'Separate automatic identity, explicit human identity confirmation, review, and replay/archive status. Preserve legacy review data and add source/config keyed game evidence indexing plus bounded preflight diagnostics.',
+                  'This remains an experimental patch. Full-game KBO identity accuracy, uniform-number recognition, player tracking, and semantic play-end detection are not completed.',
+                  'Validation and real-video failures are documented in docs/BATTER_IDENTITY_REPAIR.md and docs/UNIFIED_IDENTITY_INDEX.md.',
+                  'Windows build: ' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId,
+                  'Portable artifact: ' + process.env.ZIP_ARTIFACT
+                ].join('\n\n');
+                const result = await github.rest.pulls.create({...context.repo, head: context.ref.replace('refs/heads/', ''), base: 'main', draft: true, title: 'Separate player identity from review and index shared game evidence', body});
+                pr = result.data;
+              }
+              core.setOutput('url', pr.html_url);
+            } catch (error) {
+              core.warning('Draft PR creation failed: ' + error.message);
+              core.setOutput('error', error.message);
+            }

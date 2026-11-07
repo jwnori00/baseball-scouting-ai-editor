@@ -189,7 +189,7 @@ def test_gui_button_calls_rules_engine_and_saves_results(motion_video,tmp_path,m
     assert not w.job.isRunning()
     assert w.session and w.session.analysis['engine']==VERSION
     assert w.session.events and GameSession.load(output).analysis['engine']==VERSION
-    assert w.table.columnCount()==6
+    assert w.table.columnCount()==8 and w.table.horizontalHeaderItem(6).text()=='타자' and w.table.horizontalHeaderItem(7).text()=='신원'
     w.dirty=False;w.close();app.processEvents()
 
 
@@ -213,10 +213,10 @@ def test_reviewed_comparison_preserves_unevaluated_status(tmp_path):
 
 
 def test_reference_plate_split_merge_preserves_pitch_cuts():
-    from bsae.core.review import split_plate,merge_previous_plate
+    from bsae.core.review import split_plate,merge_previous_plate,assign_plate
     s=project('batter');s.events=[PitchEvent(s.id,s.split(a,a+1),a,a+1,number=i+1) for i,a in enumerate((1,3,5))]
     original=[(e.timeline_start,e.timeline_end) for e in s.events]
-    split_plate(s,s.events[0].id);assert len(s.appearances)==1
+    assign_plate(s,[e.id for e in s.events]);assert len(s.appearances)==1
     split_plate(s,s.events[1].id);assert [len(p.event_ids) for p in s.appearances]==[1,2]
     merge_previous_plate(s,s.events[1].id);assert len(s.appearances)==1
     assert original==[(e.timeline_start,e.timeline_end) for e in s.events]
