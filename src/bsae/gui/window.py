@@ -8,7 +8,7 @@ from PySide6.QtCore import QThread, Signal, QUrl, Qt
 from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import (QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QPushButton,QLabel,
     QLineEdit,QComboBox,QFileDialog,QMessageBox,QListWidget,QTableWidget,QTableWidgetItem,
-    QDoubleSpinBox,QProgressBar,QInputDialog,QCheckBox,QSplitter,QSizePolicy)
+    QDoubleSpinBox,QProgressBar,QInputDialog,QCheckBox,QSplitter,QSizePolicy,QScrollArea)
 from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from bsae.core.models import GameSession,PlayerIdentity,PitchEvent,DetectionEvidence
@@ -17,6 +17,7 @@ from .library_ui import LibraryUI
 from .profile_ui import ProfileUI
 from .rounds_ui import RoundsUI
 from .output_ui import OutputUI
+from .flow import ToolGrid
 from bsae.ingest.media import add_sources
 
 
@@ -57,17 +58,19 @@ class Job(QThread):
 class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Baseball Scouting AI Editor — 자동 탐색 검증판 / 검수 필수')
+        from bsae.version import build_info,BUILD_LABEL
+        self.build_information=build_info()
+        self.setWindowTitle('Baseball Scouting AI Editor — '+BUILD_LABEL+' · '+self.build_information['version'])
         self.resize(1280,900)
-        self.session=None;self.project_path=None;self.job=None;self.dirty=False
+        self.session=None;self.project_path=None;self.job=None;self.dirty=False;self.tool_rows=[]
         root=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parents[3]))
-        policy=root/'build-policy.json'
-        if policy.is_file():self.setWindowTitle(self.windowTitle()+' · '+json.loads(policy.read_text(encoding='utf-8-sig')).get('version',''))
-        self.development_package=policy.is_file() and json.loads(policy.read_text(encoding='utf-8-sig')).get('kind')=='development'
+        self.development_package=self.build_information['kind']=='development'
 
         self.preview_segments=[];self.preview_index=0
-        body=QWidget();self.setCentralWidget(body);layout=QVBoxLayout(body)
-        layout.addWidget(QLabel('경기영상 불러오기 → 분석 선수 선택 → 선수 플레이 자동 탐색 → 플레이 검수 → 스카우팅 영상 저장'))
+        root_body=QWidget();self.setCentralWidget(root_body);outer=QVBoxLayout(root_body)
+        body=QWidget();self.work_scroll=QScrollArea();self.work_scroll.setWidgetResizable(True);self.work_scroll.setFrameShape(QScrollArea.NoFrame);self.work_scroll.setWidget(body)
+        self.work_scroll.setMinimumHeight(150);self.work_scroll.setMaximumHeight(300);outer.addWidget(self.work_scroll);layout=QVBoxLayout(body)
+        layout.addWidget(QLabel('경기영상 불러오기 → 분석 선수 선택 → 선택 선수 플레이 찾기 → 후보 검수 → MP4 저장'))
         self.files=QListWidget();self.files.setMaximumHeight(55);layout.addWidget(self.files)
         row=QHBoxLayout();layout.addLayout(row)
         project_menu=self.menuBar().addMenu('프로젝트');self.project_menu=project_menu
@@ -108,33 +111,40 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         if not getattr(sys,'frozen',False):
             action=diagnostic_menu.addAction('개발자 모델 설정 표시');action.setCheckable(True)
             action.toggled.connect(self.model_settings.setVisible)
-        self.availability=QLabel('자동 분석 BLOCKED: 야구 동작 학습 모델을 선택하세요. 동봉 모델 없음.')
+        self.availability=QLabel('자동 탐색 준비 상태 확인 중')
         layout.addWidget(self.availability);self.model.textChanged.connect(self.check_model)
         row=QHBoxLayout();layout.addLayout(row)
-        self.analyze_button=self.button(row,'선수 플레이 자동 탐색',self.start_analysis);self.analyze_button.setEnabled(False)
+        self.analyze_button=self.button(row,'선택 선수 플레이 찾기',self.start_analysis);self.analyze_button.setEnabled(False)
         self.button(row,'중단',self.cancel)
-        self.progress=QProgressBar();row.addWidget(self.progress)
+        self.progress=QProgressBar();self.progress.setFormat('%p% · 작업 진행률');row.addWidget(self.progress)
         self.stage=QLabel('대기');self.stage.setWordWrap(True);layout.addWidget(self.stage)
         self.review_filter=QComboBox();self.review_filter.addItems(['기본: 타자는 목표 근거만 / 투수는 후보','전체 플레이 후보','기존 다른 선수·OCR 오류','리플레이','누락 의심 구간','목표 선수 근거 있음','타자명 일치 근거·신원 미확정','신원 근거 충돌','다른 타자 이름 근거·검수'])
-        self.review_filter.currentIndexChanged.connect(self.refresh);layout.addWidget(self.review_filter)
+        self.review_filter.currentIndexChanged.connect(self.refresh);outer.addWidget(self.review_filter)
+        self.analysis_summary=QLabel();self.analysis_summary.setWordWrap(True);outer.addWidget(self.analysis_summary)
         self.visible_events=[]
-        self.active_context=QLabel();self.active_context.setWordWrap(True);layout.addWidget(self.active_context)
+        self.active_context=QLabel();self.active_context.setWordWrap(True);outer.addWidget(self.active_context)
         self.table=QTableWidget(0,8);self.table.setHorizontalHeaderLabels(['투구 번호','타석','이닝','시작','종료','검수','타자','신원'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.selected)
         self.review_splitter=QSplitter(Qt.Vertical)
         self.review_splitter.setChildrenCollapsible(False);self.review_splitter.setHandleWidth(9)
         self.table.setMinimumHeight(100);self.review_splitter.addWidget(self.table)
-        layout.addWidget(self.review_splitter,1)
+        outer.addWidget(self.review_splitter,1)
+        bottom=QWidget();self.review_tools_scroll=QScrollArea();self.review_tools_scroll.setWidgetResizable(True);self.review_tools_scroll.setFrameShape(QScrollArea.NoFrame);self.review_tools_scroll.setWidget(bottom)
+        self.review_tools_scroll.setMinimumHeight(110);self.review_tools_scroll.setMaximumHeight(220);outer.addWidget(self.review_tools_scroll)
+        layout=QVBoxLayout(bottom)
         self.table.cellDoubleClicked.connect(lambda row,column:self.edit_pitch_number() if column==0 else self.edit_inning() if column==2 else self.edit_plate_batter() if column==6 else None)
-        bulk_row=QHBoxLayout();layout.addLayout(bulk_row)
+        bulk_row=ToolGrid();self.tool_rows.append(bulk_row);layout.addLayout(bulk_row.layout)
         self.button(bulk_row,'표 전체 선택',self.table.selectAll)
         self.button(bulk_row,'선택 플레이 일괄 검수 완료',self.approve_selected)
         self.button(bulk_row,'선택 플레이 이닝 수정',self.edit_inning)
         self.button(bulk_row,'투구 번호 수정',self.edit_pitch_number)
         self.button(bulk_row,'선택 후보 선수 확인',self.confirm_selected_players)
         bulk_row.addWidget(QLabel('Ctrl/Shift 다중 선택 · 번호/이닝 칸 더블클릭'))
-        plate_row=QHBoxLayout();layout.addLayout(plate_row)
+        self.advanced_review=QWidget();advanced_layout=QVBoxLayout(self.advanced_review);advanced_layout.setContentsMargins(0,0,0,0)
+        toggle=self.button(bulk_row,'타석 편집 펼치기',lambda:self.advanced_review.setVisible(not self.advanced_review.isVisible()))
+        self.advanced_review.hide();layout.addWidget(self.advanced_review)
+        plate_row=ToolGrid();self.tool_rows.append(plate_row);advanced_layout.addLayout(plate_row.layout)
         self.button(plate_row,'선택 투구를 한 타석으로',self.assign_selected_plate)
         self.button(plate_row,'선택 플레이부터 새 타석',lambda:self.edit_plate(False))
         self.button(plate_row,'앞 타석과 합치기',lambda:self.edit_plate(True))
@@ -152,28 +162,28 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.player=QMediaPlayer(self);self.audio=QAudioOutput(self);self.player.setAudioOutput(self.audio);self.player.setVideoOutput(self.video)
         self.player.positionChanged.connect(self.preview_position)
         self.player.mediaStatusChanged.connect(self.preview_status)
-        row=QHBoxLayout();layout.addLayout(row)
+        row=ToolGrid();self.tool_rows.append(row);layout.addLayout(row.layout)
         self.start=QDoubleSpinBox();self.end=QDoubleSpinBox()
-        for label,spin in [('통합 시작(초)',self.start),('종료(초)',self.end)]:
-            spin.setRange(0,9999999);spin.setDecimals(3);row.addWidget(QLabel(label));row.addWidget(spin)
+        for label,spin in [('클립 시작(초)',self.start),('클립 종료(초)',self.end)]:
+            spin.setRange(0,9999999);spin.setDecimals(3);spin.setMaximumWidth(140);row.addWidget(QLabel(label));row.addWidget(spin)
         self.confirm=QCheckBox('대상 선수 확인');row.addWidget(self.confirm)
         self.button(row,'플레이 후보 재생',self.preview);self.button(row,'일시정지',self.player.pause)
         self.button(row,'미리보기 크게 보기',lambda:self.video.setFullScreen(True))
         self.video.setToolTip('목록과 영상 사이 경계선을 끌어 크기 조절 · 더블클릭: 전체 화면 · Esc: 돌아오기')
-        row=QHBoxLayout();layout.addLayout(row)
+        row=ToolGrid();self.tool_rows.append(row);layout.addLayout(row.layout)
         self.button(row,'수정 저장·검수 완료',lambda:self.apply('APPROVED'))
         self.button(row,'제외',lambda:self.apply('EXCLUDED'))
         self.button(row,'판단 근거',lambda:self.evidence.setVisible(not self.evidence.isVisible()))
         project_menu.addAction('선택 후보 재검수',lambda:self.apply('REVIEW_REQUIRED'))
         self.button(row,'누락 플레이 보조 추가',self.manual)
         self.button(row,'타석 구성 확인 완료',self.confirm_plate)
-        self.output_mode=QComboBox();self.output_mode.addItems(['스카우팅 영상 — 통합','투구별 영상','타석별 영상']);row.addWidget(self.output_mode)
+        self.output_mode=QComboBox();self.output_mode.addItems(['승인 클립 합본','투구별 개별 MP4','타석별 개별 MP4']);row.addWidget(self.output_mode)
         self.auto_frame_action=project_menu.addAction('MP4 검은 여백 자동 제거·확대')
         self.auto_frame_action.setCheckable(True);self.auto_frame_action.setChecked(False)
         self.auto_frame_action.toggled.connect(self.change_auto_frame)
         self.auto_frame_action.setToolTip('승인 구간 전체를 검사하고 검은 테두리를 제거합니다. 원본 구도를 유지하려면 해제하세요.')
         self.button(row,'출력 설정',self.edit_output_preferences)
-        self.button(row,'스카우팅 영상 저장',self.start_export)
+        self.button(row,'MP4 저장',self.start_export)
         project_menu.addAction('탐색 회차 비교·되돌리기',lambda:self.show_analysis_rounds())
         project_menu.addAction('탐색 결과 CSV·JSON 저장',self.save_diagnostics)
         project_menu.addAction('타자명 자막 근거 보기',self.show_batter_captions)
@@ -194,6 +204,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             action=advanced_menu.addAction(label);action.setData(filename);action.setCheckable(True);self.broadcast_group.addAction(action)
             action.setChecked(filename=='lmb-telemetry-v1.json')
             action.triggered.connect(lambda checked=False,p=root/'profiles'/filename:self.select_broadcast(p))
+        help_menu=self.menuBar().addMenu('도움말');help_menu.addAction('프로그램 정보·빌드 확인',self.show_build_info)
         self.profile.setText(str(root/'profiles'/'lmb-telemetry-v1.json'))
         if (root/'models'/'model.json').is_file():
             self.model.setText(str(root/'models'/'model.json'))
@@ -204,8 +215,11 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.name.textChanged.connect(self.update_active_context);self.role.currentIndexChanged.connect(self.update_active_context)
         project_menu.addAction('현재 검수 선수 정보로 입력 복원',lambda:self.fill_identity(self.session.player) if self.session else None)
         self.restore_profile_preferences()
-        self.check_model()
+        self.check_model();self.refresh()
 
+    def resizeEvent(self,event):
+        super().resizeEvent(event)
+        for row in getattr(self,'tool_rows',[]):row.reflow(max(200,self.width()-48))
 
     def button(self,row,text,callback):
         b=QPushButton(text);b.clicked.connect(callback);row.addWidget(b);return b
@@ -225,6 +239,10 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         if self.job and self.job.isRunning():
             self.error('분석이 끝난 뒤 중계 유형을 변경하세요.');return
         self.auto_profile=False;self.profile.setText(str(path));self.check_model();self.save_profile_preferences()
+
+    def show_build_info(self):
+        info=self.build_information
+        QMessageBox.information(self,'프로그램 정보',f"버전: {info['version']}\n배포 종류: {info['kind']}\n실행 엔진: {info['runtime_engine']}\n빌드 엔진: {info['engine']}\nGit 커밋: {info['commit']}\n빌드 일시(UTC): {info['built_at']}\n\n배포 후보판(RC): 전체 경기 선수 식별 성능은 검증이 완료되지 않았습니다.")
 
     def check_model(self):
         # Legacy model fields remain developer-only. A generic action model is
@@ -338,18 +356,8 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             session=existing or GameSession(identity.name,identity,add_sources(paths),game_date=game_date)
             session.output_settings=settings;session.save(path)
             def analyzer(work,requested,cache,stop,progress):
-                selected=requested;assessment=None
-                if auto_profile:
-                    from bsae.vision.profile_detection import select_profile
-                    progress('중계 구도·문자 영역 자동 탐색 시도',0)
-                    selected,assessment=select_profile(work.sources[0],stop,work.player)
-                    work.analysis['preflight']=assessment.get('preflight',{})
-                    if not assessment.get('preflight',{}).get('identity_evidence_frames') and work.player.role=='batter':job.ask_preflight(assessment)
-                analyze_plays(work,selected,cache,stop,progress)
-                work.analysis.setdefault('profile_snapshot',{k:v for k,v in selected.items() if k!='scene_weights'})
-                if assessment:
-                    work.analysis['layout_detection']=assessment
-                    if assessment['status']=='UNRECOGNIZED_LAYOUT':work.analysis['status']='UNRECOGNIZED_LAYOUT_REVIEW_REQUIRED'
+                from bsae.vision.workflow import analyze_for_review
+                analyze_for_review(work,requested,cache,stop,progress,automatic_profile=auto_profile,preflight=job.ask_preflight)
             result=run_round(session,identity,profile,str(Path(path).with_suffix('.sqlite')),job.stop,job.progress.emit,analyzer)
             result.session.save(path);return result
         self.project_path=path;self.launch(operation,self.round_done)
@@ -378,6 +386,9 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
 
     def refresh(self):
         self.update_active_context()
+        from bsae.core.summary import review_counts
+        c=review_counts(self.session)
+        self.analysis_summary.setText(f"현재 회차 전체 후보 {c['total']}개(제외 포함) · 자동 신원 근거 {c['automatic']} · 직접 확인 {c['manual']}(자동과 중복 {c['overlap']}) · 신원 미확인 {c['unknown']} · 다른 선수 근거 {c['other']} · 검수 승인 {c['approved']} · 제외 {c['excluded']} — 진행률과 검수 완료는 별개")
         self.visible_events=[];self.table.setRowCount(0)
         if not self.session:
             self.plate_summary.setText('타석 그룹 0개');return
@@ -655,4 +666,4 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         if self.job and self.job.isRunning():
             self.cancel();self.error('작업 중단 후 창을 닫으세요.');event.ignore();return
         if not self.discard():event.ignore();return
-        self.player.stop();event.accept()
+        self.player.stop();self.player.setVideoOutput(None);self.player.setAudioOutput(None);event.accept()

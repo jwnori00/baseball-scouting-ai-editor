@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "baseball-scouting-ai-editor"
-version = "1.0.0.dev1"
+dynamic = ["version"]
 description = "Local, review-first baseball scouting analysis workbench"
 requires-python = ">=3.12,<3.14"
 dependencies = ["numpy==2.2.6", "opencv-python-headless==4.12.0.88", "PySide6==6.8.3"]
@@ -21,3 +21,6 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.setuptools.dynamic]
+version = {attr = "bsae.version.APP_VERSION"}

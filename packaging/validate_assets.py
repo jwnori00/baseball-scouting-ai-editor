@@ -24,6 +24,9 @@ def validate(root, kind='development'):
         if any(p.relative_to(root).as_posix() not in verified for p in files):raise ValueError('체크섬 미등록 자산: '+folder)
     for name in ('ffmpeg.exe','ffprobe.exe','tesseract.exe','tessdata/eng.traineddata'):
         if not (root/'tools'/name).is_file():raise ValueError('필수 도구 없음: '+name)
+    if kind in ('rules-preview','release'):
+        for language in ('kor','jpn'):
+            if not (root/'tools'/'tessdata'/(language+'.traineddata')).is_file():raise ValueError('필수 OCR 언어 없음: '+language)
     if kind=='release':
         model=TemporalModel(root/'models'/'model.json')
         from bsae.vision.scoreboard import ScoreboardOCR
@@ -40,6 +43,19 @@ def validate(root, kind='development'):
         report=json.loads(report_path.read_text(encoding='utf-8'))
         if report.get('model_sha256')!=model.digest or report.get('data_kind')!='real_baseball' or not report.get('independent_games') or not report.get('commercial_use_reviewed'):
             raise ValueError('실제 야구 독립 평가·상업 이용 검토 증거 필요')
+        # Preserve every legacy model/commercial/metric gate and additionally
+        # require evidence for the actual GUI discovery path.
+        from bsae.vision.rules import VERSION,load_profile
+        load_profile(root/'models'/'broadcast.json')
+        if report.get('gui_engine')!=VERSION or report.get('evaluation_path')!='bsae.vision.workflow.analyze_for_review':
+            raise ValueError('실제 GUI 규칙 엔진의 독립 평가 증거가 필요합니다')
+        engine_source=Path(__file__).resolve().parents[1]/'src'/'bsae'/'vision'/'rules.py'
+        if report.get('gui_engine_source_sha256')!=hashlib.sha256(engine_source.read_bytes().replace(b'\r\n',b'\n')).hexdigest():
+            raise ValueError('GUI 엔진 평가와 현재 소스가 다릅니다')
+        for name in ('rules.py','batter_text.py','scoreboard.py','workflow.py','scene.py','game_index.py'):
+            source=engine_source.parent/name
+            if report.get('gui_source_sha256',{}).get(name)!=hashlib.sha256(source.read_bytes().replace(b'\r\n',b'\n')).hexdigest():
+                raise ValueError('GUI 분석 소스 평가 근거 누락/변경: '+name)
         for key,minimum in [('pitch_recall',.95),('plate_recall',.95),('precision',.90),('identity_accuracy',.98),('followup_preservation',.95),('review_time_savings',.70)]:
             value=report.get('metrics',{}).get(key)
             if not isinstance(value,(int,float)) or not minimum<=value<=1:raise ValueError('정식 배포 성능 미충족: '+key)

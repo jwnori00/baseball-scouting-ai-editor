@@ -80,3 +80,16 @@ rules-preview는 사전학습 동작 가중치 없이 OpenCV/NumPy 규칙과 내
 GitHub 실행의 성공 상태/커밋, ZIP SHA-256, 원본 소스 입력 해시와 대응 소스 체크섬이 일치해야 합니다.
 빌드 입력이 바뀌거나 Artifact를 사용할 수 없으면 기존 소스 빌드 경로로 돌아갑니다.
 기존 성공 브랜치나 그 워크플로를 수정하는 것이 아니라 통합 브랜치에서만 적용합니다.
+
+## RC 인수 시험과 출처
+
+GUI와 새 인수 계획은 `bsae.vision.workflow.analyze_for_review`를 사용한다.
+새 계획은 model을 지정하지 않고 reference_project, cache, candidate_project, output,
+ground_truth_complete, followup_reviewed를 지정하며 automatic_profile 기본값은 true다.
+구형 model 계획은 legacy-temporal-v1 호환 검사이며 GUI 성능 합격으로 사용하지 않는다.
+rules-preview에서 로컬 인수 시험을 실행할 수 있지만 결과가 release 권한을 부여하지 않는다.
+기존 release 모델/독립 경기/상업 이용/성능 게이트는 유지하고 실제 GUI 경로·소스 해시를 추가 검증한다.
+앱 버전은 src/bsae/version.py에만 기록한다. 빌드 종류와 커밋/UTC시각/엔진/소스 해시는
+write_build_policy.py가 생성하고 Windows PE·도움말·설명서·ZIP 결과에 반영한다.
+현재 native 재사용 기준은 reuse_assets.py의 42324770599/f11274d이다.
+RC 세부 검증 및 깨끗한 PC 절차는 RC1_STATUS.md를 참조한다.

@@ -1,0 +1,60 @@
+from pathlib import Path
+import ast,importlib.util,json,os,subprocess,sys
+from importlib.metadata import version
+import pytest
+from bsae.core.models import GameSession,PlayerIdentity,PitchEvent,VideoSource
+from bsae.core.review import review
+from bsae.core.summary import review_counts
+from bsae.version import APP_VERSION
+from bsae.vision.rules import VERSION,load_profile
+
+ROOT=Path(__file__).resolve().parents[1]
+
+
+def test_counts_describe_active_round_and_overlap():
+    s=GameSession('Counts',PlayerIdentity('Player'),[VideoSource('/synthetic',10,'x')])
+    s.events=[PitchEvent(s.id,s.split(t,t+1),t,t+1) for t in (0,2,4)]
+    s.events[0].identity_status='TARGET_CONFIRMED';s.events[0].manual_identity_confirmed=True;s.events[0].status='APPROVED'
+    s.events[2].identity_status='OTHER_PLAYER';s.events[2].status='EXCLUDED'
+    assert review_counts(s)==dict(total=3,automatic=1,manual=1,overlap=1,unknown=1,other=1,approved=1,excluded=1)
+
+
+def test_single_version_and_generated_build_provenance(tmp_path):
+    assert version('baseball-scouting-ai-editor')==APP_VERSION
+    spec=importlib.util.spec_from_file_location('build_policy',ROOT/'packaging/write_build_policy.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    assets=tmp_path/'assets';assets.mkdir();evidence=tmp_path/'evidence'
+    value=module.create(assets,'rules-preview',evidence)
+    assert value['version']==APP_VERSION and value['engine']==VERSION and len(value['commit'])==40
+    assert json.loads((evidence/'build-info.json').read_text())==value
+    assert APP_VERSION in (evidence/'CLIENT_MANUAL.txt').read_text(encoding='utf-8-sig')
+    ast.parse((evidence/'windows-version.txt').read_text())
+
+
+@pytest.mark.parametrize('scale',['1','1.5','2'])
+def test_rc_window_dpi_fullscreen_and_process_shutdown(scale,tmp_path):
+    report=tmp_path/f'layout-{scale}.json'
+    env=dict(os.environ,QT_QPA_PLATFORM='offscreen',QT_SCALE_FACTOR=scale)
+    result=subprocess.run([sys.executable,str(ROOT/'packaging/entry.py'),'--layout-probe',str(report)],env=env,capture_output=True,text=True,timeout=30)
+    assert result.returncode==0,result.stdout+result.stderr
+    data=json.loads(report.read_text());assert data['status']=='PASS' and data['fullscreen_return']=='PASS'
+    assert data['columns']==8 and data['window']==[1024,720]
+    assert not data['overlapping_buttons'] and not data['truncated_buttons']
+    assert report.with_suffix('.png').is_file()
+
+
+def test_acceptance_uses_same_rules_workflow_without_approving(make_video,tmp_path):
+    from bsae.ingest.media import add_sources
+    from bsae.acceptance import run_acceptance
+    s=GameSession('Rules acceptance',PlayerIdentity('Unknown'),add_sources([make_video(['setup']*4)]))
+    s.events=[PitchEvent(s.id,s.split(0,1),0,1)];review(s,s.events[0].id,'APPROVED',confirm_identity=True)
+    reference=tmp_path/'reference.json';s.save(reference);before=reference.read_bytes()
+    profile=load_profile();profile['regions']={}
+    plan=dict(reference_project=str(reference),engine=VERSION,profile=profile,automatic_profile=False,
+              ground_truth_complete=True,followup_reviewed=True,cache=str(tmp_path/'cache.sqlite'),candidate_project=str(tmp_path/'candidate.json'),output=str(tmp_path/'output'))
+    path=tmp_path/'plan.json';path.write_text(json.dumps(plan))
+    report=run_acceptance(path,tmp_path/'report.json');candidate=GameSession.load(plan['candidate_project'])
+    assert report['matches_gui_engine'] and report['execution_path']=='bsae.vision.workflow.analyze_for_review'
+    assert all(e.status!='APPROVED' for e in candidate.events)
+    assert report['release_qualification']=='NOT_GRANTED_BY_THIS_TEST' and reference.read_bytes()==before
+    plan['cache']=plan['candidate_project'];path.write_text(json.dumps(plan))
+    with pytest.raises(ValueError,match='경로'):run_acceptance(path,tmp_path/'other-report.json')

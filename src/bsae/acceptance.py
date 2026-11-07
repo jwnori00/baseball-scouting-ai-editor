@@ -6,6 +6,8 @@ from bsae.core.models import GameSession,atomic_json
 from bsae.evaluation import evaluate
 from bsae.export.render import export
 from bsae.vision.pipeline import analyze
+from bsae.vision.workflow import analyze_for_review
+from bsae.vision.rules import VERSION,load_profile
 
 
 def run_acceptance(plan_path, report_path):
@@ -15,6 +17,9 @@ def run_acceptance(plan_path, report_path):
     for key in ('candidate_project','cache','output'):
         if Path(plan[key]).resolve() in protected:
             raise ValueError('인수 시험 경로가 원본/정답과 충돌합니다')
+    generated=[Path(plan[k]).resolve() for k in ('candidate_project','cache','output')]+[Path(report_path).resolve()]
+    if len(set(generated))!=len(generated):raise ValueError('후보·캐시·출력·보고서 경로를 각각 지정하세요')
+    if Path(report_path).resolve() in protected:raise ValueError('인수 시험 보고서가 원본/정답과 충돌합니다')
     if Path(plan['candidate_project']).exists() or Path(report_path).exists():
         raise FileExistsError('기존 후보/보고서를 덮어쓰지 않습니다')
     approved=[e for e in reference.events if e.status=='APPROVED' and e.event_type!='pickoff']
@@ -24,7 +29,14 @@ def run_acceptance(plan_path, report_path):
         raise ValueError('정답의 전수 확인 및 후속 플레이 보존 검수 선언이 필요합니다')
     candidate=deepcopy(reference)
     candidate.events=[];candidate.appearances=[];candidate.analysis={}
-    analyze(candidate,plan['model'],plan['profile'],plan['cache'])
+    engine=plan.get('engine','legacy-temporal-v1' if 'model' in plan else VERSION)
+    if engine==VERSION:
+        requested=plan.get('profile')
+        profile=requested if isinstance(requested,dict) and requested else load_profile(requested or None)
+        analyze_for_review(candidate,profile,plan['cache'],automatic_profile=plan.get('automatic_profile',True))
+    elif engine=='legacy-temporal-v1':
+        analyze(candidate,plan['model'],plan['profile'],plan['cache'])
+    else:raise ValueError('알 수 없는 인수 시험 엔진: '+str(engine))
     candidate.save(plan['candidate_project'])
     field='pitcher_id' if reference.player.role=='pitcher' else 'batter_id'
     predictions=[dict(start=e.timeline_start,end=e.timeline_end,player_id=getattr(e,field),plate_id=e.plate_id)
@@ -42,7 +54,9 @@ def run_acceptance(plan_path, report_path):
         value=metrics[name]
         outcomes[name]='NOT_EVALUATED' if not isinstance(value,(int,float)) else ('PASS' if (value>=threshold if minimum else value<=threshold) else 'FAIL')
     report=dict(metrics=metrics,checks=outcomes,output=str(output),
-        status='PASS' if all(v=='PASS' for v in outcomes.values()) else 'NOT_READY',
+        status='PASS' if engine==VERSION and all(v=='PASS' for v in outcomes.values()) else 'NOT_READY',
+        engine=engine,matches_gui_engine=engine==VERSION,execution_path=candidate.analysis.get('execution_path','legacy temporal pipeline'),
+        release_qualification='NOT_GRANTED_BY_THIS_TEST',automatic_candidates_approved=False,
         gui_interaction='REQUIRES_MANUAL_CLEAN_WINDOWS_CHECK',
         note='Analysis evaluated against local human-reviewed reference; rendered reference approvals only. No raw media uploaded.')
     atomic_json(report_path,report)

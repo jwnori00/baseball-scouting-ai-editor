@@ -17,6 +17,6 @@ a=Analysis([str(root/'packaging'/'entry.py')],pathex=[str(root/'src')],
     excludes=['pytest','PyQt5','PyQt6','tkinter','torch','torchvision','onnx','onnxruntime'],noarchive=False)
 a.binaries=[x for x in a.binaries if not Path(x[0]).name.lower().startswith('opencv_videoio_ffmpeg')]
 pyz=PYZ(a.pure)
-exe=EXE(pyz,a.scripts,[],exclude_binaries=True,name='BaseballScoutingAIEditor',console=False,
+exe=EXE(pyz,a.scripts,[],exclude_binaries=True,name='BaseballScoutingAIEditor',console=False,version=str(root/'build-evidence'/'windows-version.txt'),
     debug=False,strip=False,upx=False,contents_directory='_internal')
 coll=COLLECT(exe,a.binaries,a.datas,name='BaseballScoutingAIEditor',strip=False,upx=False)

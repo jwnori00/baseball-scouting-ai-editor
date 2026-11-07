@@ -23,7 +23,9 @@ if (-not $DependenciesInstalled) {
 New-Item -ItemType Directory -Force build-evidence | Out-Null
 & $Python packaging/validate_assets.py $Assets $Kind
 if ($LASTEXITCODE -ne 0) { throw 'Assets or release model failed validation' }
-@{kind=$Kind;automatic_analysis=($Kind -ne 'development');engine='broadcast-rules-v1';version='1.0.0.integration-preview9'} | ConvertTo-Json | Set-Content (Join-Path $Assets 'build-policy.json') -Encoding utf8
+& $Python packaging/write_build_policy.py $Assets $Kind
+if ($LASTEXITCODE -ne 0) { throw 'Build provenance failed' }
+$BuildInfo = Get-Content (Join-Path $Assets 'build-policy.json') -Raw | ConvertFrom-Json
 $env:PATH = "$Assets\tools;$env:PATH"
 & $Python -m pytest -q --junitxml=build-evidence/windows-tests.xml
 if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
@@ -31,6 +33,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
 if ($LASTEXITCODE -ne 0) { throw 'PyInstaller failed' }
 & $Python packaging/collect_notices.py dist/BaseballScoutingAIEditor
 if ($LASTEXITCODE -ne 0) { throw 'License collection failed' }
+Copy-Item build-evidence/CLIENT_MANUAL.txt dist/BaseballScoutingAIEditor/사용설명서.txt
+Copy-Item build-evidence/CLIENT_MANUAL.txt dist/BaseballScoutingAIEditor/_internal/docs/CLIENT_MANUAL.txt
 $PreviousPath = $env:PATH
 try {
     $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
@@ -39,6 +43,19 @@ try {
     $UnicodeInstall = Join-Path $env:TEMP ('야구 설치 Martínez ' + [guid]::NewGuid().ToString('N'))
     Copy-Item dist/BaseballScoutingAIEditor $UnicodeInstall -Recurse
     $Exe = Join-Path $UnicodeInstall 'BaseballScoutingAIEditor.exe'
+    $Signature = Get-AuthenticodeSignature $Exe
+    @{signature_status=[string]$Signature.Status;clean_user_pc='NOT_TESTED';smart_screen='NOT_TESTED';antivirus_scan='NOT_TESTED';hosted_windows='GitHub Actions'} | ConvertTo-Json | Set-Content build-evidence/platform-status.json -Encoding utf8
+    $PreviousScale = $env:QT_SCALE_FACTOR
+    try {
+        foreach ($Scale in @('1','1.5','2')) {
+            $env:QT_SCALE_FACTOR = $Scale
+            $LayoutReport = Join-Path $PWD ('build-evidence\layout-' + $Scale + '.json')
+            $LayoutProcess = Start-Process -FilePath $Exe -WorkingDirectory $UnicodeInstall -ArgumentList @('--layout-probe', "`"$LayoutReport`"") -PassThru
+            if (-not $LayoutProcess.WaitForExit(30000)) { $LayoutProcess.Kill(); throw 'DPI probe timeout' }
+            if ($LayoutProcess.ExitCode -ne 0) { throw ('DPI layout probe failed: ' + $Scale) }
+        }
+    } finally { $env:QT_SCALE_FACTOR = $PreviousScale }
+
     $Process = Start-Process -FilePath $Exe -WorkingDirectory $UnicodeInstall -ArgumentList @('--self-test', "`"$Report`"") -PassThru
     if (-not $Process.WaitForExit(180000)) { $Process.Kill(); throw 'Frozen EXE test timed out' }
     if ($Process.ExitCode -ne 0 -or -not (Test-Path $Report)) { throw 'Frozen EXE smoke failed' }
@@ -55,5 +72,23 @@ Copy-Item build-evidence dist/BaseballScoutingAIEditor/build-evidence -Recurse
 Compress-Archive -Path dist/BaseballScoutingAIEditor -DestinationPath $Zip
 $Hash = (Get-FileHash $Zip -Algorithm SHA256).Hash.ToLower()
 "$Hash  $([IO.Path]::GetFileName($Zip))" | Set-Content "$Zip.sha256" -Encoding ascii
-@{file=[IO.Path]::GetFileName($Zip);sha256=$Hash;version='1.0.0.integration-preview9';kind=$Kind} | ConvertTo-Json | Set-Content build-evidence/portable-package.json -Encoding utf8
+@{file=[IO.Path]::GetFileName($Zip);sha256=$Hash;version=$BuildInfo.version;kind=$Kind;engine=$BuildInfo.engine;commit=$BuildInfo.commit;built_at=$BuildInfo.built_at} | ConvertTo-Json | Set-Content build-evidence/portable-package.json -Encoding utf8
 Write-Host "$Kind portable ZIP and SHA-256 created."
+
+# Verify the delivered archive, not only the pre-ZIP build directory.
+$ArchivePreviousPath = $env:PATH
+$env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+$UnzipRoot = Join-Path $env:TEMP ('야구 RC ZIP ' + [guid]::NewGuid().ToString('N'))
+try {
+    if ((Get-FileHash $Zip -Algorithm SHA256).Hash.ToLower() -ne $Hash) { throw 'ZIP checksum mismatch' }
+    Expand-Archive -Path $Zip -DestinationPath $UnzipRoot
+    $UnpackedExe = Join-Path $UnzipRoot 'BaseballScoutingAIEditor\BaseballScoutingAIEditor.exe'
+    $UnpackedReport = Join-Path $PWD 'build-evidence\unpacked-exe.json'
+    $Probe = Start-Process -FilePath $UnpackedExe -ArgumentList @('--layout-probe', "`"$UnpackedReport`"") -PassThru
+    if (-not $Probe.WaitForExit(30000)) { $Probe.Kill(); throw 'Unpacked EXE timeout' }
+    if ($Probe.ExitCode -ne 0) { throw 'Unpacked EXE failed' }
+    @{zip_sha256='PASS';unpacked_executable='PASS';commit=$BuildInfo.commit} | ConvertTo-Json | Set-Content build-evidence/archive-check.json -Encoding utf8
+} finally {
+    $env:PATH = $ArchivePreviousPath
+    if (Test-Path $UnzipRoot) { Remove-Item $UnzipRoot -Recurse -Force }
+}

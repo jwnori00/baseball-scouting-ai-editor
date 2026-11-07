@@ -11,6 +11,10 @@ if __name__=='__main__':
             row=Library().get(sys.argv[index+1]);atomic_json(sys.argv[index+2],dict(id=row['id'],name=row['player']['name']))
         except Exception as exc:
             atomic_json(sys.argv[index+2],dict(status='FAIL',error=str(exc)));raise SystemExit(1)
+    elif '--layout-probe' in sys.argv:
+        from bsae.gui.diagnostics import layout_probe
+        result=layout_probe(sys.argv[sys.argv.index('--layout-probe')+1])
+        raise SystemExit(0 if result['status']=='PASS' else 1)
     elif '--compare-reviewed' in sys.argv:
         from bsae.validation import compare_projects
         index=sys.argv.index('--compare-reviewed')
@@ -25,8 +29,8 @@ if __name__=='__main__':
         try:
             import json
             policy=json.loads((Path(sys._MEIPASS)/'build-policy.json').read_text(encoding='utf-8-sig'))
-            if policy['kind']!='release':
-                raise ValueError('Development package: automatic analysis is disabled without a validated baseball model')
+            if policy['kind']=='development':
+                raise ValueError('개발판은 자동 탐색 인수 시험이 비활성화됩니다. rules-preview RC 또는 검증된 release가 필요합니다.')
             outcome=run_acceptance(sys.argv[index+1],report)
             raise SystemExit(0 if outcome['status']=='PASS' else 2)
         except Exception as exc:
@@ -51,6 +55,12 @@ if __name__=='__main__':
             from bsae.export.render import export
             root=Path(sys._MEIPASS)
             policy=json.loads((root/'build-policy.json').read_text(encoding='utf-8-sig'))
+            from bsae.version import APP_VERSION
+            from bsae.vision.rules import VERSION as runtime_engine
+            assert policy['version']==APP_VERSION and policy['engine']==runtime_engine
+            assert len(policy['commit'])==40 and policy['built_at']
+            manual=(Path(sys.executable).parent/'사용설명서.txt').read_text(encoding='utf-8-sig')
+            assert APP_VERSION in manual and '{{APP_VERSION}}' not in manual
             if policy['kind']=='release':
                 model=TemporalModel(root/'models'/'model.json')
                 model.predict(np.zeros(456))
@@ -189,7 +199,7 @@ if __name__=='__main__':
             window.dirty=False;window.close()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
-                unknown_bulk_guard='PASS',common_game_index='PASS_SYNTHETIC_ONLY' if policy['kind']=='rules-preview' else 'NOT_RUN',batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
+                client_manual='PASS',build_metadata='PASS',unknown_bulk_guard='PASS',common_game_index='PASS_SYNTHETIC_ONLY' if policy['kind']=='rules-preview' else 'NOT_RUN',batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',
                 player_library_restart='PASS',multilingual_ocr_data='PASS',scene_model_integrity='PASS' if policy['kind']=='rules-preview' else 'NOT_CHECKED',batch_review='PASS',inning_edit='PASS',output_720p30='PASS',
                 model_integrity='PASS' if policy['kind']=='release' else 'NOT_INCLUDED_DEVELOPMENT',automatic_analysis='RULES_AVAILABLE' if policy['kind']=='rules-preview' else 'ENABLED' if policy['kind']=='release' else 'DISABLED',synthetic_auto_scan=auto_scan,baseball_accuracy='NOT_EVALUATED',windows_user_pc='NOT_TESTED'),indent=2),encoding='utf-8')
         except BaseException as exc:
