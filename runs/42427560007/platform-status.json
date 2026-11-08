@@ -1,0 +1,7 @@
+{
+  "antivirus_scan": "NOT_TESTED",
+  "clean_user_pc": "NOT_TESTED",
+  "signature_status": "NotSigned",
+  "smart_screen": "NOT_TESTED",
+  "hosted_windows": "GitHub Actions"
+}
