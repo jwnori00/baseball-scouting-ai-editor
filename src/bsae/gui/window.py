@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import json
 import threading
-from PySide6.QtCore import QThread, Signal, QUrl, Qt
+from PySide6.QtCore import QThread, Signal, QUrl, Qt, QSignalBlocker, QTimer
 from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import (QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QPushButton,QLabel,
     QLineEdit,QComboBox,QFileDialog,QMessageBox,QListWidget,QTableWidget,QTableWidgetItem,
@@ -12,25 +12,12 @@ from PySide6.QtWidgets import (QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QPush
 from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from bsae.core.models import GameSession,PlayerIdentity,PitchEvent,DetectionEvidence
-from bsae.core.review import review
 from .library_ui import LibraryUI
 from .profile_ui import ProfileUI
 from .rounds_ui import RoundsUI
 from .output_ui import OutputUI
 from bsae.ingest.media import add_sources
-
-
-class ReviewVideoWidget(QVideoWidget):
-    """Keep the review player in place while allowing an enlarged native view."""
-    def mouseDoubleClickEvent(self,event):
-        if event.button()==Qt.LeftButton:
-            self.setFullScreen(not self.isFullScreen());event.accept()
-        else:super().mouseDoubleClickEvent(event)
-
-    def keyPressEvent(self,event):
-        if event.key()==Qt.Key_Escape and self.isFullScreen():
-            self.setFullScreen(False);event.accept()
-        else:super().keyPressEvent(event)
+from .timeline import ReviewTimeline
 
 
 class Job(QThread):
@@ -66,6 +53,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.development_package=policy.is_file() and json.loads(policy.read_text(encoding='utf-8-sig')).get('kind')=='development'
 
         self.preview_segments=[];self.preview_index=0
+        self.preview_source=None;self.pending_seek=None;self.timeline_session=None
         body=QWidget();self.setCentralWidget(body);layout=QVBoxLayout(body)
         layout.addWidget(QLabel('경기영상 불러오기 → 분석 선수 선택 → 선수 플레이 자동 탐색 → 플레이 검수 → 스카우팅 영상 저장'))
         self.files=QListWidget();self.files.setMaximumHeight(55);layout.addWidget(self.files)
@@ -121,10 +109,10 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.active_context=QLabel();self.active_context.setWordWrap(True);layout.addWidget(self.active_context)
         self.table=QTableWidget(0,8);self.table.setHorizontalHeaderLabels(['투구 번호','타석','이닝','시작','종료','검수','타자','신원'])
         self.table.setSelectionBehavior(QTableWidget.SelectRows);self.table.setSelectionMode(QTableWidget.ExtendedSelection);self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.table.itemSelectionChanged.connect(self.selected)
-        self.review_splitter=QSplitter(Qt.Vertical)
+        self.table.currentCellChanged.connect(self.selected)
+        self.review_splitter=QSplitter(Qt.Horizontal)
         self.review_splitter.setChildrenCollapsible(False);self.review_splitter.setHandleWidth(9)
-        self.table.setMinimumHeight(100);self.review_splitter.addWidget(self.table)
+        self.table.setMinimumSize(280,100);self.review_splitter.addWidget(self.table)
         layout.addWidget(self.review_splitter,1)
         self.table.cellDoubleClicked.connect(lambda row,column:self.edit_pitch_number() if column==0 else self.edit_inning() if column==2 else self.edit_plate_batter() if column==6 else None)
         bulk_row=QHBoxLayout();layout.addLayout(bulk_row)
@@ -141,25 +129,49 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.button(plate_row,'타석 타자명 수정',self.edit_plate_batter)
         self.plate_summary=QLabel();plate_row.addWidget(self.plate_summary)
         self.evidence=QLabel();self.evidence.setWordWrap(True);self.evidence.setMaximumHeight(110);layout.addWidget(self.evidence);self.evidence.hide()
-        self.video=ReviewVideoWidget();self.video.setMinimumHeight(180)
+        self.preview_panel=QWidget()
+        preview_layout=QVBoxLayout(self.preview_panel)
+        preview_layout.setContentsMargins(0,0,0,0)
+        self.video=QVideoWidget();self.video.setMinimumHeight(150)
         self.video.setSizePolicy(QSizePolicy.Ignored,QSizePolicy.Ignored)
         self.video.setAspectRatioMode(Qt.KeepAspectRatio)
-        self.video.setFocusPolicy(Qt.StrongFocus)
-        self.video.fullScreenChanged.connect(lambda full:self.video.setFocus() if full else None)
-        self.review_splitter.addWidget(self.video)
-        self.review_splitter.setStretchFactor(0,1);self.review_splitter.setStretchFactor(1,3)
-        self.review_splitter.setSizes([130,390])
+        preview_layout.addWidget(self.video,1)
+        self.review_splitter.addWidget(self.preview_panel)
+        self.review_splitter.setStretchFactor(0,1);self.review_splitter.setStretchFactor(1,2)
+        self.review_splitter.setSizes([490,690])
         self.player=QMediaPlayer(self);self.audio=QAudioOutput(self);self.player.setAudioOutput(self.audio);self.player.setVideoOutput(self.video)
         self.player.positionChanged.connect(self.preview_position)
         self.player.mediaStatusChanged.connect(self.preview_status)
-        row=QHBoxLayout();layout.addLayout(row)
+        self.player.errorOccurred.connect(self.preview_error)
+        self.timeline=ReviewTimeline(self)
+        self.timeline.setRange(0,0);self.timeline.setEnabled(False)
+        self.timeline.setToolTip('클릭하거나 끌어서 재생 위치 이동 · 강조선은 편집 중인 클립 구간')
+        self.timeline.valueChanged.connect(self.seek_timeline)
+        self.timeline.sliderPressed.connect(self.begin_timeline_drag)
+        self.timeline.sliderReleased.connect(self.end_timeline_drag)
+        self.drag_was_playing=False
+        self.timeline_time=QLabel()
+        self.playback_feedback=QLabel();self.playback_feedback.setWordWrap(True)
+        self.playback_feedback.hide()
+        self.show_timeline_position(0)
+        preview_layout.addWidget(self.timeline)
+        preview_layout.addWidget(self.timeline_time)
+        preview_layout.addWidget(self.playback_feedback)
+        row=QHBoxLayout();preview_layout.addLayout(row)
+        self.button(row,'지정 구간 재생',self.preview)
+        self.button(row,'이어 재생',self.resume_preview)
+        self.button(row,'일시정지',self.pause_preview)
+        row.addStretch()
+        row=QHBoxLayout();preview_layout.addLayout(row)
         self.start=QDoubleSpinBox();self.end=QDoubleSpinBox()
-        for label,spin in [('통합 시작(초)',self.start),('종료(초)',self.end)]:
-            spin.setRange(0,9999999);spin.setDecimals(3);row.addWidget(QLabel(label));row.addWidget(spin)
+        for label,spin in [('시작(초)',self.start),('종료(초)',self.end)]:
+            spin.setRange(-9999999,9999999);spin.setDecimals(3);spin.setSingleStep(.5)
+            spin.setKeyboardTracking(False)
+            spin.valueChanged.connect(self.update_clip_range)
+            row.addWidget(QLabel(label));row.addWidget(spin)
         self.confirm=QCheckBox('대상 선수 확인');row.addWidget(self.confirm)
-        self.button(row,'플레이 후보 재생',self.preview);self.button(row,'일시정지',self.player.pause)
-        self.button(row,'미리보기 크게 보기',lambda:self.video.setFullScreen(True))
-        self.video.setToolTip('목록과 영상 사이 경계선을 끌어 크기 조절 · 더블클릭: 전체 화면 · Esc: 돌아오기')
+        self.range_feedback=QLabel();self.range_feedback.setWordWrap(True)
+        preview_layout.addWidget(self.range_feedback)
         row=QHBoxLayout();layout.addLayout(row)
         self.button(row,'수정 저장·검수 완료',lambda:self.apply('APPROVED'))
         self.button(row,'제외',lambda:self.apply('EXCLUDED'))
@@ -253,7 +265,6 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
     def new_session(self):
         if self.job and self.job.isRunning():return
         if not self.discard():return
-        self.player.stop();self.preview_segments=[]
         self.session=None;self.project_path=None;self.dirty=False
         from bsae.core.output_settings import default_output_settings
         self.pending_output_settings=default_output_settings();self.load_output_preferences()
@@ -378,7 +389,13 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
 
     def refresh(self):
         self.update_active_context()
-        self.visible_events=[];self.table.setRowCount(0)
+        if self.timeline_session is not self.session:
+            self.reset_preview()
+        self.visible_events=[]
+        with QSignalBlocker(self.table):
+            self.table.setRowCount(0)
+        self.timeline.set_clip_range(None)
+        self.range_feedback.clear()
         if not self.session:
             self.plate_summary.setText('타석 그룹 0개');return
         mode=self.review_filter.currentIndex()
@@ -399,17 +416,49 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
                 if mode==2 and not legacy_other:continue
                 if mode==3 and not replay:continue
                 self.visible_events.append(e)
-        plates={p.id:i+1 for i,p in enumerate(self.session.appearances)}
-        self.plate_summary.setText(f'타석 그룹 {len(plates)}개 · 확정 {sum(p.confirmed for p in self.session.appearances)}개')
-        plate_names={p.id:p.batter_name for p in self.session.appearances}
-        for i,e in enumerate(self.visible_events):
-            self.table.insertRow(i)
-            if isinstance(e,dict):values=['?', '-', '-',f"{e['start']:.3f}",f"{e['end']:.3f}",'누락 의심: 투구 아님']
-            else:values=[e.number,plates.get(e.plate_id,'?'),e.inning or '?',f'{e.timeline_start:.3f}',f'{e.timeline_end:.3f}',{'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[e.status]]
-            values.append('-' if isinstance(e,dict) else plate_names.get(e.plate_id) or '미확인')
-            values.append('-' if isinstance(e,dict) else {'TARGET_CONFIRMED':'자동 목표 근거','OTHER_PLAYER':'다른 선수 근거','IDENTITY_UNKNOWN':'미확정'}[e.identity_status]+(' · 수동 확인' if e.manual_identity_confirmed else ''))
-            for j,value in enumerate(values):self.table.setItem(i,j,QTableWidgetItem(str(value)))
-            if not isinstance(e,dict):self.table.item(i,1).setToolTip('타자: '+(plate_names.get(e.plate_id) or '미확인'))
+        self.update_plate_summary()
+        self.table.setRowCount(len(self.visible_events))
+        plates={p.id:(i+1,p.batter_name) for i,p in enumerate(self.session.appearances)}
+        for row,event in enumerate(self.visible_events):
+            self.update_review_row(row,event,plates)
+
+    def update_plate_summary(self):
+        plates=self.session.appearances
+        self.plate_summary.setText(f'타석 그룹 {len(plates)}개 · 확정 {sum(p.confirmed for p in plates)}개')
+
+    def update_review_row(self,row,event,plates):
+        if isinstance(event,dict):
+            values=['?', '-', '-', f"{event['start']:.3f}", f"{event['end']:.3f}", '누락 의심: 투구 아님', '-', '-']
+        else:
+            plate,name=plates.get(event.plate_id,('?', ''))
+            status={'REVIEW_REQUIRED':'검수 필요','APPROVED':'승인','EXCLUDED':'제외'}[event.status]
+            identity={'TARGET_CONFIRMED':'자동 목표 근거','OTHER_PLAYER':'다른 선수 근거','IDENTITY_UNKNOWN':'미확정'}[event.identity_status]
+            if event.manual_identity_confirmed:
+                identity+=' · 수동 확인'
+            values=[event.number,plate,event.inning or '?',f'{event.timeline_start:.3f}',
+                    f'{event.timeline_end:.3f}',status,name or '미확인',identity]
+        for column,value in enumerate(values):
+            item=self.table.item(row,column)
+            if item is None:
+                self.table.setItem(row,column,QTableWidgetItem(str(value)))
+            elif item.text()!=str(value):
+                item.setText(str(value))
+        if not isinstance(event,dict):
+            self.table.item(row,1).setToolTip('타자: '+(name or '미확인'))
+
+    def update_review_rows(self,ids):
+        # Review transactions replace event objects, including untouched events.
+        events={e.id:e for e in self.session.events}
+        plates={p.id:(i+1,p.batter_name) for i,p in enumerate(self.session.appearances)}
+        changed=set(ids)
+        for row,event in enumerate(self.visible_events):
+            if isinstance(event,dict):
+                continue
+            self.visible_events[row]=events[event.id]
+            if event.id in changed:
+                self.update_review_row(row,events[event.id],plates)
+        self.update_plate_summary()
+        self.update_active_context()
 
     def selected_event(self):
         self.require_active_identity()
@@ -420,14 +469,25 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             raise ValueError('누락 의심 구간은 투구로 확정되지 않았습니다. 원본 확인 후 보조 후보를 추가하세요.')
         raise ValueError('후보를 선택하세요')
 
-    def selected(self):
+    def selected(self,row=None,column=None,previous_row=None,previous_column=None):
         i=self.table.currentRow()
+        if i==previous_row:
+            return
         if not 0<=i<len(self.visible_events):return
-        e=self.visible_events[i];self.confirm.setChecked(False)
+        e=self.visible_events[i]
+        self.confirm.setChecked(False)
         if isinstance(e,dict):
-            self.start.setValue(e['start']);self.end.setValue(e['end']);self.evidence.setText(e['reason']);return
-        self.start.setValue(e.timeline_start);self.end.setValue(e.timeline_end)
-        self.evidence.setText('\n'.join(e.warnings)+'\n'+ '; '.join(x.kind+': '+x.value[:150] for x in e.evidence))
+            start,end=e['start'],e['end']
+            self.evidence.setText(e['reason'])
+        else:
+            start,end=e.timeline_start,e.timeline_end
+            self.evidence.setText('\n'.join(e.warnings)+'\n'+'; '.join(x.kind+': '+x.value[:150] for x in e.evidence))
+        with QSignalBlocker(self.start), QSignalBlocker(self.end):
+            self.start.setValue(start)
+            self.end.setValue(end)
+        self.update_clip_range()
+        self.pause_preview()
+        self.seek_timeline(round(start*1000))
 
     def selected_event_ids(self):
         self.require_active_identity()
@@ -441,9 +501,9 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         try:
             from bsae.core.review import review_many
             ids=self.selected_event_ids()
-            if QMessageBox.question(self,'선택 플레이 검수 완료',f'선택한 {len(ids)}개 후보의 구간과 대상 선수를 모두 확인했나요?\n현재 구간을 승인하며 미확정 신원을 자동으로 바꾸지 않습니다. 먼저 선택 후보 선수 확인을 사용하세요.')!=QMessageBox.Yes:return
+            if len(ids)>1 and QMessageBox.question(self,'선택 플레이 검수 완료',f'선택한 {len(ids)}개 후보의 구간과 대상 선수를 모두 확인했나요?\n현재 구간을 승인하며 미확정 신원을 자동으로 바꾸지 않습니다. 먼저 선택 후보 선수 확인을 사용하세요.')!=QMessageBox.Yes:return
             count=review_many(self.session,ids,confirm_identity=False)
-            self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 승인 완료 · 프로젝트를 저장하세요')
+            self.dirty=True;self.update_review_rows(ids);self.stage.setText(f'{count}개 후보 승인 완료 · 프로젝트를 저장하세요')
         except Exception as exc:self.error(exc)
 
     def confirm_selected_players(self):
@@ -460,7 +520,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             def confirm():
                 try:
                     chosen=[e.id for e,c in zip(events,checks) if c.isChecked()]
-                    count=confirm_manual_identities(self.session,chosen);self.dirty=True;self.refresh();self.stage.setText(f'{count}개 후보 수동 선수 확인 · 자동 신원 판정 유지 · 구간 검수 후 승인하세요');dialog.accept()
+                    count=confirm_manual_identities(self.session,chosen);self.dirty=True;self.update_review_rows(chosen);self.stage.setText(f'{count}개 후보 수동 선수 확인 · 자동 신원 판정 유지 · 구간 검수 후 승인하세요');dialog.accept()
                 except Exception as exc:self.error(exc)
             self.button(layout,'체크한 후보만 수동 선수 확인',confirm);dialog.exec()
         except Exception as exc:self.error(exc)
@@ -546,10 +606,22 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
             from bsae.core.review import review_many
             ids=self.selected_event_ids()
             e=self.selected_event()
-            ranges={e.id:(self.start.value(),self.end.value())} if e.id in ids else {}
+            ranges={}
+            if e.id in ids:
+                try:
+                    start,end=self.clip_bounds()
+                    self.session.split(start,end)
+                except ValueError as exc:
+                    self.range_feedback.setText(str(exc))
+                    return
+                ranges[e.id]=(start,end)
             if len(ids)>1 and QMessageBox.question(self,'선택 후보 일괄 검수',f'선택한 {len(ids)}개 후보만 처리합니다.\n시각 수정은 현재 행에만 적용하고 나머지는 기존 구간을 유지합니다.\n미확정 후보는 먼저 선택 후보 선수 확인을 해야 합니다. 계속할까요?')!=QMessageBox.Yes:return
             count=review_many(self.session,ids,status,confirm_identity=self.confirm.isChecked() and len(ids)==1,note='GUI 선택 검수',ranges=ranges)
-            self.dirty=True;self.refresh();self.stage.setText(f'선택 후보 {count}개 처리 완료 · 프로젝트를 저장하세요')
+            self.dirty=True
+            self.update_review_rows(ids)
+            self.confirm.setChecked(False)
+            message='승인 완료' if status=='APPROVED' else '검수 상태 변경 완료'
+            self.stage.setText(f'{count}개 후보 {message} · 프로젝트를 저장하세요')
         except Exception as exc:self.error(exc)
 
     def assign_selected_plate(self):
@@ -574,8 +646,7 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         if not self.session:return
         try:
             self.require_active_identity()
-            a,b=self.start.value(),self.end.value()
-            if b<=a:raise ValueError('시작·종료를 입력하세요')
+            a,b=self.clip_bounds()
             e=PitchEvent(self.session.id,self.session.split(a,b),a,b,number=max((e.number for e in self.session.events),default=0)+1,event_type='manual_candidate',evidence=[DetectionEvidence('manual','사용자 보조 추가',a)])
             self.session.events.append(e);self.session.validate();self.dirty=True;self.refresh()
         except Exception as exc:self.error(exc)
@@ -589,28 +660,178 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
                 pa.confirmed=True;self.dirty=True;self.refresh()
         except Exception as exc:self.error(exc)
 
+    def reset_preview(self):
+        self.timeline_session=self.session
+        self.preview_segments=[]
+        self.pending_seek=None
+        self.preview_source=None
+        self.player.setSource(QUrl())
+        self.playback_feedback.hide()
+        total=max((s.offset+s.duration for s in self.session.sources),default=0) if self.session else 0
+        with QSignalBlocker(self.timeline):
+            self.timeline.setRange(0,round(total*1000))
+        self.timeline.setEnabled(total>0)
+        self.show_timeline_position(0)
+
+    def clip_bounds(self):
+        start,end=self.start.value(),self.end.value()
+        if not self.session or not self.session.sources:
+            raise ValueError('먼저 검수할 원본 영상을 불러오세요.')
+        total=max(s.offset+s.duration for s in self.session.sources)
+        row=self.table.currentRow()
+        if 0<=row<len(self.visible_events):
+            event=self.visible_events[row]
+            if not isinstance(event,dict):
+                # Preserve legacy sub-millisecond bounds when their displayed values are unchanged.
+                if start==round(event.timeline_start,3):
+                    start=event.timeline_start
+                if end==round(event.timeline_end,3):
+                    end=event.timeline_end
+        if start<0 or end<=start:
+            raise ValueError('시작은 0초 이상, 종료는 시작보다 뒤여야 합니다.')
+        if end>total and end==round(total*1000)/1000:
+            end=total
+        if end>total or end<=start:
+            raise ValueError(f'종료는 원본 영상의 전체 길이({total:.3f}초) 이하여야 합니다.')
+        return start,end
+
+    def update_clip_range(self,*args):
+        if not self.session or not self.session.sources:
+            return
+        try:
+            start,end=self.clip_bounds()
+            self.session.split(start,end)
+        except ValueError as exc:
+            self.timeline.set_clip_range(None)
+            self.range_feedback.setText(str(exc))
+        else:
+            self.timeline.set_clip_range((round(start*1000),round(end*1000)))
+            self.range_feedback.clear()
+
+    def show_timeline_position(self,position):
+        position=max(0,min(position,self.timeline.maximum()))
+        with QSignalBlocker(self.timeline):
+            self.timeline.setValue(position)
+        self.timeline_time.setText(f'현재 위치: {position/1000:.3f}초 / 전체 길이: {self.timeline.maximum()/1000:.3f}초')
+
+    def begin_timeline_drag(self):
+        self.drag_was_playing=self.is_preview_playing()
+        self.pause_preview()
+
+    def end_timeline_drag(self):
+        if self.drag_was_playing:
+            self.resume_preview()
+        self.drag_was_playing=False
+
+    def is_preview_playing(self):
+        if self.pending_seek is not None:
+            return self.pending_seek[1]
+        return self.player.playbackState()==QMediaPlayer.PlayingState
+
+    def seek_timeline(self,position):
+        if not self.session or not self.session.sources:
+            return
+        playing=self.is_preview_playing()
+        self.preview_segments=[]
+        # At a file boundary, seek into the next file; at project end use the last frame.
+        seconds=position/1000
+        source=next((s for s in self.session.sources if seconds<s.offset+s.duration),self.session.sources[-1])
+        local=max(0,min(round(source.duration*1000),position-round(source.offset*1000)))
+        self.seek_preview_source(source,local,playing)
+
+    def seek_preview_source(self,source,local,playing):
+        self.playback_feedback.hide()
+        self.pending_seek=(local,playing)
+        self.preview_source=source
+        self.show_timeline_position(round(source.offset*1000)+local)
+        url=QUrl.fromLocalFile(str(Path(source.path).resolve()))
+        if self.player.source()!=url:
+            self.player.setSource(url)
+        else:
+            self.finish_preview_seek()
+
+    def finish_preview_seek(self,*args):
+        if (self.pending_seek is None or not self.player.isSeekable()
+                or self.player.mediaStatus() in (QMediaPlayer.NoMedia,QMediaPlayer.LoadingMedia)):
+            return
+        local,playing=self.pending_seek
+        local=min(local,self.player.duration())
+        self.player.setPosition(local)
+        self.pending_seek=None
+        self.show_timeline_position(round(self.preview_source.offset*1000)+self.player.position())
+        if playing:
+            self.player.play()
+        else:
+            # A stopped Qt player updates its position without decoding a preview frame.
+            self.player.pause()
+
+    def preview_error(self,error,message):
+        if error!=QMediaPlayer.NoError and self.preview_source is not None:
+            self.pending_seek=None
+            self.preview_segments=[]
+            self.playback_feedback.setText(f'미리보기 오류: {message}')
+            self.playback_feedback.show()
+
+    def pause_preview(self):
+        if self.pending_seek is not None:
+            self.pending_seek=(self.pending_seek[0],False)
+        self.player.pause()
+
+    def resume_preview(self):
+        if self.pending_seek is not None:
+            self.pending_seek=(self.pending_seek[0],True)
+        elif self.preview_source is not None:
+            self.player.play()
+
     def preview(self):
         try:
-            self.preview_segments=self.session.split(self.start.value(),self.end.value());self.preview_index=0;self.play_segment()
-        except Exception as exc:self.error(exc)
+            bounds=self.clip_bounds()
+            self.preview_segments=self.session.split(*bounds)
+        except ValueError as exc:
+            self.range_feedback.setText(str(exc))
+            return
+        self.preview_index=0
+        self.play_segment()
 
     def play_segment(self):
         seg=self.preview_segments[self.preview_index]
         source=next(s for s in self.session.sources if s.id==seg.source_id)
-        self.player.setSource(QUrl.fromLocalFile(source.path))
+        self.seek_preview_source(source,round(seg.start*1000),True)
 
     def preview_status(self,status):
-        if status==QMediaPlayer.LoadedMedia and self.preview_segments:
-            self.player.setPosition(int(self.preview_segments[self.preview_index].start*1000));self.player.play()
-        elif status==QMediaPlayer.EndOfMedia and self.preview_segments:self.advance_preview()
+        if status==QMediaPlayer.LoadedMedia:
+            QTimer.singleShot(0,self,self.finish_preview_seek)
+        elif status==QMediaPlayer.EndOfMedia and self.preview_segments and self.pending_seek is None:
+            self.queue_preview_advance()
 
     def preview_position(self,position):
-        if self.preview_segments and position>=self.preview_segments[self.preview_index].end*1000:self.advance_preview()
+        if self.preview_source is None or self.pending_seek is not None:
+            return
+        offset=round(self.preview_source.offset*1000)
+        if self.preview_segments:
+            end=round(self.preview_segments[self.preview_index].end*1000)
+            if position>=end:
+                self.queue_preview_advance()
+                return
+        self.show_timeline_position(offset+position)
+
+    def queue_preview_advance(self):
+        # Qt can emit both the final position and EndOfMedia during one transition.
+        segments,index=self.preview_segments,self.preview_index
+        def advance():
+            if segments is self.preview_segments and index==self.preview_index:
+                self.advance_preview()
+        QTimer.singleShot(0,self,advance)
 
     def advance_preview(self):
-        self.player.pause()
-        if self.preview_index+1<len(self.preview_segments):self.preview_index+=1;self.play_segment()
-        else:self.preview_segments=[]
+        if self.preview_index+1<len(self.preview_segments):
+            self.preview_index+=1
+            self.play_segment()
+        else:
+            end=round(self.preview_segments[self.preview_index].end*1000)
+            self.preview_segments=[]
+            self.player.pause()
+            self.seek_preview_source(self.preview_source,end,False)
 
     def save_project(self):
         if not self.session:return
@@ -651,7 +872,6 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         self.launch(lambda job:export(session,Path(parent)/name,mode,include_pickoffs=include_pickoffs,auto_frame=auto_frame,progress=lambda v:job.progress.emit('승인 영상 출력·검증',v),stop=job.stop),lambda path:self.stage.setText('검증 완료: '+str(path)))
 
     def closeEvent(self,event):
-        self.video.setFullScreen(False)
         if self.job and self.job.isRunning():
             self.cancel();self.error('작업 중단 후 창을 닫으세요.');event.ignore();return
         if not self.discard():event.ignore();return
