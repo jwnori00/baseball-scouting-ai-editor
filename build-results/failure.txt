@@ -1,1 +1,36 @@
-No matching failure detail in artifact.
+portable-smoke.progress.json 27
+windows-tests.xml 15054
+portable-smoke.json 155
+portable-build.log 11634
+14288 WARNING: Library not found: could not resolve 'api-ms-win-shcore-scaling-l1-1-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+14288 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+14290 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-string-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+14290 WARNING: Library not found: could not resolve 'api-ms-win-core-libraryloader-l1-2-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\multimedia\\ffmpegmediaplugin.dll'.
+14290 WARNING: Library not found: could not resolve 'api-ms-win-core-libraryloader-l1-2-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\multimedia\\ffmpegmediaplugin.dll'.
+14290 WARNING: Library not found: could not resolve 'api-ms-win-core-heap-l2-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\multimedia\\ffmpegmediaplugin.dll'.
+14329 INFO: Warnings written to D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\warn-editor.txt
+14363 INFO: Graph cross-reference written to D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\xref-editor.html
+14440 INFO: checking PYZ
+14440 INFO: Building PYZ because PYZ-00.toc is non existent
+14440 INFO: Building PYZ (ZlibArchive) D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\PYZ-00.pyz
+14853 INFO: Building PYZ (ZlibArchive) D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\PYZ-00.pyz completed successfully.
+14871 INFO: checking PKG
+14871 INFO: Building PKG because PKG-00.toc is non existent
+14871 INFO: Building PKG (CArchive) BaseballScoutingAIEditor.pkg
+14888 INFO: Building PKG (CArchive) BaseballScoutingAIEditor.pkg completed successfully.
+14888 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+14888 INFO: checking EXE
+14888 INFO: Building EXE because EXE-00.toc is non existent
+14888 INFO: Building EXE from EXE-00.toc
+14888 INFO: Copying bootloader EXE to D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\build\editor\BaseballScoutingAIEditor.exe
+14890 INFO: Copying icon to EXE
+14892 INFO: Copying 0 resources to EXE
+14892 INFO: Embedding manifest in EXE
+14895 INFO: Appending PKG archive to EXE
+14897 INFO: Fixing EXE headers
+14948 INFO: Building EXE from EXE-00.toc completed successfully.
+14964 INFO: checking COLLECT
+14964 INFO: Building COLLECT because COLLECT-00.toc is non existent
+14964 INFO: Building COLLECT COLLECT-00.toc
+15936 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+15969 INFO: Build complete! The results are available in: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\dist
