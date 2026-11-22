@@ -1,0 +1,20 @@
+portable-smoke.progress.json 28
+windows-tests.xml 15054
+portable-smoke.json 1271
+portable-build.log 11638
+{"stage": "portrait_output"}
+{
+  "status": "FAIL",
+  "error": "[WinError 32] The process cannot access the file because it is being used by another process: 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\\uc57c\uad6c Mart\u00ednez to284gf2\\\\\ud569\uc131 \uc6d0\ubcf8.mp4'",
+  "traceback": "Traceback (most recent call last):\n  File \"shutil.py\", line 633, in _rmtree_unsafe\nPermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\\uc57c\uad6c Mart\u00ednez to284gf2\\\\\ud569\uc131 \uc6d0\ubcf8.mp4'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"entry.py\", line 96, in <module>\n  File 
+}
+18316 INFO: Copying 0 resources to EXE
+18316 INFO: Embedding manifest in EXE
+18317 INFO: Appending PKG archive to EXE
+18320 INFO: Fixing EXE headers
+18392 INFO: Building EXE from EXE-00.toc completed successfully.
+18410 INFO: checking COLLECT
+18410 INFO: Building COLLECT because COLLECT-00.toc is non existent
+18410 INFO: Building COLLECT COLLECT-00.toc
+19629 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+19676 INFO: Build complete! The results are available in: D:\a\baseball-scouting-ai-editor\baseball-scouting-ai-editor\dist
