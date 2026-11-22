@@ -188,8 +188,8 @@ if __name__=='__main__':
                 portrait_meta=next(v for v in probe(d/'portrait-output'/'all_0001.mp4')['streams'] if v['codec_type']=='video')
                 assert (portrait_meta['width'],portrait_meta['height'])==(720,1280)
                 assert original==fingerprint(video)
-            checkpoint('cleanup')
-            window.dirty=False;window.close()
+                checkpoint('cleanup')
+                window.dirty=False;window.close();app.processEvents()
             # Explicitly does not assert baseball model accuracy or native playback.
             Path(sys.argv[sys.argv.index('--self-test')+1]).write_text(json.dumps(dict(
                 unknown_bulk_guard='PASS',common_game_index='PASS_SYNTHETIC_ONLY' if policy['kind']=='rules-preview' else 'NOT_RUN',batter_caption_ocr='PASS_SYNTHETIC_ONLY',uniform_number_recognition='NOT_IMPLEMENTED',player_tracking='NOT_IMPLEMENTED',pitch_number_edit='PASS',pitcher_plate_edit='PASS',preview_layout='PASS',analysis_round_preservation='PASS' if policy['kind']=='rules-preview' else 'NOT_RUN',portrait_output='PASS',av1_decode='PASS',executable='PASS',gui_construction='PASS',synthetic_render='PASS',unicode_install_ocr='PASS',

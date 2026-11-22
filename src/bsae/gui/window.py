@@ -875,4 +875,5 @@ class Window(LibraryUI,ProfileUI,RoundsUI,OutputUI,QMainWindow):
         if self.job and self.job.isRunning():
             self.cancel();self.error('작업 중단 후 창을 닫으세요.');event.ignore();return
         if not self.discard():event.ignore();return
-        self.player.stop();event.accept()
+        self.reset_preview()
+        event.accept()
