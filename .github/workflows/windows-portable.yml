@@ -181,6 +181,30 @@ jobs:
           path: vendor/portable/corresponding-source/
           compression-level: 0
           if-no-files-found: error
+      - name: Annotate portable build failures
+        if: failure()
+        shell: pwsh
+        run: |
+          if (Test-Path build-evidence/windows-tests.xml) {
+            [xml]$report = Get-Content -Raw build-evidence/windows-tests.xml
+            foreach ($case in ($report.SelectNodes('//testcase[failure or error]') | Select-Object -First 8)) {
+              $problem = $case.SelectSingleNode('failure|error')
+              $detail = ($problem.GetAttribute('message') -replace '[\r\n]+', ' ')
+              if ($detail.Length -gt 280) { $detail = $detail.Substring(0, 280) }
+              Write-Host "::error title=Windows test failure::$($case.classname).$($case.name) $detail"
+              $trace = ($problem.InnerText -split '\r?\n' | Where-Object { $_ -match '^(E |tests/|tests\\)' } | Select-Object -Last 5) -join ' | '
+              if ($trace.Length -gt 500) { $trace = $trace.Substring(0, 500) }
+              if ($trace) { Write-Host "::warning title=Windows test assertion::$trace" }
+            }
+          }
+          if (Test-Path build-evidence/portable-build.log) {
+            $matches = Get-Content build-evidence/portable-build.log | Select-String -Pattern 'Smoke failed|Tests failed|PyInstaller failed|failed validation|Error:|Error ' | Select-Object -Last 4
+            foreach ($line in $matches) {
+              $detail = $line.Line.Trim()
+              if ($detail.Length -gt 300) { $detail = $detail.Substring(0, 300) }
+              Write-Host "::warning title=Portable build detail::$detail"
+            }
+          }
       - name: Build evidence
         if: always()
         uses: actions/upload-artifact@v4
