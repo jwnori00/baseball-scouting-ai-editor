@@ -82,14 +82,14 @@ if __name__=='__main__':
             def fail_test(message):raise RuntimeError('GUI self-test: '+str(message))
             window.error=fail_test
             checkpoint('preview_layout')
-            assert window.review_splitter.widget(1) is window.video
-            assert window.video.height()>window.table.height()
-            window.video.setFullScreen(True);app.processEvents()
-            assert window.video.isFullScreen()
-            from PySide6.QtCore import Qt,QEvent
-            from PySide6.QtGui import QKeyEvent
-            window.video.keyPressEvent(QKeyEvent(QEvent.KeyPress,Qt.Key_Escape,Qt.NoModifier));app.processEvents()
-            assert not window.video.isFullScreen() and window.player.videoOutput() is window.video
+            from PySide6.QtCore import Qt
+            assert window.review_splitter.orientation()==Qt.Horizontal
+            assert window.review_splitter.widget(0) is window.table
+            assert window.review_splitter.widget(1) is window.preview_panel
+            assert window.table.isVisible() and window.video.isVisible()
+            assert window.table.geometry().right()<window.preview_panel.geometry().left()
+            assert window.player.videoOutput() is window.video
+            assert window.start.singleStep()==window.end.singleStep()==.5
             if policy['kind']=='development':
                 assert not window.analyze_button.isEnabled()
             auto_scan='NOT_RUN'
@@ -116,7 +116,10 @@ if __name__=='__main__':
                 window.registered(game)
                 window.start.setValue(.2);window.end.setValue(.8);window.manual()
                 window.start.setValue(1.0);window.end.setValue(1.5);window.manual()
-                window.table.selectRow(0);window.confirm.setChecked(True);window.apply('APPROVED')
+                window.table.selectRow(0)
+                assert window.timeline.clip_range==(200,800) and window.timeline.maximum()==2000
+                window.confirm.setChecked(True);window.apply('APPROVED')
+                assert window.table.currentRow()==0 and window.table.rowCount()==2
                 game=window.session
                 checkpoint('unknown_bulk_guard')
                 from PySide6.QtCore import QTimer
