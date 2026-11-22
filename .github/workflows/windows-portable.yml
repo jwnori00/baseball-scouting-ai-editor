@@ -24,7 +24,7 @@ jobs:
           from pathlib import Path
           import re
           import xml.etree.ElementTree as ET
-          lines = []
+          lines = [str(f.relative_to("evidence")) + " " + str(f.stat().st_size) for f in Path("evidence").rglob("*") if f.is_file()]
           report = Path('evidence/windows-tests.xml')
           if report.exists():
               root = ET.parse(report)
@@ -37,7 +37,9 @@ jobs:
                       lines.extend(line.strip() for line in (problem.text or '').splitlines() if line.startswith(('E ', 'tests', '>')))
           log = Path('evidence/portable-build.log')
           if log.exists():
-              lines.extend(line.strip() for line in log.read_text(errors='replace').splitlines() if re.search(r'\bfailed\b|error|exception|traceback', line, re.I))
+              data = log.read_bytes()
+              encoding = 'utf-16' if data.startswith((b'\xff\xfe', b'\xfe\xff')) else 'utf-8-sig'
+              lines.extend(data.decode(encoding, errors='replace').splitlines()[-32:])
           lines = [re.sub(r'https?://\S+|(?i:token|password|secret)\s*=\s*\S+', '[redacted]', line)[:500] for line in lines]
           Path('build-results/failure.txt').write_text('\n'.join(lines[-50:]) or 'No matching failure detail in artifact.')
           PY
