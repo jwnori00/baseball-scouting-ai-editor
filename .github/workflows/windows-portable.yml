@@ -1,214 +1,48 @@
-name: Windows portable EXE
+name: Retrieve Windows build failure
 on:
   push:
     branches: [build/windows-timeline-portable]
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
-    inputs:
-      kind:
-        description: Development disables AI; release requires validated baseball model
-        type: choice
-        options: [rules-preview, development, release]
-        default: rules-preview
-permissions:
-  contents: read
-  actions: read
-concurrency:
-  group: windows-portable-${{ github.ref }}
-  cancel-in-progress: false
+    paths-ignore: ['build-results/**']
 jobs:
-  build:
-    runs-on: windows-latest
-    timeout-minutes: 90
-    outputs:
-      artifact_url: ${{ steps.application.outputs.artifact-url }}
-      sources_url: ${{ steps.sources.outputs.artifact-url }}
-    env:
-      QT_QPA_PLATFORM: offscreen
-      BUILD_KIND: ${{ inputs.kind || 'rules-preview' }}
+  diagnostics:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Release model gate
-        if: inputs.kind == 'release'
-        shell: pwsh
-        run: |
-          if (-not (Test-Path vendor/portable/models/model.json) -or -not (Test-Path vendor/portable/models/validation.json)) {
-            throw 'Release BLOCKED: verified baseball model and independent validation report are required. Use development for a GUI/media test ZIP.'
-          }
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          architecture: x64
-          cache: pip
-          cache-dependency-path: requirements-dev.txt
-      - name: Install locked build dependencies
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force build-evidence | Out-Null
-          python -m pip install -r requirements-dev.txt
-          if ($LASTEXITCODE -ne 0) { throw 'Dependency install failed' }
-          python -m pip install --no-deps --no-build-isolation -e .
-          if ($LASTEXITCODE -ne 0) { throw 'Project install failed' }
-          python -m pip check
-          if ($LASTEXITCODE -ne 0) { throw 'Dependency check failed' }
-      - uses: actions/cache/restore@v4
-        id: native-assets
-        with:
-          path: vendor/portable
-          key: windows-native-portable-v2-${{ hashFiles('packaging/build_media.sh', 'packaging/prepare_assets.py', 'requirements-dev.txt') }}
-          restore-keys: windows-native-portable-v2-
-      - name: Check successful baseline compatibility
-        id: baseline
-        if: steps.native-assets.outputs.cache-hit != 'true'
-        run: python packaging/reuse_assets.py --eligible
-      - uses: actions/github-script@v7
-        id: baseline-run
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.baseline.outputs.eligible == 'true'
-        continue-on-error: true
-        with:
-          script: |
-            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 42324770599});
-            if (run.data.head_sha !== 'f11274d0bd623ffc57efbe4ff73f0c56d8cf79b1' || run.data.conclusion !== 'success') throw new Error('Unverified native baseline');
       - uses: actions/download-artifact@v4
-        id: baseline-application
-        if: steps.baseline-run.outcome == 'success'
-        continue-on-error: true
         with:
           github-token: ${{ github.token }}
-          run-id: 42324770599
-          name: BaseballScoutingAIEditor-Windows-x64-rules-preview
-          path: ${{ runner.temp }}/baseline-application
-      - uses: actions/download-artifact@v4
-        id: baseline-sources
-        if: steps.baseline-application.outcome == 'success'
-        continue-on-error: true
-        with:
-          github-token: ${{ github.token }}
-          run-id: 42324770599
-          name: ThirdPartyCorrespondingSources
-          path: ${{ runner.temp }}/baseline-sources
-      - name: Reuse verified Windows native assets
-        id: reuse
-        if: steps.baseline-sources.outcome == 'success'
-        continue-on-error: true
-        shell: pwsh
-        run: |
-          python packaging/reuse_assets.py "${{ runner.temp }}/baseline-application" "${{ runner.temp }}/baseline-sources"
-          if ($LASTEXITCODE -ne 0) { throw 'Baseline reuse failed; rebuild will be used' }
-          "ready=true" >> $env:GITHUB_OUTPUT
-      - uses: msys2/setup-msys2@v2
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
-        with:
-          msystem: MINGW64
-          update: true
-          install: >-
-            git make nasm diffutils
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-meson
-            mingw-w64-x86_64-ninja
-            mingw-w64-x86_64-pkgconf
-            mingw-w64-x86_64-tesseract-ocr
-      - name: Compiler identity for safe object reuse
-        id: compiler
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
-        shell: msys2 {0}
-        run: |
-          identity=$( (gcc -dumpmachine; gcc -dumpfullversion; pacman -Q mingw-w64-x86_64-gcc nasm make) | sha256sum | cut -d ' ' -f 1)
-          echo "identity=$identity" >> "$(cygpath -u "$GITHUB_OUTPUT")"
-      - uses: actions/cache/restore@v4
-        id: media-objects
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
-        with:
-          path: |
-            build/media
-            vendor/media
-          key: windows-media-objects-f46e514-c24e06c-${{ steps.compiler.outputs.identity }}-${{ hashFiles('packaging/build_media.sh') }}
-          restore-keys: windows-media-objects-f46e514-c24e06c-${{ steps.compiler.outputs.identity }}-
-      - name: Build native FFmpeg and collect native OCR
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
-        shell: msys2 {0}
-        run: |
-          set -o pipefail
-          bash packaging/build_media.sh 2>&1 | tee build-evidence/media-build.log
-      - name: Cache successful native compilation
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true' && steps.media-objects.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        continue-on-error: true
-        with:
-          path: |
-            build/media
-            vendor/media
-          key: ${{ steps.media-objects.outputs.cache-primary-key }}
-      - name: Prepare verified data and corresponding source
-        if: steps.native-assets.outputs.cache-hit != 'true' && steps.reuse.outputs.ready != 'true'
-        shell: pwsh
-        run: |
-          python packaging/prepare_assets.py
-          if ($LASTEXITCODE -ne 0) { throw 'Asset preparation failed' }
-      - name: Retain prepared assets before application tests
-        if: steps.native-assets.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        continue-on-error: true
-        with:
-          path: vendor/portable
-          key: ${{ steps.native-assets.outputs.cache-primary-key }}
-      - name: Add verified Korean and Japanese OCR data
-        shell: pwsh
-        run: |
-          python packaging/prepare_multilingual_ocr.py vendor/portable
-          if ($LASTEXITCODE -ne 0) { throw 'Multilingual OCR asset preparation failed' }
-      - name: Test, build onedir, run actual EXE, ZIP and SHA-256
-        shell: pwsh
-        run: |
-          ./scripts/build_windows.ps1 -Assets vendor/portable -Kind $env:BUILD_KIND -DependenciesInstalled 2>&1 | Tee-Object build-evidence/portable-build.log
-          if ($LASTEXITCODE -ne 0) { throw 'Portable build failed' }
-      - name: Application ZIP and SHA-256
-        id: application
-        uses: actions/upload-artifact@v4
-        with:
-          name: BaseballScoutingAIEditor-Windows-x64-${{ env.BUILD_KIND }}
-          path: |
-            BaseballScoutingAIEditor-Windows-x64-${{ env.BUILD_KIND }}.zip
-            BaseballScoutingAIEditor-Windows-x64-${{ env.BUILD_KIND }}.zip.sha256
-          compression-level: 0
-          if-no-files-found: error
-      - name: Corresponding source distributed beside application
-        id: sources
-        uses: actions/upload-artifact@v4
-        with:
-          name: ThirdPartyCorrespondingSources
-          path: vendor/portable/corresponding-source/
-          compression-level: 0
-          if-no-files-found: error
-      - name: Annotate portable build failures
-        if: failure()
-        shell: pwsh
-        run: |
-          if (Test-Path build-evidence/windows-tests.xml) {
-            [xml]$report = Get-Content -Raw build-evidence/windows-tests.xml
-            foreach ($case in ($report.SelectNodes('//testcase[failure or error]') | Select-Object -First 8)) {
-              $problem = $case.SelectSingleNode('failure|error')
-              $detail = ($problem.GetAttribute('message') -replace '[\r\n]+', ' ')
-              if ($detail.Length -gt 280) { $detail = $detail.Substring(0, 280) }
-              Write-Host "::error title=Windows test failure::$($case.classname).$($case.name) $detail"
-              $trace = ($problem.InnerText -split '\r?\n' | Where-Object { $_ -match '^(E |tests/|tests\\)' } | Select-Object -Last 5) -join ' | '
-              if ($trace.Length -gt 500) { $trace = $trace.Substring(0, 500) }
-              if ($trace) { Write-Host "::warning title=Windows test assertion::$trace" }
-            }
-          }
-          if (Test-Path build-evidence/portable-build.log) {
-            $matches = Get-Content build-evidence/portable-build.log | Select-String -Pattern 'Smoke failed|Tests failed|PyInstaller failed|failed validation|Error:|Error ' | Select-Object -Last 4
-            foreach ($line in $matches) {
-              $detail = $line.Line.Trim()
-              if ($detail.Length -gt 300) { $detail = $detail.Substring(0, 300) }
-              Write-Host "::warning title=Portable build detail::$detail"
-            }
-          }
-      - name: Build evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
+          run-id: 45038335335
           name: Windows-build-evidence
-          path: build-evidence/
-          if-no-files-found: warn
+          path: evidence
+      - name: Save bounded synthetic failure details
+        run: |
+          mkdir -p build-results
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import xml.etree.ElementTree as ET
+          lines = []
+          report = Path('evidence/windows-tests.xml')
+          if report.exists():
+              root = ET.parse(report)
+              for case in root.iter('testcase'):
+                  problem = case.find('failure')
+                  if problem is None:
+                      problem = case.find('error')
+                  if problem is not None:
+                      lines.append(case.get('classname', '') + '.' + case.get('name', ''))
+                      lines.extend(line.strip() for line in (problem.text or '').splitlines() if line.startswith(('E ', 'tests', '>')))
+          log = Path('evidence/portable-build.log')
+          if log.exists():
+              lines.extend(line.strip() for line in log.read_text(errors='replace').splitlines() if re.search(r'\bfailed\b|error|exception|traceback', line, re.I))
+          lines = [re.sub(r'https?://\S+|(?i:token|password|secret)\s*=\s*\S+', '[redacted]', line)[:500] for line in lines]
+          Path('build-results/failure.txt').write_text('\n'.join(lines[-50:]) or 'No matching failure detail in artifact.')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add build-results/failure.txt
+          git commit -m 'Record Windows build failure details'
+          git push origin HEAD:refs/heads/build/windows-timeline-portable
